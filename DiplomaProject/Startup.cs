@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiplomaProject.IRepositories;
 using DiplomaProject.Models;
+using DiplomaProject.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,18 +34,19 @@ namespace DiplomaProject
             
             // other service configurations go here
             var connString = Configuration.GetConnectionString("DefaultConnection");
-            // services.AddDbContextPool<KraftWebAppContext>(
-            //     options => options.UseMySql(connString,
-            //         mySqlOptions =>
-            //         {
-            //             mySqlOptions.ServerVersion(new Version(5, 7), ServerType.MySql);
-            //         }
-            //     ));
-            
-            //services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
             
             services.AddDbContext<KraftWebAppContext>(options => options.UseMySql(connString, 
                             ServerVersion.AutoDetect(connString)));
+            
+            // установка конфигурации подключения
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
+
+            services.AddScoped<IAccountRepository, AccountRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +68,8 @@ namespace DiplomaProject
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();    // аутентификация
+            app.UseAuthorization();     // авторизация
 
             app.UseEndpoints(endpoints =>
             {
