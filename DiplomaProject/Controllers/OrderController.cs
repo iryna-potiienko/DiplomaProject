@@ -46,8 +46,9 @@ namespace DiplomaProject.Controllers
             else
             {
                 orders = await _context.Orders
-                    .Include(o => o.Cart)
-                    .ThenInclude(o => o.Customer)
+                    // .Include(o => o.Cart)
+                    // .ThenInclude(o => o.Customer)
+                    .Where(o=>o.Cart.CustomerId == GetCurrentUserId())
                     .Include(o=>o.ShopProfile)
                     //.Include(o => o.Cart)
                     //.ThenInclude(o => o.ShopProfile)
@@ -112,9 +113,10 @@ namespace DiplomaProject.Controllers
             {
                 //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
                 //order.CustomerId = user.Id;
-                if (CloseCart())
+                var currentCart = CloseCart();
+                if (currentCart!=null)
                 {
-                    order.ShopProfileId = 1;
+                    order.ShopProfileId = currentCart.ShopProfileId;
                     order.ReadyStageId = 1;
                     order.DateOfFixation = DateTime.Today;
                     order.IsPaid = false;
@@ -233,7 +235,7 @@ namespace DiplomaProject.Controllers
             return _context.Orders.Any(e => e.Id == id);
         }
         
-        public bool CloseCart()
+        public Cart CloseCart()
         {
             var sessionKey = "Cart";
             var sessionId  = HttpContext.Session.GetInt32(sessionKey);
@@ -243,8 +245,12 @@ namespace DiplomaProject.Controllers
                 //var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
 
                 var userId = GetCurrentUserId();
+
+                var cart = _context.Carts
+                    .Include(c => c.ProductsInOrder)
+                    .ThenInclude(p => p.Product)
+                    .FirstOrDefault(c => c.Id == sessionId);
                 
-                var cart = _context.Carts.Find(sessionId);
                 if (cart.CustomerId == userId && cart.IsOpenForAddingProducts == true)
                 {
                     cart.IsOpenForAddingProducts = false;
@@ -252,11 +258,11 @@ namespace DiplomaProject.Controllers
                     _context.SaveChanges();
                     
                     HttpContext.Session.Remove(sessionKey);
-                    return true;
+                    return cart;
                 }
             }
 
-            return false;
+            return null;
         }
 
         public int GetCurrentUserId()

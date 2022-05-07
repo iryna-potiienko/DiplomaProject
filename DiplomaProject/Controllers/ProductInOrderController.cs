@@ -23,13 +23,11 @@ namespace DiplomaProject.Controllers
         public async Task<IActionResult> Index()
         {
             Task<List<ProductInOrder>> productsInOrder;
-            var cart = await GetCart();//HttpContext.Session.GetInt32("Cart");//GetCart().Id;
+            var cart = await GetCart();
             // if (cartId != null)
             // {
                 var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
                 productsInOrder = _context.ProductsInOrder
-                    // .Include(p => p.Cart)
-                    // .ThenInclude(c=>c.CustomerId==user.Id)
                     .Where(p => p.CartId == cart.Id && p.Cart.CustomerId == user.Id)
                     .Include(p => p.Product)
                     .ToListAsync();
@@ -77,36 +75,45 @@ namespace DiplomaProject.Controllers
         }
 
         // POST: ProductInOrder/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductId,ShopProfileId,CartId,Amount,Comment,FinalPrice,FinalDescription")] ProductInOrder productInOrder)
         {
             //var product = await _context.Products.FindAsync(productInOrder.ProductId);
+            
+            if (!ModelState.IsValid) return View(productInOrder);
+            
             var cart = await GetCart();
             productInOrder.CartId = cart.Id;
-            
-            if (ModelState.IsValid)
-            {
-                // if (cart.ProductsInOrder.Count != 0)
-                // {
-                //     var firstProductInOrder = cart.ProductsInOrder.First();
-                //     var shopProfileId = (int) ViewBag.ShopProfileId;
-                //
-                //     if (firstProductInOrder.Product.ShopProfileId != shopProfileId)
-                //     {
-                //         return View(productInOrder);
-                //     }
-                // }
+            var product = _context.Products.FirstOrDefault(p => p.Id == productInOrder.ProductId);
 
-                _context.Add(productInOrder);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            if (cart.ProductsInOrder.Count == 0)
+            {
+                cart.ShopProfileId = product.ShopProfileId;
+                _context.Update(cart);
+                //_context.SaveChanges();
             }
-            //ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", productInOrder.OrderId);
-            //ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productInOrder.ProductId);
-            return View(productInOrder);
+            else
+            {
+                if( cart.ShopProfileId != product.ShopProfileId)
+                    return View(productInOrder);
+            }
+
+            // if (cart.ProductsInOrder.Count != 0)
+            // {
+            //     var firstProductInOrder = cart.ProductsInOrder.First();
+            //     var shopProfileId = (int) ViewBag.ShopProfileId;
+            //
+            //     if (firstProductInOrder.Product.ShopProfileId != shopProfileId)
+            //     {
+            //         return View(productInOrder);
+            //     }
+            // }
+
+            _context.Add(productInOrder);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: ProductInOrder/Edit/5

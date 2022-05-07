@@ -32,12 +32,15 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                     </li>
                     
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                    </li>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                     </li>
@@ -47,9 +50,10 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <p>@User.Identity.Name</p>
+                                          
+                    @Html.ActionLink("Мій кошик", "Index", "ProductInOrder")
+                    @Html.ActionLink("Мої замовлення", "Index", "Order")
                 }
-
-                @Html.ActionLink("Мій кошик","Index","ProductInOrder")
             </div>
         </div>
     </nav>

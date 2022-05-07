@@ -12,7 +12,7 @@ public class Cart
     public int CustomerId { get; set; }
     public User Customer { get; set; }
     
-    //public int ShopProfileId { get; set; }
+    public int ShopProfileId { get; set; }
     //public ShopProfile ShopProfile { get; set; }
     public bool IsOpenForAddingProducts { get; set; }
     public List<ProductInOrder> ProductsInOrder { get; set; }
