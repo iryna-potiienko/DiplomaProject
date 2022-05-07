@@ -3,6 +3,7 @@ using System;
 using DiplomaProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaProject.Migrations
 {
     [DbContext(typeof(KraftWebAppContext))]
-    partial class KraftWebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220506122208_AddColsToCart")]
+    partial class AddColsToCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +33,14 @@ namespace DiplomaProject.Migrations
                     b.Property<bool>("IsOpenForAddingProducts")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("ShopProfileId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("ShopProfileId");
 
                     b.ToTable("Carts");
                 });
@@ -109,9 +116,6 @@ namespace DiplomaProject.Migrations
                     b.Property<int>("ReadyStageId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShopProfileId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CartId")
@@ -120,8 +124,6 @@ namespace DiplomaProject.Migrations
                     b.HasIndex("DeliveryTypeId");
 
                     b.HasIndex("ReadyStageId");
-
-                    b.HasIndex("ShopProfileId");
 
                     b.ToTable("Orders");
                 });
@@ -417,7 +419,15 @@ namespace DiplomaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DiplomaProject.Models.ShopProfile", "ShopProfile")
+                        .WithMany("Carts")
+                        .HasForeignKey("ShopProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("ShopProfile");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.LikedProductsByUsers", b =>
@@ -459,19 +469,11 @@ namespace DiplomaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DiplomaProject.Models.ShopProfile", "ShopProfile")
-                        .WithMany("Orders")
-                        .HasForeignKey("ShopProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Cart");
 
                     b.Navigation("DeliveryType");
 
                     b.Navigation("ReadyStage");
-
-                    b.Navigation("ShopProfile");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.OrderFeedback", b =>
@@ -606,7 +608,7 @@ namespace DiplomaProject.Migrations
 
             modelBuilder.Entity("DiplomaProject.Models.ShopProfile", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Carts");
 
                     b.Navigation("Products");
 

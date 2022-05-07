@@ -47,6 +47,16 @@ namespace DiplomaProject
                 });
 
             services.AddScoped<IAccountRepository, AccountRepository>();
+            
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".DiplomaProject.MyCart.Session";
+                //options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +81,8 @@ namespace DiplomaProject
             app.UseAuthentication();    // аутентификация
             app.UseAuthorization();     // авторизация
 
+            app.UseSession();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

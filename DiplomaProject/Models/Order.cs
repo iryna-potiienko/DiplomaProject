@@ -7,10 +7,10 @@ public class Order
 {
     public Order()
     {
-        ProductsInOrder = new List<ProductInOrder>();
+        //ProductsInOrder = new List<ProductInOrder>();
     }
     public int Id { get; set; }
-    public int CustomerId { get; set; }
+    //public int CustomerId { get; set; }
     public int ShopProfileId { get; set; }
     public int DeliveryTypeId { get; set; }
     public DateTime DateBeReady { get; set; }
@@ -22,11 +22,15 @@ public class Order
     public double Price { get; set; }
     public bool IsPaid { get; set; }
     public int ReadyStageId { get; set; }
+    
     public OrderFeedback OrderFeedback { get; set; }
     
-    public User Customer { get; set; }
+    public int CartId { get; set; }
+    public Cart Cart { get; set; }
+    
+    //public User Customer { get; set; }
     public ShopProfile ShopProfile { get; set; }
     public DeliveryType DeliveryType { get; set; }
     public ReadyStage ReadyStage { get; set; }
-    public List<ProductInOrder> ProductsInOrder { get; set; }
+    //public List<ProductInOrder> ProductsInOrder { get; set; }
 }

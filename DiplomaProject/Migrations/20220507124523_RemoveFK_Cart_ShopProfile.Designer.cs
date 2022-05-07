@@ -3,6 +3,7 @@ using System;
 using DiplomaProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaProject.Migrations
 {
     [DbContext(typeof(KraftWebAppContext))]
-    partial class KraftWebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220507124523_RemoveFK_Cart_ShopProfile")]
+    partial class RemoveFK_Cart_ShopProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

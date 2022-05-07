@@ -34,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.IsPaid)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.Cart.Customer)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ShopProfile)
@@ -73,10 +73,10 @@
                 @Html.DisplayFor(modelItem => item.IsPaid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.Id)
+                @Html.DisplayFor(modelItem => item.Cart.Customer.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ShopProfile.Id)
+                @Html.DisplayFor(modelItem => item.ShopProfile.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DeliveryType.Id)

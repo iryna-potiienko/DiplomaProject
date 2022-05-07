@@ -3,6 +3,7 @@ using System;
 using DiplomaProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaProject.Migrations
 {
     [DbContext(typeof(KraftWebAppContext))]
-    partial class KraftWebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220505200623_TypoInProductInOrderTable")]
+    partial class TypoInProductInOrderTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,15 +27,7 @@ namespace DiplomaProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsOpenForAddingProducts")
-                        .HasColumnType("tinyint(1)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Carts");
                 });
@@ -88,6 +82,9 @@ namespace DiplomaProject.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateBeReady")
                         .HasColumnType("datetime(6)");
 
@@ -116,6 +113,8 @@ namespace DiplomaProject.Migrations
 
                     b.HasIndex("CartId")
                         .IsUnique();
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DeliveryTypeId");
 
@@ -409,17 +408,6 @@ namespace DiplomaProject.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DiplomaProject.Models.Cart", b =>
-                {
-                    b.HasOne("DiplomaProject.Models.User", "Customer")
-                        .WithMany("Carts")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("DiplomaProject.Models.LikedProductsByUsers", b =>
                 {
                     b.HasOne("DiplomaProject.Models.Product", "Product")
@@ -447,6 +435,12 @@ namespace DiplomaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DiplomaProject.Models.User", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DiplomaProject.Models.DeliveryType", "DeliveryType")
                         .WithMany()
                         .HasForeignKey("DeliveryTypeId")
@@ -466,6 +460,8 @@ namespace DiplomaProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Cart");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("DeliveryType");
 
@@ -615,11 +611,11 @@ namespace DiplomaProject.Migrations
 
             modelBuilder.Entity("DiplomaProject.Models.User", b =>
                 {
-                    b.Navigation("Carts");
-
                     b.Navigation("LikedProducts");
 
                     b.Navigation("OrderFeedbacks");
+
+                    b.Navigation("Orders");
 
                     b.Navigation("ProductComments");
 

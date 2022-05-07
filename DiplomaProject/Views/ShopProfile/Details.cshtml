@@ -76,6 +76,12 @@
         <dd class = "col-sm-2">
             @Html.ActionLink("Товари цього магазину", "Index", "Product", new { shopProfileId = ViewBag.ShopProfileId }, null)
         </dd>
+        <dt class = "col-sm-2">
+            Orders in this shop
+        </dt>
+        <dd class = "col-sm-2">
+            @Html.ActionLink("Замовлення цього магазину", "Index", "Order", new { shopProfileId = ViewBag.ShopProfileId }, null)
+        </dd>
         @* <dd> *@
         @*     @Html.DisplayFor(model => model.Products) *@
         @* </dd> *@

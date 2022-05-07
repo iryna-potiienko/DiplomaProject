@@ -13,13 +13,15 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShopProfileId" class="control-label"></label>
-                <select asp-for="ShopProfileId" class ="form-control" asp-items="ViewBag.ShopProfileId"></select>
-            </div>
+                @* <label asp-for="CustomerId" class="control-label"></label> *@
+                @* <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select> *@
+                @* <input type="hidden" asp-for="CustomerId" asp-items="ViewBag.CustomerId"/> *@
+                <input type="hidden" asp-for="CartId" asp-items="ViewBag.CartId"/>
+                </div>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="ShopProfileId" class="control-label"></label> *@
+            @*     <select asp-for="ShopProfileId" class ="form-control" asp-items="ViewBag.ShopProfileId"></select> *@
+            @* </div> *@
             @* <input type="hidden" asp-for="ShopProfileId" asp-items="ViewBag.ShopProfileId"/> *@
             <div class="form-group">
                 <label asp-for="DeliveryTypeId" class="control-label"></label>
@@ -30,16 +32,16 @@
                 <input asp-for="DateBeReady" class="form-control" />
                 <span asp-validation-for="DateBeReady" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateOfFixation" class="control-label"></label>
-                <input asp-for="DateOfFixation" class="form-control" />
-                <span asp-validation-for="DateOfFixation" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDelivered" /> @Html.DisplayNameFor(model => model.IsDelivered)
-                </label>
-            </div>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="DateOfFixation" class="control-label"></label> *@
+            @*     <input asp-for="DateOfFixation" class="form-control" /> *@
+            @*     <span asp-validation-for="DateOfFixation" class="text-danger"></span> *@
+            @* </div> *@
+            @* <div class="form-group form-check"> *@
+            @*     <label class="form-check-label"> *@
+            @*         <input class="form-check-input" asp-for="IsDelivered" /> @Html.DisplayNameFor(model => model.IsDelivered) *@
+            @*     </label> *@
+            @* </div> *@
             <div class="form-group">
                 <label asp-for="AddressToDelivery" class="control-label"></label>
                 <input asp-for="AddressToDelivery" class="form-control" />
@@ -55,15 +57,15 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReadyStageId" class="control-label"></label>
-                <select asp-for="ReadyStageId" class ="form-control" asp-items="ViewBag.ReadyStageId"></select>
-            </div>
+            @* <div class="form-group form-check"> *@
+            @*     <label class="form-check-label"> *@
+            @*         <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid) *@
+            @*     </label> *@
+            @* </div> *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="ReadyStageId" class="control-label"></label> *@
+            @*     <select asp-for="ReadyStageId" class ="form-control" asp-items="ViewBag.ReadyStageId"></select> *@
+            @* </div> *@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

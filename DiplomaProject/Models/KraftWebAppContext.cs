@@ -14,7 +14,8 @@ public class KraftWebAppContext: DbContext
     public DbSet<LikedProductsByUsers> LikedProductsByUsers { get; set; }
     public DbSet<ShopComment> ShopComments { get; set; }
     public DbSet<ProductComment> ProductComments { get; set; }
-    
+    public DbSet<Cart> Carts { get; set; }
+
     public DbSet<DeliveryType> DeliveryTypes { get; set; }
     public DbSet<ReadyStage> ReadyStages { get; set; }
     public DbSet<Role> Roles { get; set; }

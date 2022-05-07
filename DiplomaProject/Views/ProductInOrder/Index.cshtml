@@ -1,0 +1,69 @@
+@model IEnumerable<DiplomaProject.Models.ProductInOrder>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index (My Cart)</h1>
+
+<p>
+    @* <a asp-action="Create">Create New</a> *@
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Product)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FinalPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FinalDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cart)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cart.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div>
+    @Html.ActionLink("Оформити замовлення", "Create", "Order", new {cartId = ViewBag.CartId})
+</div>
