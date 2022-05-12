@@ -50,10 +50,10 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <p>@User.Identity.Name</p>
-                                          
+
                     @Html.ActionLink("Мій кошик", "Index", "ProductInOrder")
                     @Html.ActionLink("Мої замовлення", "Index", "Order")
-                    
+                    @await Component.InvokeAsync("MyShop", new {currentUserEmail = User.Identity.Name})
                 }
             </div>
         </div>
