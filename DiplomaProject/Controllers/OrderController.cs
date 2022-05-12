@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiplomaProject.Models;
+using DiplomaProject.Repositories;
+using DiplomaProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -14,10 +16,12 @@ namespace DiplomaProject.Controllers
     public class OrderController : Controller
     {
         private readonly KraftWebAppContext _context;
+        private readonly OrderRepository _orderRepository;
 
-        public OrderController(KraftWebAppContext context)
+        public OrderController(KraftWebAppContext context, OrderRepository repository)
         {
             _context = context;
+            _orderRepository = repository;
         }
 
         // GET: Order
@@ -34,7 +38,6 @@ namespace DiplomaProject.Controllers
                         .ThenInclude(o => o.Customer)
                         .Include(o => o.ShopProfile)
                         .Where(o => o.ShopProfileId == shopProfileId)
-                        //.AndInclude(o=>o.ShopProfile)
                         //.Include(o => o.Cart)
                         //.ThenInclude(o => o.ShopProfile)
                         //.Where(o=>o.Cart.ShopProfileId==shopProfileId)
@@ -74,6 +77,10 @@ namespace DiplomaProject.Controllers
                 .Include(o => o.DeliveryType)
                 .Include(o => o.ReadyStage)
                 .Include(o => o.ShopProfile)
+                .ThenInclude(o=>o.Salesman)
+                .Include(o=>o.Cart)
+                .ThenInclude(c=>c.ProductsInOrder)
+                .ThenInclude(p=>p.Product)
                 // .Include(o => o.Cart)
                 // .ThenInclude(o => o.ShopProfile)
                 .Include(o => o.Cart)
@@ -88,80 +95,93 @@ namespace DiplomaProject.Controllers
         }
 
         // GET: Order/Create
-        public IActionResult Create(int cartId)
+        public IActionResult UserMakeOrder(int cartId)
         {
-            // var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-            // ViewData["CustomerId"] = user.Id;//new SelectList(_context.Users, "Id", "Id");
-
             ViewData["CartId"] = cartId;
-            
             ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Name");
-            //ViewData["ReadyStageId"] = 1;//new SelectList(_context.ReadyStages, "Id", "Id");
-            //ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id");
+            // var sum = _context.ProductsInOrder
+            //     .Where(o => o.CartId == cartId)
+            //     .Include(p => p.Product)
+            //     .Sum(p => p.Product.Price);//.ToList();
+            // var price = (from product in productInOrders
+            //         ) 
+            //ViewBag.Price = sum;
             return View();
         }
 
         // POST: Order/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CartId,DeliveryTypeId,DateBeReady,DateOfFixation,IsDelivered,AddressToDelivery,Comment,Price,IsPaid,ReadyStageId")] Order order)
+        public async Task<IActionResult> UserMakeOrder([Bind("Id,CartId,DeliveryTypeId,AddressToDelivery,DateBeReady,Comment")] UserMakeOrderViewModel model)
         {
-            //order.CartId = GetCart();
             if (ModelState.IsValid)
             {
                 //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
                 //order.CustomerId = user.Id;
+                
                 var currentCart = CloseCart();
                 if (currentCart!=null)
                 {
-                    order.ShopProfileId = currentCart.ShopProfileId;
-                    order.ReadyStageId = 1;
-                    order.DateOfFixation = DateTime.Today;
-                    order.IsPaid = false;
-                    order.IsDelivered = false;
+                    var order = new Order
+                    {
+                        CartId = model.CartId,
+                        AddressToDelivery = model.AddressToDelivery,
+                        UserComment = model.Comment,
+                        DeliveryTypeId = model.DeliveryTypeId,
+                        DateBeReady = model.DateBeReady,
+                        //Price = ViewBag.Price,
+
+                        ShopProfileId = currentCart.ShopProfileId,
+                        ReadyStageId = 1,
+                        DateOfFixation = DateTime.Now,
+                        IsPaid = false,
+                        IsDelivered = false
+                    };
 
                     _context.Add(order);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
             }
-            //ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "Id", order.CustomerId);
-            ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Name", order.DeliveryTypeId);
-            //ViewData["ReadyStageId"] = 1;//new SelectList(_context.ReadyStages, "Id", "Id", order.ReadyStageId);
-            //ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id", order.ShopProfileId);
-            return View(order);
+            
+            ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Name", model.DeliveryTypeId);
+            return View(model);
         }
 
         // GET: Order/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> ShopGetsOrderFromUser(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                .Include(o=>o.Cart)
+                .ThenInclude(c=>c.Customer)
+                .Include(o=>o.Cart)
+                .ThenInclude(c=>c.ProductsInOrder)
+                .ThenInclude(p=>p.Product)
+                .Include(o=>o.ShopProfile)
+                .Include(o=>o.DeliveryType)
+                .Include(o=>o.ReadyStage)
+                .FirstOrDefaultAsync(o=>o.Id==id);
             if (order == null)
             {
                 return NotFound();
             }
-            //ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "Id", order.CustomerId);
-            ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
-            ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Id", order.ReadyStageId);
-            //ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id", order.ShopProfileId);
+            
+            //ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
+            ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", order.ReadyStageId);
+            ViewData["CartId"] = order.CartId;
             return View(order);
         }
-
-        // POST: Order/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,ShopProfileId,DeliveryTypeId,DateBeReady,DateOfFixation,IsDelivered,AddressToDelivery,Comment,Price,IsPaid,ReadyStageId")] Order order)
+        public async Task<IActionResult> ShopGetsOrderFromUser(int id, string[] productPrices, string[] productDescriptions, [Bind("Id,CustomerId,ShopProfileId,DeliveryTypeId,DateBeReady,DateOfFixation,IsDelivered,AddressToDelivery,SalesmanComment,Price,IsPaid,ReadyStageId")] Order model)
         {
-            if (id != order.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -170,12 +190,41 @@ namespace DiplomaProject.Controllers
             {
                 try
                 {
+                    //var order = await _context.Orders.FindAsync(id);
+                    var order = await _context.Orders
+                        // .Include(o=>o.Cart)
+                        // .ThenInclude(c=>c.Customer)
+                        // .Include(o=>o.Cart)
+                        // .ThenInclude(c=>c.ProductsInOrder)
+                        // .ThenInclude(p=>p.Product)
+                        // .Include(o=>o.ShopProfile)
+                        // .Include(o=>o.DeliveryType)
+                        .Include(o => o.ReadyStage)
+                        .FirstOrDefaultAsync(o => o.Id == id);
+                    
+                    order.DateBeReady = model.DateBeReady;
+                    //order.ReadyStageId = model.ReadyStageId;
+                    order.Price = model.Price;
+                    //order.IsPaid = model.IsPaid;
+                    order.SalesmanComment = model.SalesmanComment;
+                    order.ReadyStageId = 2;
+
                     _context.Update(order);
+
+                    var productsInOrder = _context.ProductsInOrder
+                        .Where(p => p.CartId == order.CartId)
+                        .ToList();
+                    
+                    for (var i = 0; i < productsInOrder.Count; i++)
+                    {
+                        productsInOrder[i].FinalPrice = Convert.ToDouble(productPrices[i]);
+                        productsInOrder[i].FinalDescription = productDescriptions[i];
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.Id))
+                    if (!OrderExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -186,13 +235,13 @@ namespace DiplomaProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "Id", order.CustomerId);
-            ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
-            ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Id", order.ReadyStageId);
-            ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id", order.ShopProfileId);
-            return View(order);
+            
+            //ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
+            ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", model.ReadyStageId);
+            //ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id", order.ShopProfileId);
+            return View(model);
         }
-
+        
         // GET: Order/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -269,6 +318,113 @@ namespace DiplomaProject.Controllers
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             return user.Id;
+        }
+
+        public async Task<IActionResult> UserGetResponse(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders
+                .Include(o=>o.Cart)
+                .ThenInclude(c=>c.Customer)
+                .Include(o=>o.Cart)
+                .ThenInclude(c=>c.ProductsInOrder)
+                .ThenInclude(p=>p.Product)
+                .Include(o=>o.ShopProfile)
+                .Include(o=>o.DeliveryType)
+                .Include(o=>o.ReadyStage)
+                .FirstOrDefaultAsync(o=>o.Id==id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            
+            ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Name", order.DeliveryTypeId);
+            //ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", order.ReadyStageId);
+            ViewData["CartId"] = order.CartId;
+            ViewBag.Price = order.Price;
+            return View(order);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserGetResponse(int id, [Bind("Id,CartId,DeliveryTypeId,AddressToDelivery,Comment")] Order model)
+        {
+            if (ModelState.IsValid)
+            {
+                //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+                //order.CustomerId = user.Id;
+
+                var order = await _orderRepository.GetOrderById(id);
+
+
+                order.AddressToDelivery = model.AddressToDelivery;
+                order.UserComment = model.UserComment;
+                order.DeliveryTypeId = model.DeliveryTypeId;
+                order.DateBeReady = order.DateBeReady;
+
+                // ShopProfileId = currentCart.ShopProfileId,
+                // ReadyStageId = 1,
+                // DateOfFixation = DateTime.Today,
+                // IsPaid = false,
+                // IsDelivered = false
+
+
+                // _context.Update(order);
+                // await _context.SaveChangesAsync();
+                await _orderRepository.UpdateOrder(order);
+                return RedirectToAction(nameof(Index));
+
+            }
+
+            ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Name", model.DeliveryTypeId);
+            return View(model);
+        }
+
+        public async Task<IActionResult> ReadyStageChanged(int id, string option)
+        {
+            var order = await _orderRepository.GetOrderById(id);
+
+            switch (option)
+            {
+                case "AcceptOrder":
+                    order.ReadyStageId = 3;
+                    ViewBag.MessageText = "Замовлення підтверджене";
+                    break;
+                case "PayForTheOrder":
+                    order.IsPaid = true;
+                    order.ReadyStageId = 4;
+                    ViewBag.MessageText = "Замовлення оплачено";
+                    break;
+                case "PutOrderInWork":
+                    order.ReadyStageId = 5;
+                    ViewBag.MessageText = "Замовлення прийнято в обробку";
+                    break;
+                case "OrderIsReady":
+                    order.ReadyStageId = 6;
+                    ViewBag.MessageText = "Замовлення готове";
+                    break;
+                case "SendOrderToUser":
+                    order.ReadyStageId = 7;
+                    ViewBag.MessageText = "Замовлення надіслано покупцю";
+                    break;
+                case "CancelOrder":
+                    order.ReadyStageId = 8;
+                    ViewBag.MessageText = "Замовлення скасовано";
+                    break;
+                case "GetOrder":
+                    order.IsDelivered = true;
+                    order.ReadyStageId = 9;
+                    ViewBag.MessageText = "Замовлення отримано";
+                    break;
+            }
+
+
+            await _orderRepository.UpdateOrder(order);
+            return View();
         }
     }
 }

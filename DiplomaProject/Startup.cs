@@ -47,6 +47,7 @@ namespace DiplomaProject
                 });
 
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<OrderRepository>();
             
             services.AddDistributedMemoryCache();
 

@@ -15,6 +15,17 @@ public class OrderRepository
         _context = context;
     }
 
+    public async Task<Order> GetOrderById(int id)
+    {
+        var order = await _context.Orders.FindAsync(id);
+        return order;
+    }
+    public async Task UpdateOrder(Order order)
+    {
+        _context.Update(order);
+        await _context.SaveChangesAsync();
+    }
+    
     public async void AddProductToOrder(ProductInOrder productInOrder, int quantity)
     {
         //var productInOrder = await _context.ProductsInOrder.FindAsync(game.Id);

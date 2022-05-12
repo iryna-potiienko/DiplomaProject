@@ -18,7 +18,8 @@ public class Order
     
     public bool IsDelivered { get; set; }
     public string AddressToDelivery { get; set; }
-    public string Comment { get; set; }
+    public string UserComment { get; set; }
+    public string SalesmanComment { get; set; }
     public double Price { get; set; }
     public bool IsPaid { get; set; }
     public int ReadyStageId { get; set; }

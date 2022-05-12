@@ -36,9 +36,10 @@ public class KraftWebAppContext: DbContext
         // добавляем роли
         Role adminRole = new Role { Id = 1, Name = adminRoleName };
         Role userRole = new Role { Id = 2, Name = userRoleName };
+        Role salesmanRole = new Role { Id = 3, Name = "salesman" };
         User adminUser = new User { Id = 1, Email = adminEmail, Password = adminPassword, RoleId = adminRole.Id };
  
-        modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole });
+        modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole, salesmanRole });
         modelBuilder.Entity<User>().HasData( new User[] { adminUser });
         base.OnModelCreating(modelBuilder);
     }

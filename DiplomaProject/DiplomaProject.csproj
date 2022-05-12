@@ -24,4 +24,11 @@
       <Folder Include="Views\ShopProfile" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\ReadyStagesChange\AcceptOrder.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ReadyStagesChange\CancelOrder.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ReadyStagesChange\GetOrder.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\ReadyStagesChange\PayForTheOrder.cshtml" />
+    </ItemGroup>
+
 </Project>

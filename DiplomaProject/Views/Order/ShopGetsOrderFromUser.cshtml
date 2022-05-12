@@ -1,0 +1,109 @@
+@model DiplomaProject.Models.Order
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ShopGetsOrderFromUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CartId" />
+            <input type="hidden" asp-for="ShopProfileId" />
+            <input type="hidden" asp-for="Cart.ProductsInOrder" />
+            
+            <div class="form-group">
+                @* <label asp-for="Cart.Customer.Email" class="control-label"></label> *@
+                @Html.DisplayNameFor(model => model.Cart.Customer)
+                @Html.DisplayFor(model => model.Cart.Customer.Email)
+            </div>
+            <div class="form-group">
+                @* <label asp-for="DeliveryType.Name" class="control-label"></label> *@
+                @Html.DisplayNameFor(model => model.DeliveryType)
+                @Html.DisplayFor(model => model.DeliveryType.Name)
+            </div>
+            <div class="form-group">
+                @* <label asp-for="DateOfFixation" class="control-label"></label> *@
+                @Html.DisplayNameFor(model => model.DateOfFixation)
+                @Html.DisplayFor(model => model.DateOfFixation)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.AddressToDelivery)
+                @Html.DisplayFor(model => model.AddressToDelivery)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.UserComment)
+                @Html.DisplayFor(model => model.UserComment)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.ReadyStageId)
+                @Html.DisplayFor(model => model.ReadyStage.Name)
+            </div>
+
+            <input type="submit" value="Update" />
+            <table class="table">
+                @foreach (var item in Model.Cart.ProductsInOrder)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comment)
+                        </td>
+                        <td>
+                            <input type="number" name="productPrices" value="@item.FinalPrice" />
+                            @* @Html.EditorFor(modelItem => item.FinalPrice) *@
+                        </td>
+                        <td>
+                            <input type="text" name="productDescriptions" value="@item.FinalDescription" />
+                            @* @Html.EditorFor(modelItem => item.FinalDescription) *@
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <div class="form-group">
+                <label asp-for="DateBeReady" class="control-label"></label>
+                <input asp-for="DateBeReady" class="form-control" />
+                <span asp-validation-for="DateBeReady" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            @* <div class="form-group form-check"> *@
+            @*     <label class="form-check-label"> *@
+            @*         <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid) *@
+            @*     </label> *@
+            @* </div> *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="ReadyStageId" class="control-label"></label> *@
+            @*     <select asp-for="ReadyStageId" class="form-control" asp-items="ViewBag.ReadyStageId"></select> *@
+            @*     <span asp-validation-for="ReadyStageId" class="text-danger"></span> *@
+            @* </div> *@
+            <div class="form-group">
+                <label asp-for="SalesmanComment" class="control-label"></label>
+                <input asp-for="SalesmanComment" class="form-control" />
+                <span asp-validation-for="SalesmanComment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

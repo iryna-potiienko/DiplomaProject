@@ -34,11 +34,21 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AddressToDelivery)
         </dd>
+        
+        
+        
+        
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Comment)
+            @Html.DisplayNameFor(model => model.UserComment)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Comment)
+            @Html.DisplayFor(model => model.UserComment)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SalesmanComment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SalesmanComment)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
@@ -46,6 +56,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
+        
+        
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IsPaid)
         </dt>
@@ -56,29 +69,197 @@
             @Html.DisplayNameFor(model => model.Cart.Customer)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cart.Customer.Id)
+            @Html.DisplayFor(model => model.Cart.Customer.Email)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ShopProfile)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShopProfile.Id)
+            @Html.DisplayFor(model => model.ShopProfile.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DeliveryType)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryType.Id)
+            @Html.DisplayFor(model => model.DeliveryType.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ReadyStage)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReadyStage.Id)
+            @Html.DisplayFor(model => model.ReadyStage.Name)
         </dd>
     </dl>
+  
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Cart.ProductsInOrder)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinalDescription)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @{
+        if (Model.Cart.Customer.Email == User.Identity.Name)
+        {
+            switch (Model.ReadyStageId)
+            {
+                case 1:
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 2:
+                    <a asp-action="UserGetResponse" asp-route-id="@Model?.Id">Узгодити деталі замовлення</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="AcceptOrder" asp-route-id="@Model?.Id">Підтвердити замовлення</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 3:
+                    <a asp-action="ReadyStageChanged" asp-route-option="PayForTheOrder" asp-route-id="@Model?.Id">Оплатити</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 4:
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 5:
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 6:
+                    if (Model.DeliveryTypeId == 2)
+                    {
+                        <a asp-action="ReadyStageChanged" asp-route-option="GetOrder" asp-route-id="@Model?.Id">Замовлення отримано</a>
+                    }
+                    break;
+                case 7:
+                    <a asp-action="ReadyStageChanged" asp-route-option="GetOrder" asp-route-id="@Model?.Id">Замовлення отримано</a>
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    <a asp-action="Create" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id" asp-route-customerId="@Model.Cart.CustomerId">Залишити відгук</a>
+                    <a asp-action="Details" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id">Переглянути відгук</a>
+                    break;
+            }
+        }
+        else if (Model.ShopProfile.Salesman.Email == User.Identity.Name)
+        {
+            switch (Model.ReadyStageId)
+            {
+                case 1:
+                    <a asp-action="ShopGetsOrderFromUser" asp-route-id="@Model?.Id">Узгодити деталі замовлення</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="AcceptOrder" asp-route-id="@Model?.Id">Підтвердити замовлення</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 2:
+                    <a asp-action="UserGetResponse" asp-route-id="@Model?.Id">Узгодити деталі замовлення</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="AcceptOrder" asp-route-id="@Model?.Id">Підтвердити замовлення</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 3:
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 4:
+                    <a asp-action="ReadyStageChanged" asp-route-option="PutOrderInWork"  asp-route-id="@Model?.Id">Відправити замовлення в роботу</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder"  asp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 5:
+                    <a asp-action="ReadyStageChanged" asp-route-option="OrderIsReady" asp-route-id="@Model?.Id">Замовлення готове</a>
+                    <a asp-action="ReadyStageChanged" asp-route-option="CancelOrder" sp-route-id="@Model?.Id">Скасувати замовлення</a>
+                    break;
+                case 6:
+                    if (Model.DeliveryTypeId == 2)
+                    {
+                        <a asp-action="ReadyStageChanged" asp-route-option="SendOrderToUser" asp-route-id="@Model?.Id">Надіслати замовлення</a>
+                    }
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    <a asp-action="Details" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id">Переглянути відгук</a>
+                    break;
+            }
+        }
+        
+    }
+
+        @*if (Model.ReadyStageId != 8)
+        {
+            //if (User.IsInRole("salesman"))
+            if (Model.ShopProfile.Salesman.Email == User.Identity.Name)
+            {
+                <div>
+                    <a asp-action="ShopGetsOrderFromUser" asp-route-id="@Model?.Id">Узгодити деталі замовлення</a>
+                    <a asp-action="AcceptOrder" asp-route-id="@Model?.Id">Підтвердити замовлення</a>
+                </div>
+            }
+
+            else if (Model.Cart.Customer.Email == User.Identity.Name)
+            {
+                <div>
+                    <a asp-action="UserGetResponse" asp-route-id="@Model?.Id">Узгодити деталі замовлення</a>
+                    <a asp-action="AcceptOrder" asp-route-id="@Model?.Id">Підтвердити замовлення</a>
+                    @if (Model.ReadyStageId == 3)
+                    {
+                        <button asp-action="PayForTheOrder" asp-route-id="@Model?.Id">Оплатити</button>
+                    }
+                    @if (Model.ReadyStageId == 9)
+                    {
+                        <a asp-action="Create" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id" asp-route-customerId="@Model.Cart.CustomerId">Залишити відгук</a>
+                    }
+
+
+                </div>
+            }
+            <a asp-action="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
+        }
+    }*@
+    @* @if (Model.ReadyStageId != 8) *@
+    @* { *@
+    @*     <a asp-action="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a> *@
+    @*     @#1#await Component.InvokeAsync("CancelOrder", new {id = Model.Id})#1# *@
+    @* } *@
+    |
+    <a asp-action="Index" asp-route-shopProfileId="@Model?.ShopProfileId">Back to List</a>
 </div>
