@@ -20,10 +20,21 @@ namespace DiplomaProject.Controllers
         }
 
         // GET: ShopProfile
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? salesmanId)
         {
-            var kraftWebAppContext = _context.ShopProfiles.Include(s => s.Salesman);
-            return View(await kraftWebAppContext.ToListAsync());
+            Task<List<ShopProfile>> shopProfiles;
+            if (salesmanId != null)
+            {
+                shopProfiles = _context.ShopProfiles
+                    .Where(s => s.SalesmanId == salesmanId).ToListAsync();
+            }
+            else
+            {
+                shopProfiles = _context.ShopProfiles
+                    .Include(s => s.Salesman).ToListAsync();
+            }
+
+            return View(await shopProfiles);
         }
 
         // GET: ShopProfile/Details/5
@@ -35,15 +46,37 @@ namespace DiplomaProject.Controllers
             }
 
             var shopProfile = await _context.ShopProfiles
-                //.Include(s => s.Salesman)
+                .Include(s => s.Salesman)
                 .Include(s=>s.Products)
+                .Include(s=>s.Orders)
+                .ThenInclude(o=>o.OrderFeedback)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (shopProfile == null)
             {
                 return NotFound();
             }
 
-            ViewBag.ShopProfileId = shopProfile.Id;
+            //ViewBag.ShopProfileId = shopProfile.Id;
+            ViewBag.ProductsCount = shopProfile.Products.Count;
+            ViewBag.OrdersCount = shopProfile.Orders.Count;
+            //_context.Orders.Count(o => o.ShopProfileId == (int) id);
+            ViewBag.OrdersUserGetCount = //_context.Orders
+                shopProfile.Orders
+                //.Where(o => o.ShopProfileId == (int) id)
+                .Count(o => o.ReadyStageId == 9);
+
+            var shopOrders = _context.Orders
+                .Include(o => o.OrderFeedback)
+                .Where(o => o.ShopProfileId == (int) id);
+            ViewBag.OrdersInTimeCount = //_context.Orders
+            //     .Include(o => o.OrderFeedback)
+            //     .Where(o => o.ShopProfileId == (int) id)
+            shopOrders.Count(o => o.OrderFeedback.IsInTime == true);
+            ViewBag.OrdersSuccesfulCount = //_context.Orders
+            //     .Include(o => o.OrderFeedback)
+            //     .Where(o => o.ShopProfileId == (int) id)
+                shopOrders.Count(o => o.OrderFeedback.IsEverythingOkay == true);
+            
             return View(shopProfile);
         }
 
@@ -172,6 +205,16 @@ namespace DiplomaProject.Controllers
         private bool ShopProfileExists(int id)
         {
             return _context.ShopProfiles.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> VerifyShopProfile(int id)
+        {
+            var shopProfile = await _context.ShopProfiles.FindAsync(id);
+            shopProfile.IsVerified = true;
+            
+            _context.ShopProfiles.Update(shopProfile);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = shopProfile.Id});
         }
     }
 }

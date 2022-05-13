@@ -23,6 +23,9 @@
                 @Html.DisplayNameFor(model => model.IsInTime)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.IsEverythingOkay)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Customer)
             </th>
             <th>
@@ -42,6 +45,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsInTime)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.IsEverythingOkay)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Customer.Id)

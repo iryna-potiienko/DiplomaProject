@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Pages\Components\MyShop" />
       <Folder Include="Views\ShopProfile" />
     </ItemGroup>
 

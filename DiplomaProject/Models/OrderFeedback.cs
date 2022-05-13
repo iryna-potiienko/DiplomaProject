@@ -6,6 +6,7 @@ public class OrderFeedback
     public string Text { get; set; }
     public int Estimation { get; set; }
     public bool IsInTime { get; set; }
+    public bool IsEverythingOkay { get; set; }
     public int CustomerId { get; set; }
     public int OrderId { get; set; }
     

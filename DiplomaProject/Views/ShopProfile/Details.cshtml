@@ -11,6 +11,12 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LogoPhoto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LogoPhoto)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
@@ -46,12 +52,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Longitude)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LogoPhoto)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LogoPhoto)
-        </dd>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
@@ -59,37 +60,148 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
+            Загалом товарів
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.ProductsCount
+        </dd>
+        
+        <dt class = "col-sm-2">
+            Загалом замовлень
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.OrdersCount
+        </dd>
+        <dt class = "col-sm-2">
+            Замовлень виконано
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.OrdersUserGetCount
+        </dd>
+        <dt class = "col-sm-2">
+            Замовлень виконано вчасно
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.OrdersInTimeCount
+        </dd>
+        <dt class = "col-sm-2">
+            Замовлень виконано успішно
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.OrdersSuccesfulCount
+        </dd>
+
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Contacts)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Contacts)
         </dd>
-        @* <dt class = "col-sm-2"> *@
-        @*     @Html.DisplayNameFor(model => model.Salesman) *@
-        @* </dt> *@
-        @* <dd class = "col-sm-10"> *@
-        @*     @Html.DisplayFor(model => model.Salesman.Id) *@
-        @* </dd> *@
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Salesman)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Salesman.Name)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Products)
         </dt>
         <dd class = "col-sm-2">
-            @Html.ActionLink("Товари цього магазину", "Index", "Product", new { shopProfileId = ViewBag.ShopProfileId }, null)
+            @Html.ActionLink("Товари цього магазину", "Index", "Product", new { shopProfileId = Model.Id }, null)
         </dd>
-        <dt class = "col-sm-2">
-            Orders in this shop
-        </dt>
-        <dd class = "col-sm-2">
-            @Html.ActionLink("Замовлення цього магазину", "Index", "Order", new { shopProfileId = ViewBag.ShopProfileId }, null)
-        </dd>
-        @* <dd> *@
-        @*     @Html.DisplayFor(model => model.Products) *@
-        @* </dd> *@
-        
-        
+        @if (Model.Salesman.Email == User.Identity.Name)
+        {
+            <dt class="col-sm-2">
+                Orders in this shop
+            </dt>
+            <dd class="col-sm-2">
+                @Html.ActionLink("Замовлення цього магазину", "Index", "Order", new {shopProfileId = Model.Id}, null)
+            </dd>
+        }
     </dl>
 </div>
+<div>
+    @if (!Model.IsVerified) //&& User.IsInRole("admin"))
+    {
+        <a asp-action="VerifyShopProfile" asp-route-id="@Model?.Id">Верифікувати сторінку</a>
+    }
+</div>
+
+@if (Model.Salesman.Email == User.Identity.Name)
+{
+    <table class="columns">
+        <tr>
+            <td>
+                <div id="piechart_div" style="border: 1px solid #ccc"></div></td>
+            <td>
+                <div id="barchart_div" style="border: 1px solid #ccc"></div></td>
+        </tr>
+    </table>
+}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+google.charts.load('current', { 'packages': ['corechart'] });
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: "application/json",
+                url: '/Charts/OrdersEstimations/@Model.Id',
+                success: function (result) {
+                    // google.charts.load('current', {
+                    //     'packages': ['corechart']
+                    // });
+                    google.charts.setOnLoadCallback(function () {
+                        drawPieChart(result);
+                    });
+                }
+            });
+
+            function drawPieChart(mydata) {
+                data = google.visualization.arrayToDataTable(mydata, false);
+                var options = {
+                    title: "Співвідношення оцінок замовлень",
+                    width: 500,
+                    height: 400
+                    }
+                    
+                    var piechart = new google.visualization.PieChart(document.getElementById('piechart_div'));
+                    piechart.draw(data, options);      
+            }
+            
+            $.ajax({
+                            type: 'GET',
+                            dataType: "json",
+                            contentType: "application/json",
+                            url: '/Charts/OrdersAmountPerDay/@Model.Id',
+                            success: function (result) {
+                                // google.charts.load('current', {
+                                //     'packages': ['corechart']
+                                // });
+                                google.charts.setOnLoadCallback(function () {
+                                    drawBarChart(result);
+                                });
+                            }
+                        });
+            
+            function drawBarChart(mydata) {
+                            data = google.visualization.arrayToDataTable(mydata, false);
+                            var options = {
+                                title: "Надійшло замовлень за 1 день",
+                                width: 500,
+                                height: 400
+                                }
+                                
+                                var barchart = new google.visualization.ColumnChart(document.getElementById('barchart_div'));
+                                barchart.draw(data, options);      
+                        }
+            
+        });
+    </script>

@@ -31,6 +31,7 @@ namespace DiplomaProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddControllers();
             
             // other service configurations go here
             var connString = Configuration.GetConnectionString("DefaultConnection");
