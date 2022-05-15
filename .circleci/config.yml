@@ -51,8 +51,8 @@ jobs:
       - run:
           name: Stop AWS ECS task
           command: |
-            export OLD_TASK_ID=$(aws ecs list-tasks --cluster "hope-cluster" --service "HopeFrontService" --output text --query taskArns[0])
-            aws ecs stop-task --cluster hope-cluster --task ${OLD_TASK_ID} &
+            export OLD_TASK_ID=$(aws ecs list-tasks --cluster "diploma-cluster" --service "DiplomaService" --output text --query taskArns[0])
+            aws ecs stop-task --cluster diploma-cluster --task ${OLD_TASK_ID} &
             sleep 10s
 workflows:
   build_and_test:
@@ -68,10 +68,10 @@ workflows:
       - aws-ecs/deploy-service-update:
           requires:
             - approve-deploy
-          family: "HopeFrontRELEASE"
-          cluster-name: "hope-cluster"
-          container-image-name-updates: "container=HopeFrontContainer,tag=${CIRCLE_SHA1}"
-          service-name: "HopeFrontService"
+          family: "DiplomaTaskRelease"
+          cluster-name: "diploma-cluster"
+          container-image-name-updates: "container=DiplomaService,tag=${CIRCLE_SHA1}"
+          service-name: "DiplomaService"
       - aws-ecs-stop-task:
           requires:
             - aws-ecs/deploy-service-update
