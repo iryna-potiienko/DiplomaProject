@@ -1,0 +1,118 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@8.0.0
+  aws-ecs: circleci/aws-ecs@02.2.1
+  aws-cli: circleci/aws-cli@2.0
+
+jobs:
+  build:
+    docker:
+      - image: node:17.4.0-alpine
+    steps:
+      - checkout
+      - run:
+          name: Build app
+          command: |
+            npm install
+            npm run build
+      - run:
+          name: Create source folder
+          command: |
+            mkdir -p output/files/src
+      - run:
+          name: Move app to source folder
+          command: |
+            mv build/* output/files
+      - run:
+          name: Move Docker file into output folder
+          command: |
+            mv docker/Dockerfile output/files
+      - run:
+          name: Move nginx into output folder
+          command: |
+            mv nginx output/files
+      - persist_to_workspace:
+          root: output
+          paths:
+            - files/*
+  build-docker:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - attach_workspace:
+          at: output
+      - run: ls
+      - run:
+          name: Create build folder
+          command: |
+            mkdir build
+      - run:
+          name: Move app into build folder
+          command: |
+            mv output/files/* build/
+      - run:
+          name: Move Dockerfile
+          command: |
+            mv build/Dockerfile ./
+      - run:
+          name: Move nginx
+          command: |
+            mv build/nginx ./
+      - run:
+          name: Show files
+          command: |
+            ls
+      - run:
+          name: Show docker build content
+          command: |
+            cd build && ls
+      - run:
+          name: Login into docker repository
+          command: |
+            aws --version
+            aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 382729611829.dkr.ecr.eu-central-1.amazonaws.com
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t "382729611829.dkr.ecr.eu-central-1.amazonaws.com/${PROJECT_NAME}:${CIRCLE_SHA1}" .
+      - run:
+          name: Push docker image
+          command: |
+            docker push "382729611829.dkr.ecr.eu-central-1.amazonaws.com/${PROJECT_NAME}:${CIRCLE_SHA1}"
+  approve-deploy:
+    docker:
+      - image: alpine/helm:latest
+    steps:
+      - run: ls
+  aws-ecs-stop-task:
+    docker:
+      - image: amazon/aws-cli:latest
+    steps:
+      - run:
+          name: Stop AWS ECS task
+          command: |
+            export OLD_TASK_ID=$(aws ecs list-tasks --cluster "hope-cluster" --service "HopeFrontService" --output text --query taskArns[0])
+            aws ecs stop-task --cluster hope-cluster --task ${OLD_TASK_ID} &
+            sleep 10s
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - build-docker:
+          requires:
+            - build
+      - approve-deploy:
+          type: approval
+          requires:
+            - build-docker
+      - aws-ecs/deploy-service-update:
+          requires:
+            - approve-deploy
+          family: "HopeFrontRELEASE"
+          cluster-name: "hope-cluster"
+          container-image-name-updates: "container=HopeFrontContainer,tag=${CIRCLE_SHA1}"
+          service-name: "HopeFrontService"
+      - aws-ecs-stop-task:
+          requires:
+            - aws-ecs/deploy-service-update
