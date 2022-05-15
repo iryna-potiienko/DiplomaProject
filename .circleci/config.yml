@@ -25,33 +25,6 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
-      - attach_workspace:
-          at: output
-      - run: ls
-      - run:
-          name: Create build folder
-          command: |
-            mkdir build
-      - run:
-          name: Move app into build folder
-          command: |
-            mv output/files/* build/
-      - run:
-          name: Move Dockerfile
-          command: |
-            mv build/Dockerfile ./
-      - run:
-          name: Move nginx
-          command: |
-            mv build/nginx ./
-      - run:
-          name: Show files
-          command: |
-            ls
-      - run:
-          name: Show docker build content
-          command: |
-            cd build && ls
       - run:
           name: Login into docker repository
           command: |
