@@ -20,7 +20,7 @@ namespace DiplomaProject
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                    webBuilder.UseStartup<Startup>();
-                   webBuilder.UseUrls("http://*:5005");
+                   webBuilder.UseUrls("http://*:80");
                 });
     }
 }
