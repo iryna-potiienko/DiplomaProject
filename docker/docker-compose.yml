@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: hope-front
+    ports:
+      - 80:80
+
+

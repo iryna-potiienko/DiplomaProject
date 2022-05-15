@@ -8,34 +8,19 @@ orbs:
 jobs:
   build:
     docker:
-      - image: node:17.4.0-alpine
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
     steps:
       - checkout
       - run:
-          name: Build app
+          name: Restore packages
           command: |
-            npm install
-            npm run build
+            cd DiplomaProject
+            dotnet restore
       - run:
-          name: Create source folder
+          name: Build App
           command: |
-            mkdir -p output/files/src
-      - run:
-          name: Move app to source folder
-          command: |
-            mv build/* output/files
-      - run:
-          name: Move Docker file into output folder
-          command: |
-            mv docker/Dockerfile output/files
-      - run:
-          name: Move nginx into output folder
-          command: |
-            mv nginx output/files
-      - persist_to_workspace:
-          root: output
-          paths:
-            - files/*
+            cd DiplomaProject
+            dotnet build
   build-docker:
     machine:
       image: ubuntu-2004:current
