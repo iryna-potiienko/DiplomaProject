@@ -32,9 +32,17 @@ namespace DiplomaProject
         {
             services.AddControllersWithViews();
             services.AddControllers();
+
+            var environmentName = Environment.GetEnvironmentVariable("Env");
+
+            var configuration = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile($"appsettings.{environmentName}.json", true)
+                    .AddEnvironmentVariables()
+                    .Build();
             
             // other service configurations go here
-            var connString = Configuration.GetConnectionString("DefaultConnection");
+            var connString = configuration.GetConnectionString("DefaultConnection");
             
             services.AddDbContext<KraftWebAppContext>(options => options.UseMySql(connString, 
                             ServerVersion.AutoDetect(connString)));
