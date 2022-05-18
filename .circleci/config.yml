@@ -1,0 +1,77 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@8.0.0
+  aws-ecs: circleci/aws-ecs@02.2.1
+  aws-cli: circleci/aws-cli@2.0
+
+jobs:
+  build:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
+    steps:
+      - checkout
+      - run:
+          name: Restore packages
+          command: |
+            cd DiplomaProject
+            dotnet restore
+      - run:
+          name: Build App
+          command: |
+            cd DiplomaProject
+            dotnet build
+  build-docker:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout
+      - run:
+          name: Login into docker repository
+          command: |
+            aws --version
+            aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 382729611829.dkr.ecr.eu-central-1.amazonaws.com
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t "382729611829.dkr.ecr.eu-central-1.amazonaws.com/${PROJECT_NAME}:${CIRCLE_SHA1}" -f docker/Dockerfile .
+      - run:
+          name: Push docker image
+          command: |
+            docker push "382729611829.dkr.ecr.eu-central-1.amazonaws.com/${PROJECT_NAME}:${CIRCLE_SHA1}"
+  approve-deploy:
+    docker:
+      - image: alpine/helm:latest
+    steps:
+      - run: ls
+  aws-ecs-stop-task:
+    docker:
+      - image: amazon/aws-cli:latest
+    steps:
+      - run:
+          name: Stop AWS ECS task
+          command: |
+            export OLD_TASK_ID=$(aws ecs list-tasks --cluster "diploma-cluster" --service "DiplomaService" --output text --query taskArns[0])
+            aws ecs stop-task --cluster diploma-cluster --task ${OLD_TASK_ID} &
+            sleep 10s
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - build-docker:
+          requires:
+            - build
+      - approve-deploy:
+          type: approval
+          requires:
+            - build-docker
+      - aws-ecs/deploy-service-update:
+          requires:
+            - approve-deploy
+          family: "DiplomaTaskRelease"
+          cluster-name: "diploma-cluster"
+          container-image-name-updates: "container=DiplomaService,tag=${CIRCLE_SHA1}"
+          service-name: "DiplomaService"
+      - aws-ecs-stop-task:
+          requires:
+            - aws-ecs/deploy-service-update
