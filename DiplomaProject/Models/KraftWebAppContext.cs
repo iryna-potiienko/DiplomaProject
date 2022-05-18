@@ -15,6 +15,8 @@ public class KraftWebAppContext: DbContext
     public DbSet<ShopComment> ShopComments { get; set; }
     public DbSet<ProductComment> ProductComments { get; set; }
     public DbSet<Cart> Carts { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Subcategory> Subcategories { get; set; }
 
     public DbSet<DeliveryType> DeliveryTypes { get; set; }
     public DbSet<ReadyStage> ReadyStages { get; set; }
@@ -30,14 +32,14 @@ public class KraftWebAppContext: DbContext
         string adminRoleName = "admin";
         string userRoleName = "user";
  
-        string adminEmail = "admin@mail.ru";
-        string adminPassword = "123456";
+        string adminEmail = "admin@gmail.com";
+        string adminPassword = "$2y$10$dXXelPy/f3Tvvupx9WVUwu6Yx0OLbAg6MLQHSI5zB8OemL7RU96za";
  
         // добавляем роли
         Role adminRole = new Role { Id = 1, Name = adminRoleName };
         Role userRole = new Role { Id = 2, Name = userRoleName };
         Role salesmanRole = new Role { Id = 3, Name = "salesman" };
-        User adminUser = new User { Id = 1, Email = adminEmail, Password = adminPassword, RoleId = adminRole.Id };
+        User adminUser = new User { Id = 1, Name = "Admin", Email = adminEmail, Password = adminPassword, RoleId = adminRole.Id };
  
         modelBuilder.Entity<Role>().HasData(new Role[] { adminRole, userRole, salesmanRole });
         modelBuilder.Entity<User>().HasData( new User[] { adminUser });
