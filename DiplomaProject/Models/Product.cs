@@ -18,6 +18,8 @@ public class Product
     public string Photo { get; set; }
     public string Composition { get; set; }
     public double Price { get; set; }
+    public int SubcategoryId { get; set; }
+    public Subcategory Subcategory { get; set; }
     
     public ShopProfile ShopProfile { get; set; }
     public List<ProductComment> ProductComments { get; set; }

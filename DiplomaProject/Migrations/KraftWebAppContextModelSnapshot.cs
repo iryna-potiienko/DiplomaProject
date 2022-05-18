@@ -41,6 +41,20 @@ namespace DiplomaProject.Migrations
                     b.ToTable("Carts");
                 });
 
+            modelBuilder.Entity("DiplomaProject.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("DiplomaProject.Models.DeliveryType", b =>
                 {
                     b.Property<int>("Id")
@@ -88,9 +102,6 @@ namespace DiplomaProject.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Comment")
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("DateBeReady")
                         .HasColumnType("datetime(6)");
 
@@ -112,8 +123,14 @@ namespace DiplomaProject.Migrations
                     b.Property<int>("ReadyStageId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SalesmanComment")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("ShopProfileId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserComment")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -140,6 +157,9 @@ namespace DiplomaProject.Migrations
 
                     b.Property<int>("Estimation")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsEverythingOkay")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsInTime")
                         .HasColumnType("tinyint(1)");
@@ -184,9 +204,14 @@ namespace DiplomaProject.Migrations
                     b.Property<int>("ShopProfileId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ShopProfileId");
+
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("Products");
                 });
@@ -372,6 +397,25 @@ namespace DiplomaProject.Migrations
                     b.ToTable("ShopProfiles");
                 });
 
+            modelBuilder.Entity("DiplomaProject.Models.Subcategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Subcategories");
+                });
+
             modelBuilder.Entity("DiplomaProject.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -409,10 +453,11 @@ namespace DiplomaProject.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "admin@mail.ru",
+                            Email = "admin@gmail.com",
                             Latitude = 0,
                             Longitude = 0,
-                            Password = "123456",
+                            Name = "Admin",
+                            Password = "$2y$10$dXXelPy/f3Tvvupx9WVUwu6Yx0OLbAg6MLQHSI5zB8OemL7RU96za",
                             RoleId = 1
                         });
                 });
@@ -509,7 +554,15 @@ namespace DiplomaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DiplomaProject.Models.Subcategory", "Subcategory")
+                        .WithMany("Products")
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ShopProfile");
+
+                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.ProductComment", b =>
@@ -580,6 +633,17 @@ namespace DiplomaProject.Migrations
                     b.Navigation("Salesman");
                 });
 
+            modelBuilder.Entity("DiplomaProject.Models.Subcategory", b =>
+                {
+                    b.HasOne("DiplomaProject.Models.Category", "Category")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("DiplomaProject.Models.User", b =>
                 {
                     b.HasOne("DiplomaProject.Models.Role", "Role")
@@ -596,6 +660,11 @@ namespace DiplomaProject.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("ProductsInOrder");
+                });
+
+            modelBuilder.Entity("DiplomaProject.Models.Category", b =>
+                {
+                    b.Navigation("Subcategories");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.Order", b =>
@@ -619,6 +688,11 @@ namespace DiplomaProject.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("ShopComments");
+                });
+
+            modelBuilder.Entity("DiplomaProject.Models.Subcategory", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.User", b =>

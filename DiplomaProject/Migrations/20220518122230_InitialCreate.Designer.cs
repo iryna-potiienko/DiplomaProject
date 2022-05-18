@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaProject.Migrations
 {
     [DbContext(typeof(KraftWebAppContext))]
-    [Migration("20220430173235_UserUpdate")]
-    partial class UserUpdate
+    [Migration("20220518122230_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,42 @@ namespace DiplomaProject.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("DiplomaProject.Models.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsOpenForAddingProducts")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("ShopProfileId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("DiplomaProject.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
 
             modelBuilder.Entity("DiplomaProject.Models.DeliveryType", b =>
                 {
@@ -65,10 +101,7 @@ namespace DiplomaProject.Migrations
                     b.Property<string>("AddressToDelivery")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Comment")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateBeReady")
@@ -92,12 +125,19 @@ namespace DiplomaProject.Migrations
                     b.Property<int>("ReadyStageId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SalesmanComment")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("ShopProfileId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserComment")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CartId")
+                        .IsUnique();
 
                     b.HasIndex("DeliveryTypeId");
 
@@ -119,6 +159,9 @@ namespace DiplomaProject.Migrations
 
                     b.Property<int>("Estimation")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsEverythingOkay")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsInTime")
                         .HasColumnType("tinyint(1)");
@@ -163,9 +206,14 @@ namespace DiplomaProject.Migrations
                     b.Property<int>("ShopProfileId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ShopProfileId");
+
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("Products");
                 });
@@ -209,6 +257,9 @@ namespace DiplomaProject.Migrations
                     b.Property<string>("Amount")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comment")
                         .HasColumnType("longtext");
 
@@ -218,15 +269,12 @@ namespace DiplomaProject.Migrations
                     b.Property<double>("FinalPrice")
                         .HasColumnType("double");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
 
@@ -270,6 +318,11 @@ namespace DiplomaProject.Migrations
                         {
                             Id = 2,
                             Name = "user"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "salesman"
                         });
                 });
 
@@ -346,6 +399,25 @@ namespace DiplomaProject.Migrations
                     b.ToTable("ShopProfiles");
                 });
 
+            modelBuilder.Entity("DiplomaProject.Models.Subcategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Subcategories");
+                });
+
             modelBuilder.Entity("DiplomaProject.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -383,12 +455,24 @@ namespace DiplomaProject.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "admin@mail.ru",
+                            Email = "admin@gmail.com",
                             Latitude = 0,
                             Longitude = 0,
-                            Password = "123456",
+                            Name = "Admin",
+                            Password = "$2y$10$dXXelPy/f3Tvvupx9WVUwu6Yx0OLbAg6MLQHSI5zB8OemL7RU96za",
                             RoleId = 1
                         });
+                });
+
+            modelBuilder.Entity("DiplomaProject.Models.Cart", b =>
+                {
+                    b.HasOne("DiplomaProject.Models.User", "Customer")
+                        .WithMany("Carts")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.LikedProductsByUsers", b =>
@@ -412,9 +496,9 @@ namespace DiplomaProject.Migrations
 
             modelBuilder.Entity("DiplomaProject.Models.Order", b =>
                 {
-                    b.HasOne("DiplomaProject.Models.User", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
+                    b.HasOne("DiplomaProject.Models.Cart", "Cart")
+                        .WithOne("Order")
+                        .HasForeignKey("DiplomaProject.Models.Order", "CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -436,7 +520,7 @@ namespace DiplomaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Cart");
 
                     b.Navigation("DeliveryType");
 
@@ -472,7 +556,15 @@ namespace DiplomaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DiplomaProject.Models.Subcategory", "Subcategory")
+                        .WithMany("Products")
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ShopProfile");
+
+                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.ProductComment", b =>
@@ -496,9 +588,9 @@ namespace DiplomaProject.Migrations
 
             modelBuilder.Entity("DiplomaProject.Models.ProductInOrder", b =>
                 {
-                    b.HasOne("DiplomaProject.Models.Order", "Order")
+                    b.HasOne("DiplomaProject.Models.Cart", "Cart")
                         .WithMany("ProductsInOrder")
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -508,7 +600,7 @@ namespace DiplomaProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("Cart");
 
                     b.Navigation("Product");
                 });
@@ -543,6 +635,17 @@ namespace DiplomaProject.Migrations
                     b.Navigation("Salesman");
                 });
 
+            modelBuilder.Entity("DiplomaProject.Models.Subcategory", b =>
+                {
+                    b.HasOne("DiplomaProject.Models.Category", "Category")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("DiplomaProject.Models.User", b =>
                 {
                     b.HasOne("DiplomaProject.Models.Role", "Role")
@@ -554,11 +657,21 @@ namespace DiplomaProject.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("DiplomaProject.Models.Cart", b =>
+                {
+                    b.Navigation("Order");
+
+                    b.Navigation("ProductsInOrder");
+                });
+
+            modelBuilder.Entity("DiplomaProject.Models.Category", b =>
+                {
+                    b.Navigation("Subcategories");
+                });
+
             modelBuilder.Entity("DiplomaProject.Models.Order", b =>
                 {
                     b.Navigation("OrderFeedback");
-
-                    b.Navigation("ProductsInOrder");
                 });
 
             modelBuilder.Entity("DiplomaProject.Models.Product", b =>
@@ -579,13 +692,18 @@ namespace DiplomaProject.Migrations
                     b.Navigation("ShopComments");
                 });
 
+            modelBuilder.Entity("DiplomaProject.Models.Subcategory", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("DiplomaProject.Models.User", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("LikedProducts");
 
                     b.Navigation("OrderFeedbacks");
-
-                    b.Navigation("Orders");
 
                     b.Navigation("ProductComments");
 
