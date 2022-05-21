@@ -52,7 +52,8 @@ jobs:
           name: Stop AWS ECS task
           command: |
             export OLD_TASK_ID=$(aws ecs list-tasks --cluster "diploma-cluster" --service "DiplomaService" --output text --query taskArns[0])
-            aws ecs stop-task --cluster diploma-cluster --task ${OLD_TASK_ID} &
+            aws ecs stop-task --cluster diploma-cluster --task ${OLD_TASK_ID} 
+            aws elbv2 register-targets --target-group-arn arn:aws:elasticloadbalancing:eu-central-1:382729611829:targetgroup/diploma-tg/ce0041202eef5585 --targets Id=i-06fee03a3b3a2e3db &
             sleep 10s
 workflows:
   build_and_test:
