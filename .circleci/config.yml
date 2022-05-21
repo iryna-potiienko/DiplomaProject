@@ -39,11 +39,6 @@ jobs:
           name: Push docker image
           command: |
             docker push "382729611829.dkr.ecr.eu-central-1.amazonaws.com/${PROJECT_NAME}:${CIRCLE_SHA1}"
-  approve-deploy:
-    docker:
-      - image: alpine/helm:latest
-    steps:
-      - run: ls
   aws-ecs-stop-task:
     docker:
       - image: amazon/aws-cli:latest
@@ -70,13 +65,9 @@ workflows:
       - build-docker:
           requires:
             - build
-      - approve-deploy:
-          type: approval
-          requires:
-            - build-docker
       - aws-ecs/deploy-service-update:
           requires:
-            - approve-deploy
+            - build-docker
           family: "DiplomaTaskRelease"
           cluster-name: "diploma-cluster"
           container-image-name-updates: "container=DiplomaService,tag=${CIRCLE_SHA1}"
