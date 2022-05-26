@@ -51,7 +51,7 @@ namespace DiplomaProject.Controllers
                 .Where(o => o.ShopProfileId == shopProfileId).ToListAsync();
             
             var resList = new List<object>();
-            resList.Add(new[] {"Балів оцінено замовлення", "Кількість замовлень"});
+            resList.Add(new[] {"Дата", "Кількість замовлень"});
             
             var orders = await ordersListAsync;
             foreach (var order in orders)

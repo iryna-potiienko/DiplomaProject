@@ -47,7 +47,6 @@ namespace DiplomaProject
             services.AddDbContext<KraftWebAppContext>(options => options.UseMySql(connString, 
                             ServerVersion.AutoDetect(connString)));
             
-            // установка конфигурации подключения
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
@@ -88,8 +87,8 @@ namespace DiplomaProject
 
             app.UseRouting();
 
-            app.UseAuthentication();    // аутентификация
-            app.UseAuthorization();     // авторизация
+            app.UseAuthentication();    // автентификація
+            app.UseAuthorization();     // авторизація
 
             app.UseSession();
             

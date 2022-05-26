@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Замовлення магазину</h1>
 
 @* <p> *@
 @*     <a asp-action="Create">Create New</a> *@
@@ -18,9 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.DateOfFixation)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IsDelivered)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.AddressToDelivery)
             </th>
@@ -33,18 +33,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IsPaid)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Cart.Customer)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ShopProfile)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.DeliveryType)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.ReadyStage)
             </th>
@@ -60,9 +60,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateOfFixation)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.IsDelivered)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.AddressToDelivery)
             </td>
@@ -75,18 +75,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.IsPaid)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Cart.Customer.Email)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ShopProfile.Name)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.DeliveryType.Name)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.ReadyStage.Name)
             </td>

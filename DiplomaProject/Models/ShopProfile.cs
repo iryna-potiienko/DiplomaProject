@@ -9,7 +9,6 @@ public class ShopProfile
         Products = new List<Product>();
         ShopComments = new List<ShopComment>();
         Orders = new List<Order>();
-        //Carts = new List<Cart>();
     }
     public int Id { get; set; }
     public string Name { get; set; }
@@ -29,6 +28,4 @@ public class ShopProfile
     public List<Product> Products { get; set; }
     public List<ShopComment> ShopComments { get; set; }
     public List<Order> Orders { get; set; }
-    
-    //public List<Cart> Carts { get; set; }
 }

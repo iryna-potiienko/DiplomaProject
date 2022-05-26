@@ -53,7 +53,8 @@ namespace DiplomaProject.Controllers
         // GET: Product/Create
         public IActionResult Create(int? shopProfileId)
         {
-            ViewData["ShopProfileId"] = shopProfileId;//new SelectList(_context.ShopProfiles, "Id", "Id");
+            ViewData["ShopProfileId"] = shopProfileId;
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "Id", "Name");
             return View();
         }
 
@@ -62,7 +63,7 @@ namespace DiplomaProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ShopProfileId,Description,Photo,Composition,Price")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,ShopProfileId,SubcategoryId,Description,Photo,Composition,Price")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +73,7 @@ namespace DiplomaProject.Controllers
             }
 
             //ViewData["ShopProfileId"] = shopProfileId;//new SelectList(_context.ShopProfiles, "Id", "Id", product.ShopProfileId);
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "Id", "Name", product.SubcategoryId);
             return View(product);
         }
 
