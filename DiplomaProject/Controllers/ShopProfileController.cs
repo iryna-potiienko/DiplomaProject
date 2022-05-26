@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiplomaProject.Models;
 using DiplomaProject.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace DiplomaProject.Controllers
 {
@@ -96,12 +98,23 @@ namespace DiplomaProject.Controllers
                     City = model.City,
                     Contacts = model.Contacts,
                     Description = model.Description,
-                    LogoPhoto = model.LogoPhoto,
+                    //LogoPhoto = model.LogoPhoto,
                     Latitude = 0,
                     Longitude = 0,
                     IsVerified = false,
                     SalesmanId = user.Id
                 };
+
+                await using (var memoryStream = new MemoryStream())
+                {
+                    await model.LogoPhoto.CopyToAsync(memoryStream);
+
+                    // Upload the file if less than 16 MB
+                    if (memoryStream.Length < 16777216)
+                    {
+                        shopProfile.LogoPhoto = memoryStream.ToArray();
+                    }
+                }
                 
                 _context.Add(shopProfile);
                 await _context.SaveChangesAsync();
@@ -123,8 +136,30 @@ namespace DiplomaProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["SalesmanId"] = new SelectList(_context.Users, "Id", "Id", shopProfile.SalesmanId);
-            return View(shopProfile);
+
+            var model = new ShopProfileViewModel
+            {
+                Id=shopProfile.Id,
+                Name = shopProfile.Name,
+                Address = shopProfile.Address,
+                City = shopProfile.City,
+                Contacts = shopProfile.Contacts,
+                Description = shopProfile.Description,
+                //LogoPhoto = new FormFile() //shopProfile.LogoPhoto
+            };
+            
+            // await using (var memoryStream = new MemoryStream())
+            // {
+            //     await shopProfile.LogoPhoto.CopyToAsync(memoryStream);
+            //
+            //     // Upload the file if less than 16 MB
+            //     if (memoryStream.Length < 16777216)
+            //     {
+            //         model.LogoPhoto = memoryStream.ToArray();
+            //     }
+            // }
+            
+            return View(model);
         }
 
         // POST: ShopProfile/Edit/5
@@ -132,9 +167,9 @@ namespace DiplomaProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,SalesmanId,IsVerified,City,Address,Latitude,Longitude,LogoPhoto,Description,Contacts")] ShopProfile shopProfile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,SalesmanId,IsVerified,City,Address,Latitude,Longitude,LogoPhoto,Description,Contacts")] ShopProfileViewModel model)
         {
-            if (id != shopProfile.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -143,12 +178,23 @@ namespace DiplomaProject.Controllers
             {
                 try
                 {
+                    var shopProfile = await _context.ShopProfiles.FindAsync(id);
+                    await using (var memoryStream = new MemoryStream())
+                    {
+                        await model.LogoPhoto.CopyToAsync(memoryStream);
+
+                        // Upload the file if less than 16 MB
+                        if (memoryStream.Length < 16777216)
+                        {
+                            shopProfile.LogoPhoto = memoryStream.ToArray();
+                        }
+                    }
                     _context.Update(shopProfile);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ShopProfileExists(shopProfile.Id))
+                    if (!ShopProfileExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -159,8 +205,8 @@ namespace DiplomaProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SalesmanId"] = new SelectList(_context.Users, "Id", "Id", shopProfile.SalesmanId);
-            return View(shopProfile);
+            //ViewData["SalesmanId"] = new SelectList(_context.Users, "Id", "Id", shopProfile.SalesmanId);
+            return View(model);
         }
 
         // GET: ShopProfile/Delete/5

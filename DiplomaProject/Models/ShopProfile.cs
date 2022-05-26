@@ -20,7 +20,7 @@ public class ShopProfile
     public int Latitude { get; set; }
     public int Longitude { get; set; }
     
-    public string LogoPhoto { get; set; }
+    public byte[] LogoPhoto { get; set; }
     public string Description { get; set; }
     public string Contacts { get; set; }
     

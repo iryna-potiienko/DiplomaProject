@@ -15,7 +15,7 @@ public class Product
     public int ShopProfileId { get; set; }
     public string Description { get; set; }
     
-    public string Photo { get; set; }
+    public byte[] Photo { get; set; }
     public string Composition { get; set; }
     public double Price { get; set; }
     public int SubcategoryId { get; set; }

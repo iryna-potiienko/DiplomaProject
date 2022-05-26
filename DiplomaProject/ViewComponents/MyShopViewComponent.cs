@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DiplomaProject.Models;
@@ -19,13 +20,21 @@ public class MyShopViewComponent: ViewComponent
     
     public async Task<ViewViewComponentResult> InvokeAsync(string currentUserEmail)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == currentUserEmail);
-        var shops = await _context.ShopProfiles.Where(s => s.SalesmanId == user.Id).ToListAsync();
+        // try
+        // {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == currentUserEmail);
+            var shops = await _context.ShopProfiles.Where(s => s.SalesmanId == user.Id).ToListAsync();
 
-        if (shops.Count == 1)
-            return View("MyShop", shops.First());
-        
-        ViewBag.UserId = user.Id;
-        return View("MyShops", shops);
+            if (shops.Count == 1)
+                return View("MyShop", shops.First());
+
+            ViewBag.UserId = user.Id;
+            return View("MyShops", shops);
+        // }
+        // catch (Exception e)
+        // {
+        //     Console.WriteLine(e.Message);
+        //     return null;
+        // }
     }
 }
