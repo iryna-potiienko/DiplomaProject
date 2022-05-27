@@ -61,6 +61,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  font-family: cursive;
 }
 .footer {
   position: absolute;
@@ -74,10 +75,17 @@ body {
   color: #b920bc !important;
 }
 
+.secondary-color {
+  color: #6b20bb !important;
+}
+
+.third-color {
+  color: #bb2070 !important;
+}
+
 .hover:hover {
   text-decoration: underline solid 2px;
 }
-
 
 .bg-header {
   /* fallback for old browsers */
@@ -99,4 +107,30 @@ body {
 
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: linear-gradient(to right, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5))
+}
+
+.bg-footer {
+  /* fallback for old browsers */
+  background: #f093fb;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to bottom, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to bottom, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5))
+}
+
+.image-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.left {
+  margin-right: auto;
+}
+
+.form-control:valid {
+  background-color:  #f8c9fd !important;
 }
