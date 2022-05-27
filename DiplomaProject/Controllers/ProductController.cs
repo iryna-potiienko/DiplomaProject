@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiplomaProject.Models;
+using DiplomaProject.ViewModels;
 
 namespace DiplomaProject.Controllers
 {
@@ -64,31 +65,40 @@ namespace DiplomaProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ShopProfileId,SubcategoryId,Description,Photo,Composition,Price")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,ShopProfileId,SubcategoryId,Description,Photo,Composition,Price")] ProductViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // using (var memoryStream = new MemoryStream())
-                // {
-                //     await FileUpload.FormFile.CopyToAsync(memoryStream);
-                //
-                //     // Upload the file if less than 2 MB
-                //     if (memoryStream.Length < 2097152)
-                //     {
-                //         var file = new Product()
-                //         {
-                //             Photo = memoryStream.ToArray()
-                //         };
-                //
-                //         //_context.File.Add(file);
-                //
-                //         //await _dbContext.SaveChangesAsync();
-                //     }
-                //     else
-                //     {
-                //         ModelState.AddModelError("File", "The file is too large.");
-                //     }
-                // }
+                byte[] photo = new byte[] { };
+                await using (var memoryStream = new MemoryStream())
+                {
+                    await model.Photo.CopyToAsync(memoryStream);
+                
+                    // Upload the file if less than 16 MB
+                    if (memoryStream.Length < 16777216)
+                    {
+                        photo = memoryStream.ToArray();
+                        // var file = new Product()
+                        // {
+                        //     Photo = memoryStream.ToArray()
+                        // };
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("File", "The file is too large.");
+                    }
+                }
+
+                var product = new Product
+                {
+                    Name = model.Name,
+                    Composition = model.Composition,
+                    Description = model.Description,
+                    Price = model.Price,
+                    ShopProfileId = model.ShopProfileId,
+                    SubcategoryId = model.SubcategoryId,
+                    Photo = photo
+                };
                 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
@@ -96,8 +106,8 @@ namespace DiplomaProject.Controllers
             }
 
             //ViewData["ShopProfileId"] = shopProfileId;//new SelectList(_context.ShopProfiles, "Id", "Id", product.ShopProfileId);
-            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "Id", "Name", product.SubcategoryId);
-            return View(product);
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "Id", "Name", model.SubcategoryId);
+            return View(model);
         }
 
         // GET: Product/Edit/5
@@ -113,8 +123,21 @@ namespace DiplomaProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id", product.ShopProfileId);
-            return View(product);
+            
+            var model = new ProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Composition = product.Composition,
+                Description = product.Description,
+                Price = product.Price,
+                ShopProfileId = product.ShopProfileId,
+                SubcategoryId = product.SubcategoryId,
+                //Photo = photo
+            };
+            
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "Id", "Name", product.SubcategoryId);
+            return View(model);
         }
 
         // POST: Product/Edit/5
@@ -122,9 +145,9 @@ namespace DiplomaProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ShopProfileId,Description,Photo,Composition,Price")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ShopProfileId,Description,Photo,Composition,Price,SubcategoryId")] ProductViewModel model)
         {
-            if (id != product.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -133,12 +156,31 @@ namespace DiplomaProject.Controllers
             {
                 try
                 {
+                    var product = await _context.Products.FindAsync(id);
+                    await using (var memoryStream = new MemoryStream())
+                    {
+                        await model.Photo.CopyToAsync(memoryStream);
+
+                        // Upload the file if less than 16 MB
+                        if (memoryStream.Length < 16777216)
+                        {
+                            product.Photo = memoryStream.ToArray();
+                        }
+                    }
+
+                    product.Name = model.Name;
+                    product.Composition = model.Composition;
+                    product.Description = model.Description;
+                    product.Price = model.Price;
+                    product.ShopProfileId = model.ShopProfileId;
+                    product.SubcategoryId = model.SubcategoryId;
+                    
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!ProductExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -149,8 +191,8 @@ namespace DiplomaProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id", product.ShopProfileId);
-            return View(product);
+            ViewData["SubcategoryId"] = new SelectList(_context.Subcategories, "Id", "Name", model.SubcategoryId);
+            return View(model);
         }
 
         // GET: Product/Delete/5

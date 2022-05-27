@@ -1,4 +1,4 @@
-@model DiplomaProject.Models.Product
+@model DiplomaProject.ViewModels.ProductViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,18 +11,19 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ShopProfileId" asp-items="ViewBag.ShopProfileId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ShopProfileId" class="control-label"></label>
-                <select asp-for="ShopProfileId" class="form-control" asp-items="ViewBag.ShopProfileId"></select>
-                <span asp-validation-for="ShopProfileId" class="text-danger"></span>
+                <label asp-for="SubcategoryId" class="control-label"></label>
+                <select asp-for="SubcategoryId" class="form-control" asp-items="ViewBag.SubcategoryId"></select>
+                <span asp-validation-for="SubcategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -31,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" />
+                <input asp-for="Photo" type="file" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
             <div class="form-group">

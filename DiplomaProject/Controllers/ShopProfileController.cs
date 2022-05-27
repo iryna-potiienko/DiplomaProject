@@ -179,6 +179,9 @@ namespace DiplomaProject.Controllers
                 try
                 {
                     var shopProfile = await _context.ShopProfiles.FindAsync(id);
+                    if (shopProfile == null)
+                        return NotFound();
+                    
                     await using (var memoryStream = new MemoryStream())
                     {
                         await model.LogoPhoto.CopyToAsync(memoryStream);
@@ -189,6 +192,19 @@ namespace DiplomaProject.Controllers
                             shopProfile.LogoPhoto = memoryStream.ToArray();
                         }
                     }
+
+                    shopProfile.Name = model.Name;
+                    shopProfile.Address = model.Address;
+                    shopProfile.City = model.City;
+                    shopProfile.Contacts = model.Contacts;
+                    shopProfile.Description = model.Description;
+                        //LogoPhoto = model.LogoPhoto,
+                        // shopProfile.Latitude = model;
+                        // shopProfile.Longitude = 0;
+                        // shopProfile.IsVerified = false,
+                        // shopProfile.SalesmanId = user.Id
+                    
+                    
                     _context.Update(shopProfile);
                     await _context.SaveChangesAsync();
                 }
