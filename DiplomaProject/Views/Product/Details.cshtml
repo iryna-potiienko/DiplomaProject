@@ -5,58 +5,76 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1 class="text-center secondary-color pt-2">Details</h1>
 
 <div>
-    <h4>Product</h4>
-    <hr />
-    <div class = "col-sm-6">
+    <h4 class="text-center">Product</h4>
+    <hr/>
+
+    <div class="image-center pb-5">
         @* @Html.DisplayFor(model => model.LogoPhoto) *@
-        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="LogoPhoto" style="width: inherit;"/>
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="LogoPhoto" class="image-style"/>
     </div>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        @* <dt class = "col-sm-2"> *@
-        @*     @Html.DisplayNameFor(model => model.Photo) *@
-        @* </dt> *@
-        @* <dd class = "col-sm-10"> *@
-        @*     @Html.DisplayFor(model => model.Photo) *@
-        @* </dd> *@
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Composition)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Composition)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShopProfile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShopProfile.Id)
-        </dd>
-    </dl>
+
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayFor(model => model.Name)
+            </th>
+        </tr>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayFor(model => model.Description)
+            </th>
+        </tr>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Composition)
+            </th>
+            <th>
+                @Html.DisplayFor(model => model.Composition)
+            </th>
+        </tr>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayFor(model => model.Price)
+            </th>
+        </tr>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ShopProfile)
+            </th>
+            <th>
+                @Html.DisplayFor(model => model.ShopProfile.Id)
+            </th>
+        </tr>
+
+    </table>
+    
 </div>
-<div>
-    @Html.ActionLink("Замовити товар", "Create", "ProductInOrder", new { productId = Model.Id, shopProfileId = Model.ShopProfile.Id }, null)
+
+<div class="w-100">
+    <div class="center btn btn-warning ">
+        <i class="fa-solid fa-cart-shopping"></i>
+        @Html.ActionLink("Замовити товар", "Create", "ProductInOrder", new { productId = Model.Id, shopProfileId = Model.ShopProfile.Id }, null)
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="d-flex align-items-center">
+    <a class="btn btn-info left" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
 </div>
