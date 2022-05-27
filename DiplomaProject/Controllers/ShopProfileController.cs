@@ -37,6 +37,24 @@ namespace DiplomaProject.Controllers
 
             return View(await shopProfiles);
         }
+        
+        public async Task<IActionResult> GetByName(string name)
+        {
+            Task<List<ShopProfile>> shopProfiles;
+            if (name != null)
+            {
+                shopProfiles = _context.ShopProfiles
+                    .Where(s => s.Name.Contains(name)).ToListAsync();
+            }
+            else
+            {
+                shopProfiles = _context.ShopProfiles
+                    .Include(s => s.Salesman).ToListAsync();
+            }
+
+            return View("Index", await shopProfiles);
+        }
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

@@ -9,6 +9,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form class="d-flex">
+    <input class="form-control me-2" type="search" name="name" placeholder="Введіть назву магазину" aria-label="Search">
+    <button asp-action="GetByName" class="btn btn-outline-success" type="submit">Пошук</button>
+</form>
+
 <table class="table">
     <thead>
     <tr>

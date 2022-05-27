@@ -21,18 +21,56 @@ namespace DiplomaProject.Controllers
         }
 
         // GET: Product
-        public async Task<IActionResult> Index(int? shopProfileId)
+        public async Task<IActionResult> Index(int? shopProfileId, int? categoryId, int? subcategoryId)
         {
             Task<List<Product>> products;
-            if(shopProfileId==null)
-                products = _context.Products.Include(p => p.ShopProfile).ToListAsync();
-            else
+            if(shopProfileId!=null)
                 products = _context.Products.Where(p => p.ShopProfileId == shopProfileId).ToListAsync();
 
+            else if (categoryId != null)
+            {
+                // var subcategories = _context.Subcategories
+                //     .Where(s => s.CategoryId == categoryId)
+                //     .ToList();
+
+                products = _context.Subcategories
+                    .Where(s => s.CategoryId == categoryId)
+                    //.ToList()
+                    .SelectMany(subcategory => _context.Products
+                        .Include(p => p.ShopProfile)
+                        .Where(p => p.SubcategoryId == subcategory.Id))
+                    //.ToList())
+                    .ToListAsync();
+                ViewBag.CategoryId = categoryId;
+            }
+            else if (subcategoryId != null)
+            {
+                products = _context.Products
+                    .Include(p => p.ShopProfile)
+                    .Where(p => p.SubcategoryId == subcategoryId)
+                    .ToListAsync();
+            }
+            else
+            {
+                products = _context.Products.Include(p => p.ShopProfile).ToListAsync();
+            }
             ViewBag.ShopProfileId = shopProfileId;
             return View(await products);
         }
 
+        public async Task<IActionResult> GetByName(string name)
+        {
+            Task<List<Product>> products;
+            if(name!=null)
+                products = _context.Products.Where(p => p.Name.Contains(name)).ToListAsync();
+            else
+            {
+                products = _context.Products.Include(p => p.ShopProfile).ToListAsync();
+            }
+            //ViewBag.ShopProfileId = shopProfileId;
+            return View("Index", await products);
+        }
+        
         // GET: Product/Details/5
         public async Task<IActionResult> Details(int? id)
         {
