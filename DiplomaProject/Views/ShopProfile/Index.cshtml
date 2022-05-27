@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center secondary-color pt-5">Shop list</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
 
 <form class="d-flex">
@@ -15,7 +15,7 @@
     <button asp-action="GetByName" class="btn btn-outline-success" type="submit">Пошук</button>
 </form>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
     <tr>
         <th>
@@ -43,57 +43,71 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-        <th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.Contacts)
         </th>
-        <th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.Salesman)
         </th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            <div class = "col-12">
-                <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.LogoPhoto)" alt="LogoPhoto" style="width: inherit;"/>
-            </div>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsVerified)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        @* <td> *@
-        @*     @Html.DisplayFor(modelItem => item.Latitude) *@
-        @* </td> *@
-        @* <td> *@
-        @*     @Html.DisplayFor(modelItem => item.Longitude) *@
-        @* </td> *@
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div class="col-12">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.LogoPhoto)" alt="LogoPhoto" style="width: inherit;"/>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="text-center">
+                @if (item.IsVerified)
+                {
+                    <i class="fa-solid fa-check text-success fa-2x"></i>
+                }
+                else
+                {
+                    <i class="fa-solid fa-xmark text-danger fa-2x"></i>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.Latitude) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.Longitude) *@
+            @* </td> *@
 
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Contacts)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Salesman.Email)
-        </td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-        </td>
-    </tr>
-}
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Contacts)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Salesman.Email)
+            </td>
+            <td>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-circle-info"></i>
+                </a>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-pen"></i>
+                </a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
