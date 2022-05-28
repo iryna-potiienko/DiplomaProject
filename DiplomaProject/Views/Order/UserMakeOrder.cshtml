@@ -15,6 +15,8 @@
             
             <input type="hidden" asp-for="CartId" asp-items="ViewBag.CartId"/>
                 
+            @await Component.InvokeAsync("ProductsInOrderList", new { cartId = ViewBag.CartId })
+            
             <div class="form-group">
                 <label asp-for="DeliveryTypeId" class="control-label"></label>
                 <select asp-for="DeliveryTypeId" class ="form-control" asp-items="ViewBag.DeliveryTypeId"></select>
@@ -30,37 +32,6 @@
                 <span asp-validation-for="DateBeReady" class="text-danger"></span>
             </div>
             
-            @* <p>Price: @ViewBag.Price</p> *@
-            @* @Html.DisplayNameFor(model => model.Price) *@
-                        @* *@
-                        @* @Html.DisplayFor(model => model.Price) *@
-
-
-            @*<table class="table">
-            @foreach (var item in Model.ProductsInOrder)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Product.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Comment)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FinalPrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FinalDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cart.Id)
-                    </td>
-                </tr>
-            }
-            </table>*@
             
             <div class="form-group">
                 <label asp-for="Comment" class="control-label"></label>
@@ -75,5 +46,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="ProductInOrder">Повернутися до кошика</a>
 </div>

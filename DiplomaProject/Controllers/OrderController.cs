@@ -17,6 +17,7 @@ namespace DiplomaProject.Controllers
     {
         private readonly KraftWebAppContext _context;
         private readonly OrderRepository _orderRepository;
+        public const string SessionKey = "Cart";
 
         public OrderController(KraftWebAppContext context, OrderRepository repository)
         {
@@ -27,23 +28,21 @@ namespace DiplomaProject.Controllers
         // GET: Order
         public async Task<IActionResult> Index(int? shopProfileId)
         {
-            List<Order> orders =new List<Order>();
+            var orders =new List<Order>();
             if (shopProfileId != null)
             {
                 var shop = await _context.ShopProfiles.FindAsync(shopProfileId);
                 if (shop.SalesmanId == GetCurrentUserId())
                 {
                     orders = await _context.Orders
+                        .Where(o => o.ShopProfileId == shopProfileId)
                         .Include(o => o.Cart)
                         .ThenInclude(o => o.Customer)
                         .Include(o => o.ShopProfile)
-                        .Where(o => o.ShopProfileId == shopProfileId)
-                        //.Include(o => o.Cart)
-                        //.ThenInclude(o => o.ShopProfile)
-                        //.Where(o=>o.Cart.ShopProfileId==shopProfileId)
                         .Include(o => o.DeliveryType)
                         .Include(o => o.ReadyStage)
                         .ToListAsync();
+                    ViewBag.ShopProfileName = shop.Name;
                 }
             }
             else
@@ -118,8 +117,8 @@ namespace DiplomaProject.Controllers
             {
                 //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
                 //order.CustomerId = user.Id;
-                
-                var currentCart = CloseCart();
+
+                var currentCart = GetCurrentCart();//CloseCart();
                 if (currentCart!=null)
                 {
                     var order = new Order
@@ -140,6 +139,8 @@ namespace DiplomaProject.Controllers
 
                     _context.Add(order);
                     await _context.SaveChangesAsync();
+
+                    CloseCart();
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -172,7 +173,8 @@ namespace DiplomaProject.Controllers
             }
             
             //ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
-            ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", order.ReadyStageId);
+            //ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", order.ReadyStageId);
+            ViewBag.ShopProfileId = order.ShopProfileId;
             ViewData["CartId"] = order.CartId;
             return View(order);
         }
@@ -237,7 +239,7 @@ namespace DiplomaProject.Controllers
             }
             
             //ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
-            ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", model.ReadyStageId);
+            //ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", model.ReadyStageId);
             //ViewData["ShopProfileId"] = new SelectList(_context.ShopProfiles, "Id", "Id", order.ShopProfileId);
             return View(model);
         }
@@ -286,8 +288,7 @@ namespace DiplomaProject.Controllers
         
         public Cart CloseCart()
         {
-            var sessionKey = "Cart";
-            var sessionId  = HttpContext.Session.GetInt32(sessionKey);
+            var sessionId  = HttpContext.Session.GetInt32(SessionKey);
 
             if (sessionId != null)
             {
@@ -295,10 +296,11 @@ namespace DiplomaProject.Controllers
 
                 var userId = GetCurrentUserId();
 
-                var cart = _context.Carts
-                    .Include(c => c.ProductsInOrder)
-                    .ThenInclude(p => p.Product)
-                    .FirstOrDefault(c => c.Id == sessionId);
+                // var cart = _context.Carts
+                //     .Include(c => c.ProductsInOrder)
+                //     .ThenInclude(p => p.Product)
+                //     .FirstOrDefault(c => c.Id == sessionId);
+                var cart = GetCurrentCart();
                 
                 if (cart.CustomerId == userId && cart.IsOpenForAddingProducts == true)
                 {
@@ -306,7 +308,7 @@ namespace DiplomaProject.Controllers
                     _context.Update(cart);
                     _context.SaveChanges();
                     
-                    HttpContext.Session.Remove(sessionKey);
+                    HttpContext.Session.Remove(SessionKey);
                     return cart;
                 }
             }
@@ -314,10 +316,28 @@ namespace DiplomaProject.Controllers
             return null;
         }
 
+        public Cart GetCurrentCart()
+        {
+            var sessionId = HttpContext.Session.GetInt32(SessionKey);
+            if (sessionId == null) return null;
+            
+            var cart = _context.Carts
+                .Include(c => c.ProductsInOrder)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefault(c => c.Id == sessionId);
+            return cart;
+        }
+        
         public int GetCurrentUserId()
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             return user.Id;
+        }
+        
+        public User GetCurrentUser()
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+            return user;
         }
 
         public async Task<IActionResult> UserGetResponse(int? id)
@@ -422,6 +442,7 @@ namespace DiplomaProject.Controllers
                     break;
             }
 
+            ViewBag.OrderId = order.Id;
 
             await _orderRepository.UpdateOrder(order);
             return View();

@@ -4,7 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Замовлення магазину</h1>
+@if (ViewBag.ShopProfileName != null)
+{
+    <h1>Замовлення магазину @ViewBag.ShopProfileName</h1>
+}
+else
+{
+    <h1>Мої замовлення</h1>
+}
 
 @* <p> *@
 @*     <a asp-action="Create">Create New</a> *@
@@ -15,9 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.DateBeReady)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfFixation)
-            </th>
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.DateOfFixation) *@
+            @* </th> *@
             @*<th>
                 @Html.DisplayNameFor(model => model.IsDelivered)
             </th>*@
@@ -36,9 +43,12 @@
             @*<th>
                 @Html.DisplayNameFor(model => model.IsPaid)
             </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Cart.Customer)
-            </th>
+            @if (ViewBag.ShopProfileName != null)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Cart.Customer)
+                </th>
+            }
             <th>
                 @Html.DisplayNameFor(model => model.ShopProfile)
             </th>
@@ -57,9 +67,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateBeReady)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfFixation)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.DateOfFixation) *@
+            @* </td> *@
             @*<td>
                 @Html.DisplayFor(modelItem => item.IsDelivered)
             </td>*@
@@ -78,9 +88,12 @@
             @*<td>
                 @Html.DisplayFor(modelItem => item.IsPaid)
             </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.Cart.Customer.Email)
-            </td>
+            @if (ViewBag.ShopProfileName != null)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cart.Customer.Email)
+                </td>
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.ShopProfile.Name)
             </td>
@@ -91,8 +104,8 @@
                 @Html.DisplayFor(modelItem => item.ReadyStage.Name)
             </td>
             <td>
-                <a asp-action="ShopGetsOrderFromUser" asp-route-id="@item.Id">Узгодити деталі замовлення</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                @* <a asp-action="ShopGetsOrderFromUser" asp-route-id="@item.Id">Узгодити деталі замовлення</a> | *@
+                <a asp-action="Details" asp-route-id="@item.Id">Деталі замовлення</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

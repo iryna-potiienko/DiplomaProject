@@ -13,6 +13,7 @@ namespace DiplomaProject.Controllers
     public class ProductInOrderController : Controller
     {
         private readonly KraftWebAppContext _context;
+        public const string SessionKey = "Cart";
 
         public ProductInOrderController(KraftWebAppContext context)
         {
@@ -22,27 +23,31 @@ namespace DiplomaProject.Controllers
         // GET: ProductInOrder
         public async Task<IActionResult> Index()
         {
-            Task<List<ProductInOrder>> productsInOrder;
-            var cart = await GetCart();
-            // if (cartId != null)
-            // {
+            List<ProductInOrder> productsInOrder;
+            
+            var sessionId = HttpContext.Session.GetInt32(SessionKey);
+            var cart = GetCurrentCart(sessionId); //await GetCart();
+            if (cart != null)
+            {
                 var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
-                productsInOrder = _context.ProductsInOrder
+                var productsList = _context.ProductsInOrder
                     .Where(p => p.CartId == cart.Id && p.Cart.CustomerId == user.Id)
                     .Include(p => p.Product)
                     .ToListAsync();
 
                 ViewBag.CartId = cart.Id;
-            // }
-            // else
-            // {
-            //     productsInOrder = _context.ProductsInOrder
-            //         .Include(p => p.Cart)
-            //         .Include(p => p.Product)
-            //         .ToListAsync();
-            // }
+                productsInOrder = await productsList;
+            }
+            else
+            {
+                productsInOrder = new List<ProductInOrder>();
+                // productsInOrder = _context.ProductsInOrder
+                //     .Include(p => p.Cart)
+                //     .Include(p => p.Product)
+                //     .ToListAsync();
+            }
 
-            return View(await productsInOrder);
+            return View(productsInOrder);
         }
 
         // GET: ProductInOrder/Details/5
@@ -209,8 +214,7 @@ namespace DiplomaProject.Controllers
         
         public async Task<Cart> GetCart()
         {
-            var sessionKey = "Cart";
-            var sessionId  = HttpContext.Session.GetInt32(sessionKey);
+            var sessionId  = HttpContext.Session.GetInt32(SessionKey);
             Cart cart;
             
             if (sessionId == null)
@@ -230,19 +234,32 @@ namespace DiplomaProject.Controllers
                         IsOpenForAddingProducts = true
                     };
                     _context.Carts.Add(cart);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                 }
 
                 sessionId = cart.Id;
-                HttpContext.Session.SetInt32(sessionKey, (int) sessionId);
+                HttpContext.Session.SetInt32(SessionKey, (int) sessionId);
             }
             else
             {
-                cart = await _context.Carts
-                    .Include(c => c.ProductsInOrder)
-                    .ThenInclude(p=>p.Product)
-                    .FirstOrDefaultAsync(c => c.Id == sessionId);
+                // cart = await _context.Carts
+                //     .Include(c => c.ProductsInOrder)
+                //     .ThenInclude(p=>p.Product)
+                //     .FirstOrDefaultAsync(c => c.Id == sessionId);
+                cart = GetCurrentCart(sessionId);
             }
+            return cart;
+        }
+        
+        public Cart GetCurrentCart(int? sessionId)
+        {
+            //var sessionId = HttpContext.Session.GetInt32(SessionKey);
+            if (sessionId == null) return null;
+            
+            var cart = _context.Carts
+                .Include(c => c.ProductsInOrder)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefault(c => c.Id == sessionId);
             return cart;
         }
     }

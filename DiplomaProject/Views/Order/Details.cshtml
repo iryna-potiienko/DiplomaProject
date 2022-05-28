@@ -4,94 +4,53 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Деталі замовлення</h1>
 
 <div>
     <h4>Order</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateBeReady)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateBeReady)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfFixation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfFixation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDelivered)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDelivered)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AddressToDelivery)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AddressToDelivery)
-        </dd>
-        
-        
-        
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserComment)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserComment)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SalesmanComment)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SalesmanComment)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        
-        
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsPaid)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsPaid)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cart.Customer)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Cart.Customer.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ShopProfile)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ShopProfile.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryType)
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateBeReady)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryType.Name)
+        <dd class="col-sm-4">
+            @Html.DisplayFor(model => model.DateBeReady)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReadyStage)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfFixation)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReadyStage.Name)
+        <dd class="col-sm-4">
+            @Html.DisplayFor(model => model.DateOfFixation)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AddressToDelivery)
+        </dt>
+        <dd class="col-sm-4">
+            @Html.DisplayFor(model => model.AddressToDelivery)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsDelivered)
+        </dt>
+        <dd class="col-sm-4">
+            @Html.DisplayFor(model => model.IsDelivered)
         </dd>
     </dl>
-  
-    <table class="table">
+
+    <table class="table table-bordered table-striped">
         <thead>
         <tr>
             <th>
@@ -109,10 +68,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalDescription)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cart)
-            </th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -138,6 +93,49 @@
         }
         </tbody>
     </table>
+
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-4">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsPaid)
+        </dt>
+        <dd class="col-sm-4">
+            @Html.DisplayFor(model => model.IsPaid)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserComment)
+        </dt>
+        <dd class="col-sm-4">
+            @Html.DisplayFor(model => model.UserComment)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SalesmanComment)
+        </dt>
+        <dd class="col-sm-4">
+            @Html.DisplayFor(model => model.SalesmanComment)
+        </dd>
+        
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeliveryType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryType.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReadyStage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReadyStage.Name)
+        </dd>
+    </dl>
+
 </div>
 
 <div>
@@ -169,6 +167,10 @@
                     {
                         <a asp-action="ReadyStageChanged" asp-route-option="GetOrder" asp-route-id="@Model?.Id">Замовлення отримано</a>
                     }
+                    else if (Model.DeliveryTypeId == 1)
+                    {
+                        <a asp-action="ReadyStageChanged" asp-route-option="GetOrder" asp-route-id="@Model?.Id">Забрати замовлення</a>
+                    }
                     break;
                 case 7:
                     <a asp-action="ReadyStageChanged" asp-route-option="GetOrder" asp-route-id="@Model?.Id">Замовлення отримано</a>
@@ -180,6 +182,7 @@
                     <a asp-action="Details" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id">Переглянути відгук</a>
                     break;
             }
+            <a asp-action="Index" asp-controller="Order">Back to List</a>
         }
         else if (Model.ShopProfile.Salesman.Email == User.Identity.Name)
         {
@@ -220,46 +223,9 @@
                     <a asp-action="Details" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id">Переглянути відгук</a>
                     break;
             }
+            <a asp-action="Index" asp-controller="Order" asp-route-shopProfileId="@Model?.ShopProfileId">Back to List</a>
         }
         
     }
-
-        @*if (Model.ReadyStageId != 8)
-        {
-            //if (User.IsInRole("salesman"))
-            if (Model.ShopProfile.Salesman.Email == User.Identity.Name)
-            {
-                <div>
-                    <a asp-action="ShopGetsOrderFromUser" asp-route-id="@Model?.Id">Узгодити деталі замовлення</a>
-                    <a asp-action="AcceptOrder" asp-route-id="@Model?.Id">Підтвердити замовлення</a>
-                </div>
-            }
-
-            else if (Model.Cart.Customer.Email == User.Identity.Name)
-            {
-                <div>
-                    <a asp-action="UserGetResponse" asp-route-id="@Model?.Id">Узгодити деталі замовлення</a>
-                    <a asp-action="AcceptOrder" asp-route-id="@Model?.Id">Підтвердити замовлення</a>
-                    @if (Model.ReadyStageId == 3)
-                    {
-                        <button asp-action="PayForTheOrder" asp-route-id="@Model?.Id">Оплатити</button>
-                    }
-                    @if (Model.ReadyStageId == 9)
-                    {
-                        <a asp-action="Create" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id" asp-route-customerId="@Model.Cart.CustomerId">Залишити відгук</a>
-                    }
-
-
-                </div>
-            }
-            <a asp-action="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a>
-        }
-    }*@
-    @* @if (Model.ReadyStageId != 8) *@
-    @* { *@
-    @*     <a asp-action="CancelOrder" asp-route-id="@Model?.Id">Скасувати замовлення</a> *@
-    @*     @#1#await Component.InvokeAsync("CancelOrder", new {id = Model.Id})#1# *@
-    @* } *@
-    |
-    <a asp-action="Index" asp-route-shopProfileId="@Model?.ShopProfileId">Back to List</a>
+    
 </div>

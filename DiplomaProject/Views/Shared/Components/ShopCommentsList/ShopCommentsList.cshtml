@@ -1,5 +1,6 @@
 @model IEnumerable<DiplomaProject.Models.ShopComment>
 
+<h4>Коментарі до магазину @Model.First().ShopProfile.Name</h4>
 <table class="table">
     @* <thead> *@
     @* <tr> *@
@@ -36,9 +37,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.User.Name)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShopProfile.Name)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.ShopProfile.Name) *@
+            @* </td> *@
             <td>
                 @if (item.User.Email == User.Identity.Name)
                 {

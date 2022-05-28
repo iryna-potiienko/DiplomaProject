@@ -70,9 +70,28 @@
             </div>
             
             </dl>
-
-            @* <input type="submit" value="Update" /> *@
+            
             <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Comment)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalDescription)
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
                 @foreach (var item in Model.Cart.ProductsInOrder)
                 {
                     <tr>
@@ -86,15 +105,16 @@
                             @Html.DisplayFor(modelItem => item.Comment)
                         </td>
                         <td>
-                            <input type="number" name="productPrices" value="@item.FinalPrice" />
+                            <input type="number" name="productPrices" value="@item.FinalPrice"/>
                             @* @Html.EditorFor(modelItem => item.FinalPrice) *@
                         </td>
                         <td>
-                            <input type="text" name="productDescriptions" value="@item.FinalDescription" />
+                            <textarea type="text" name="productDescriptions" value="@item.FinalDescription" rows="5"></textarea>
                             @* @Html.EditorFor(modelItem => item.FinalDescription) *@
                         </td>
                     </tr>
                 }
+                </tbody>
             </table>
 
             <div class="form-group">
@@ -131,5 +151,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-shopProfileId="@ViewBag.ShopProfileId">Back to List</a>
 </div>
