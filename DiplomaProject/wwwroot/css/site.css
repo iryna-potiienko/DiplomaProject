@@ -134,3 +134,23 @@ body {
 .form-control:valid {
   background-color:  #f8c9fd !important;
 }
+
+.image-style {
+  width: 100% !important;
+}
+
+.shop-image-style {
+  width: 50% !important;
+}
+
+.center {
+  margin-left: 45%;
+}
+
+.main-background-color {
+  background-color:  #f8c9fd !important;
+}
+
+.welcome-padding {
+  padding-top: 27% !important;
+}

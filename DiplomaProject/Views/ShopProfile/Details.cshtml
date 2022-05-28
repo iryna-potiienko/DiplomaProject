@@ -13,9 +13,9 @@
     @* <dt class = "col-sm-2"> *@
     @*     @Html.DisplayNameFor(model => model.LogoPhoto) *@
     @* </dt> *@
-    <div class="image-center pb-5">
+    <div class="image-center pb-5 image-style">
         @* @Html.DisplayFor(model => model.LogoPhoto) *@
-        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LogoPhoto)" alt="LogoPhoto" style="width: inherit;"/>
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LogoPhoto)" alt="LogoPhoto" class="shop-image-style"/>
     </div>
 
 
@@ -178,7 +178,7 @@
 <div class="text-center">
     @if (!Model.IsVerified) //&& User.IsInRole("admin"))
     {
-        <a class="btn btn-success " asp-action="VerifyShopProfile" asp-route-id="@Model?.Id">
+        <a class="btn btn-success" asp-action="VerifyShopProfile" asp-route-id="@Model?.Id">
             <i class="fa-solid fa-check"></i>
             Верифікувати сторінку
         </a>

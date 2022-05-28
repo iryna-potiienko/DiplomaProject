@@ -5,86 +5,92 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-<h4>Продукти у категорії @ViewBag.CategoryId</h4>
+<h1 class="text-center secondary-color pt-5">Products List</h1>
+<h4 class="text-center primary-color">Продукти у категорії @ViewBag.CategoryId</h4>
 
 <p>
-    <a asp-action="Create" asp-route-shopProfileId="@ViewBag.ShopProfileId">Create New</a>
+    <a class="btn btn-success" asp-action="Create" asp-route-shopProfileId="@ViewBag.ShopProfileId">Create New</a>
 </p>
-<div class="container">
-    <div class="row">
-        <div class="col-9">
-            <table class="table">
-                <thead>
+
+<form class="d-flex">
+    <input class="form-control me-2" type="search" name="name" placeholder="Введіть назву" aria-label="Search">
+    <button asp-action="GetByName" class="btn btn-outline-success" type="submit">Пошук</button>
+</form>
+
+<div class="row">
+
+    <div class="col-md-9">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Photo)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Composition)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.ShopProfile)
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Photo)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Composition)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ShopProfile)
-                    </th>
-                    <th></th>
+                    <td>
+                        @* @Html.DisplayFor(modelItem => item.Photo) *@
+                        <div class="col-12">
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Photo)" alt="LogoPhoto" style="width: inherit;"/>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Composition)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.ShopProfile.Name)
+                    </td>
+                    <td>
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @* @Html.DisplayFor(modelItem => item.Photo) *@
-                            <div class="col-12">
-                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Photo)" alt="LogoPhoto" style="width: inherit;"/>
-                            </div>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Composition)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ShopProfile.Name)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-        <div class="col-3">
-            <div class="container-fluid">
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" name="name" placeholder="Введіть назву" aria-label="Search">
-                    <button asp-action="GetByName" class="btn btn-outline-success" type="submit">Пошук</button>
-                </form>
-              
-                @if (ViewBag.CategoryId != null)
-                {
-                    @await Component.InvokeAsync("SubcategoryInProducts", new {categoryId = ViewBag.CategoryId})
-                }
-                </div>
-        </div>
+            }
+            </tbody>
+        </table>
     </div>
+
+    <div class="col-md-3 pt-5">
+        @if (ViewBag.CategoryId != null)
+        {
+            @await Component.InvokeAsync("SubcategoryInProducts", new { categoryId = ViewBag.CategoryId })
+        }
+    </div>
+
 </div>
