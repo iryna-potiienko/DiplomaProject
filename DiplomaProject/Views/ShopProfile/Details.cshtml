@@ -185,6 +185,11 @@
     }
 </div>
 
+@Html.ActionLink("Залишити коментар", "Create", "ShopComment", new { shopProfileId = Model.Id }, null)
+
+@await Component.InvokeAsync("ShopCommentsList", new {shopProfileId = Model.Id})
+
+
 @if (Model.Salesman.Email == User.Identity.Name)
 {
     <table class="columns">
