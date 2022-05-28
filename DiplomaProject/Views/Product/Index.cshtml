@@ -19,7 +19,7 @@
 
 <div class="row">
 
-    <div class="col-md-9">
+    <div class="@(ViewBag.CategoryId != null) ? col-md-9  : col-md-12">
         <table class="table">
             <thead>
             <tr>
@@ -86,11 +86,12 @@
         </table>
     </div>
 
-    <div class="col-md-3 pt-5">
-        @if (ViewBag.CategoryId != null)
-        {
+    @if (ViewBag.CategoryId != null)
+    {
+        <div class="col-md-3 pt-5">
             @await Component.InvokeAsync("SubcategoryInProducts", new { categoryId = ViewBag.CategoryId })
-        }
-    </div>
+        </div>
+    }
+
 
 </div>

@@ -1,29 +1,31 @@
 @model IEnumerable<DiplomaProject.Models.ShopComment>
 
 <h4>Коментарі до магазину @Model.First().ShopProfile.Name</h4>
-<table class="table">
-    @* <thead> *@
-    @* <tr> *@
-    @*     <th> *@
-    @*         @Html.DisplayNameFor(model => model.CommentText) *@
-    @*     </th> *@
-    @*     <th> *@
-    @*         @Html.DisplayNameFor(model => model.Date) *@
-    @*     </th> *@
-    @*     <th> *@
-    @*         @Html.DisplayNameFor(model => model.Estimation) *@
-    @*     </th> *@
-    @*     <th> *@
-    @*         @Html.DisplayNameFor(model => model.User) *@
-    @*     </th> *@
-    @*     <th> *@
-    @*         @Html.DisplayNameFor(model => model.ShopProfile) *@
-    @*     </th> *@
-    @*     <th></th> *@
-    @* </tr> *@
-    @* </thead> *@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CommentText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estimation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShopProfile)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    
     <tbody>
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.CommentText)

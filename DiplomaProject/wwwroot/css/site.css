@@ -2,14 +2,14 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #b920bc;
+    color: #b920bc;
 }
 
 /*.btn-primary {*/
@@ -27,130 +27,145 @@ a {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  font-family: cursive;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-family: cursive;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }
 
 .primary-color {
-  color: #b920bc !important;
+    color: #b920bc !important;
 }
 
 .secondary-color {
-  color: #6b20bb !important;
+    color: #6b20bb !important;
 }
 
 .third-color {
-  color: #bb2070 !important;
+    color: #bb2070 !important;
 }
 
 .hover:hover {
-  text-decoration: underline solid 2px;
+    text-decoration: underline solid 2px;
 }
 
 .bg-header {
-  /* fallback for old browsers */
-  background: #cd9cf2;
+    /* fallback for old browsers */
+    background: #cd9cf2;
 
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to top, rgba(205, 156, 242, 0.5), rgba(246, 243, 255, 0.5));
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to top, rgba(205, 156, 242, 0.5), rgba(246, 243, 255, 0.5));
 
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to top, rgba(205, 156, 242, 0.5), rgba(246, 243, 255, 0.5))
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to top, rgba(205, 156, 242, 0.5), rgba(246, 243, 255, 0.5))
 }
 
 .bg-main {
-  /* fallback for old browsers */
-  background: #f093fb;
+    /* fallback for old browsers */
+    background: #f093fb;
 
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5));
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5));
 
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5))
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5))
 }
 
 .bg-footer {
-  /* fallback for old browsers */
-  background: #f093fb;
+    /* fallback for old browsers */
+    background: #f093fb;
 
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to bottom, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5));
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5));
 
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to bottom, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5))
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to bottom, rgba(240, 147, 251, 0.5), rgba(245, 87, 108, 0.5))
 }
 
 .image-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 .left {
-  margin-right: auto;
+    margin-right: auto;
 }
 
 .form-control:valid {
-  background-color:  #f8c9fd !important;
+    background-color: #f8c9fd !important;
 }
 
 .image-style {
-  width: 100% !important;
+    width: 100% !important;
 }
 
 .shop-image-style {
-  width: 50% !important;
+    width: 50% !important;
 }
 
 .center {
-  margin-left: 45%;
+    margin-left: 45%;
 }
 
 .main-background-color {
-  background-color:  #f8c9fd !important;
+    background-color: #f8c9fd !important;
 }
 
 .welcome-padding {
-  padding-top: 27% !important;
+    padding-top: 27% !important;
+}
+
+#leave-comment a {
+    color: #70DB93;
+}
+
+#sign-in-btn {
+    color: white;
+}
+
+#log-out {
+    color: red;
 }

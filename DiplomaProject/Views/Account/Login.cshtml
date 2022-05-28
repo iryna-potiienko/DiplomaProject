@@ -1,24 +1,32 @@
 @model DiplomaProject.ViewModels.LoginViewModel
- 
-<h2>Вхід на сайт</h2>
- 
-<a asp-action="Register" asp-controller="Account">Зареєструватися</a>
- 
-<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
+
+<div class="d-flex align-items-center justify-content-center welcome-padding">
+    
+    <h2 class="text-center secondary-color">Вхід на сайт</h2>
+
+    <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" class="pl-5">
+
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div class="form-group">
-            <label asp-for="Email">Введіть Email</label>
-            <input type="text" asp-for="Email" />
-            <span asp-validation-for="Email" />
+            <label class="form-label" asp-for="Email">Введіть Email</label>
+            <input class="form-control" type="text" asp-for="Email"/>
+            <span asp-validation-for="Email"></span>
         </div>
+
         <div class="form-group">
-            <label asp-for="Password">Введіть пароль</label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
+            <label class="form-label" asp-for="Password">Введіть пароль</label>
+            <input class="form-control" type="password" asp-for="Password"/>
+            <span asp-validation-for="Password"></span>
         </div>
+
         <div class="form-group">
-            <input type="submit" value="Увійти" class="btn" />
+            <button type="submit" class="btn btn-primary">
+                Увійти
+            </button>
+            
+            OR
+            
+            <a id="sign-in-btn" class="btn btn-success" asp-action="Register" asp-controller="Account">Зареєструватися</a>
         </div>
-    </div>
-</form>
+    </form>
+</div>

@@ -30,17 +30,37 @@
             <a class="nav-link primary-color hover" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
             <a class="nav-link primary-color hover" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
         }
-        <a class="nav-link primary-color hover " asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
     </div>
 
-    <div>
+    <div style="width: 30%">
         @if (User.Identity.IsAuthenticated)
         {
-            <p>@User.Identity.Name</p>
+            <div>
+                <p>@User.Identity.Name</p>
+            </div>
+            
+            <div class="d-flex justify-content-start">
 
-            @Html.ActionLink("Мій кошик", "Index", "ProductInOrder")
-            @Html.ActionLink("Мої замовлення", "Index", "Order")
-            @await Component.InvokeAsync("MyShop", new { currentUserEmail = User.Identity.Name })
+                <div>
+                    <i class="fa-solid fa-cart-arrow-down" style="color:green;"></i>
+                    @Html.ActionLink("Мій кошик", "Index", "ProductInOrder")
+                </div>
+
+                <div style="padding-left: 3%;">
+                    <i class="fa-solid fa-cart-shopping" style="color:green;"></i>
+                    @Html.ActionLink("Мої замовлення", "Index", "Order")
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-store" style="color:green;"></i>
+                    @await Component.InvokeAsync("MyShop", new { currentUserEmail = User.Identity.Name })
+                </div>
+                
+                <div style="display: flex;width: 27%;justify-content: end;">
+                    <a id="log-out" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                    <i class="fa-solid fa-right-from-bracket" style="color:red;">></i>
+                </div>
+            </div>
         }
     </div>
 

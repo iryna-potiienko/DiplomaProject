@@ -185,9 +185,13 @@
     }
 </div>
 
-@Html.ActionLink("Залишити коментар", "Create", "ShopComment", new { shopProfileId = Model.Id }, null)
+<div class="btn btn-secondary" id="leave-comment">
+    @Html.ActionLink("Залишити коментар", "Create", "ShopComment", new { shopProfileId = Model.Id }, null)
+</div>
 
-@await Component.InvokeAsync("ShopCommentsList", new {shopProfileId = Model.Id})
+<div class="pt-5">
+    @await Component.InvokeAsync("ShopCommentsList", new {shopProfileId = Model.Id})
+</div>
 
 
 @if (Model.Salesman.Email == User.Identity.Name)

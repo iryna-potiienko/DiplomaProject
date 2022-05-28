@@ -1,32 +1,40 @@
 @model DiplomaProject.ViewModels.RegisterViewModel
- 
-<h2>Реєстрація</h2>
- 
-<form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
+
+<h2 class="text-center secondary-color pt-2">Реєстрація</h2>
+
+
+<div class="d-flex align-items-center justify-content-center pt-5">
+    <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
         <div>
-            <label asp-for="Name">Введіть Ім'я</label><br />
-            <input type="text" asp-for="Name" />
-            <span asp-validation-for="Name" />
+            
+            <div>
+                <label asp-for="Name" class="form-label">Введіть Ім'я</label><br/>
+                <input type="text" class="form-control" asp-for="Name"/>
+                <span asp-validation-for="Name" ></span>
+            </div>
+    
+            <div class="pt-2">
+                <label class="form-label" asp-for="Email">Введіть Email</label><br/>
+                <input class="form-control" type="text" asp-for="Email"/>
+                <span asp-validation-for="Email"></span>
+            </div>
+    
+            <div class="pt-2">
+                <label class="form-label" asp-for="Password">Введіть пароль</label><br/>
+                <input type="password" class="form-control" asp-for="Password"/>
+                <span asp-validation-for="Password"></span>
+            </div>
+    
+            <div class="pt-2">
+                <label class="form-label" asp-for="ConfirmPassword">Повторіть пароль</label><br/>
+                <input type="password" class="form-control" asp-for="ConfirmPassword"/>
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+    
+            <div class="pt-5">
+                <input class="btn btn-primary w-100" type="submit" value="Зареєструватися"/>
+            </div>
         </div>
-        <div>
-            <label asp-for="Email">Введіть Email</label><br/>
-            <input type="text" asp-for="Email"/>
-            <span asp-validation-for="Email"/>
-        </div>
-        <div>
-            <label asp-for="Password">Введіть пароль</label><br/>
-            <input asp-for="Password"/>
-            <span asp-validation-for="Password"/>
-        </div>
-        <div>
-            <label asp-for="ConfirmPassword">Повторіть пароль</label><br/>
-            <input asp-for="ConfirmPassword"/>
-            <span asp-validation-for="ConfirmPassword"/>
-        </div>
-        <div>
-            <input type="submit" value="Зареєструватися"/>
-        </div>
-    </div>
-</form>
+    </form>
+</div>

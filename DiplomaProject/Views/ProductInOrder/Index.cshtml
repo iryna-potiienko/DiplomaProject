@@ -9,22 +9,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.Product)
         </th>
-        <th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.Amount)
         </th>
-        <th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.Comment)
         </th>
-        <th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.FinalPrice)
         </th>
-        <th>
+        <th class="text-center">
             @Html.DisplayNameFor(model => model.FinalDescription)
         </th>
-        @* <th> *@
+        @* <th class="text-center"> *@
         @*     @Html.DisplayNameFor(model => model.Cart) *@
         @* </th> *@
         <th></th>
@@ -33,22 +33,22 @@
     <tbody>
     @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Product.Name)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.FinalPrice)
             </td>
-            <td>
+            <td class="text-center">
                 @Html.DisplayFor(modelItem => item.FinalDescription)
             </td>
-            @* <td> *@
+            @* <td class="text-center"> *@
             @*     @Html.DisplayFor(modelItem => item.Cart.Id) *@
             @* </td> *@
             <td>
