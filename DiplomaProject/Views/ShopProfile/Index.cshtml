@@ -7,7 +7,7 @@
 <h1 class="text-center secondary-color pt-5">Shop list</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
+    <a asp-action="Create" asp-route-username="@User.Identity.Name" class="btn btn-success">Create New</a>
 </p>
 
 <form class="d-flex">

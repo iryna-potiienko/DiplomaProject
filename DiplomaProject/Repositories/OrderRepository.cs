@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiplomaProject.IRepositories;
 using DiplomaProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace DiplomaProject.Repositories;
 
-public class OrderRepository
+public class OrderRepository: IOrderRepository
 {
     //private List<CartLine> lineCollection = new List<CartLine>();
     private readonly KraftWebAppContext _context;

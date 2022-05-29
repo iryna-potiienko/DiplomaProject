@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    ViewData["Username"] = ViewBag.Username;
 }
 
 <h1>Create</h1>
@@ -12,6 +13,8 @@
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Username"/>
+            @* <input type="hidden" name="@ViewBag.Username"/> *@
             
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>

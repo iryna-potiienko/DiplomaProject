@@ -91,51 +91,52 @@
             </th>
         </tr>
 
-        <tr>
-            <th>
-                Загалом товарів
-            </th>
-            <th>
-                @ViewBag.ProductsCount
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                Загалом замовлень
-            </th>
-            <th>
-                @ViewBag.OrdersCount
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                Замовлень виконано
-            </th>
-            <th>
-                @ViewBag.OrdersUserGetCount
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                Замовлень виконано вчасно
-            </th>
-            <th>
-                @ViewBag.OrdersInTimeCount
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                Замовлень виконано успішно
-            </th>
-            <th>
-                @ViewBag.OrdersSuccesfulCount
-            </th>
-        </tr>
-
+        @* <tr> *@
+        @*     <th> *@
+        @*         Загалом товарів *@
+        @*     </th> *@
+        @*     <th> *@
+        @*         @ViewBag.ProductsCount *@
+        @*     </th> *@
+        @* </tr> *@
+        @* *@
+        @* <tr> *@
+        @*     <th> *@
+        @*         Загалом замовлень *@
+        @*     </th> *@
+        @*     <th> *@
+        @*         @ViewBag.OrdersCount *@
+        @*     </th> *@
+        @* </tr> *@
+        @* *@
+        @* <tr> *@
+        @*     <th> *@
+        @*         Замовлень виконано *@
+        @*     </th> *@
+        @*     <th> *@
+        @*         @ViewBag.OrdersUserGetCount *@
+        @*     </th> *@
+        @* </tr> *@
+        @* *@
+        @* <tr> *@
+        @*     <th> *@
+        @*         Замовлень виконано вчасно *@
+        @*     </th> *@
+        @*     <th> *@
+        @*         @ViewBag.OrdersInTimeCount *@
+        @*     </th> *@
+        @* </tr> *@
+        @* *@
+        @* <tr> *@
+        @*     <th> *@
+        @*         Замовлень виконано успішно *@
+        @*     </th> *@
+        @*     <th> *@
+        @*         @ViewBag.OrdersSuccesfulCount *@
+        @*     </th> *@
+        @* </tr> *@
+        
+        @await Component.InvokeAsync("ShopOrdersInfo",new {shopProfileId = Model.Id})
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Contacts)

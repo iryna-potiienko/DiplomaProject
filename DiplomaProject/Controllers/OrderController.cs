@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiplomaProject.IRepositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,10 @@ namespace DiplomaProject.Controllers
     public class OrderController : Controller
     {
         private readonly KraftWebAppContext _context;
-        private readonly OrderRepository _orderRepository;
+        private readonly IOrderRepository _orderRepository;
         public const string SessionKey = "Cart";
 
-        public OrderController(KraftWebAppContext context, OrderRepository repository)
+        public OrderController(KraftWebAppContext context, IOrderRepository repository)
         {
             _context = context;
             _orderRepository = repository;

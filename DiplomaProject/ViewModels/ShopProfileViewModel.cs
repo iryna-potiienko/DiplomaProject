@@ -9,6 +9,7 @@ public class ShopProfileViewModel
     
     public string City { get; set; }
     public string Address { get; set; }
+    public string Username { get; set; }
     
     public IFormFile LogoPhoto { get; set; }
     public string Description { get; set; }

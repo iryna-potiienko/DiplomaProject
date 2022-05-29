@@ -17,11 +17,11 @@ public interface IShopProfileRepository
 
     public Task<ShopProfile> GetShopProfileDetailedById(int id);
 
-    public Task CreateShopProfile(ShopProfileViewModel model, int userId);
+    public Task<bool> CreateShopProfile(ShopProfileViewModel model, int userId);
 
-    public Task UpdateShopProfile(int id, ShopProfileViewModel model);
+    public Task<ShopProfile?> UpdateShopProfile(int id, ShopProfileViewModel model);
 
-    public Task DeleteShopProfile(int id);
+    public Task<bool> DeleteShopProfile(int id);
 
     public Task<ShopProfile> VerifyShopProfile(int id);
 }

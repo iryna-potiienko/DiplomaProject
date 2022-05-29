@@ -78,24 +78,8 @@ public class ShopProfileRepository: IShopProfileRepository
         return shopProfile;
     }
 
-    public async Task CreateShopProfile(ShopProfileViewModel model, int userId)
+    public async Task<bool> CreateShopProfile(ShopProfileViewModel model, int userId)
     {
-        // byte[] logoPhoto;
-        // await using (var memoryStream = new MemoryStream())
-        // {
-        //     await model.LogoPhoto.CopyToAsync(memoryStream);
-        //
-        //     // Upload the file if less than 16 MB
-        //     if (memoryStream.Length < 16777216)
-        //     {
-        //         logoPhoto = memoryStream.ToArray();
-        //     }
-        //     else
-        //     {
-        //         throw new IOException("Файл завеликий");
-        //     }
-        // }
-
         var logoPhoto = await AddLogoPhoto(model.LogoPhoto);
         
         var shopProfile = new ShopProfile
@@ -114,9 +98,10 @@ public class ShopProfileRepository: IShopProfileRepository
                 
         _context.Add(shopProfile);
         await _context.SaveChangesAsync();
+        return true;
     }
 
-    public async Task UpdateShopProfile(int id, ShopProfileViewModel model)
+    public async Task<ShopProfile?> UpdateShopProfile(int id, ShopProfileViewModel model)
     {
         try
         {
@@ -124,17 +109,6 @@ public class ShopProfileRepository: IShopProfileRepository
             if (shopProfile == null)
                 //return NotFound();
                 throw new FileNotFoundException();
-
-            // await using (var memoryStream = new MemoryStream())
-            // {
-            //     await model.LogoPhoto.CopyToAsync(memoryStream);
-            //
-            //     // Upload the file if less than 16 MB
-            //     if (memoryStream.Length < 16777216)
-            //     {
-            //         shopProfile.LogoPhoto = memoryStream.ToArray();
-            //     }
-            // }
 
             shopProfile.LogoPhoto = await AddLogoPhoto(model.LogoPhoto);
             shopProfile.Name = model.Name;
@@ -147,6 +121,7 @@ public class ShopProfileRepository: IShopProfileRepository
                     
             _context.Update(shopProfile);
             await _context.SaveChangesAsync();
+            return shopProfile;
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -161,19 +136,21 @@ public class ShopProfileRepository: IShopProfileRepository
         }
     }
 
-    public async Task DeleteShopProfile(int id)
+    public async Task<bool> DeleteShopProfile(int id)
     {
         var shopProfile = await _context.ShopProfiles.FindAsync(id);
         if (shopProfile == null)
-            throw new FileNotFoundException();
+            return false;
+            //throw new FileNotFoundException();
         
         _context.ShopProfiles.Remove(shopProfile);
         await _context.SaveChangesAsync();
+        return true;
     }
     
     public async Task<ShopProfile> VerifyShopProfile(int id)
     {
-        var shopProfile = await GetShopProfileById(id);//_context.ShopProfiles.FindAsync(id);
+        var shopProfile = await GetShopProfileById(id);
         if (shopProfile == null)
             return null;
         
@@ -181,7 +158,6 @@ public class ShopProfileRepository: IShopProfileRepository
         _context.ShopProfiles.Update(shopProfile);
         await _context.SaveChangesAsync();
         return shopProfile;
-        //return RedirectToAction(nameof(Details), new {id = shopProfile.Id});
     }
     
     private bool ShopProfileExists(int id)
