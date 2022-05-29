@@ -6,5 +6,5 @@ namespace DiplomaProject.IRepositories;
 public interface IAccountRepository
 {
     Task<User> GetUserByEmail(string email);
-    
+    User GetCurrentUser(string username);
 }

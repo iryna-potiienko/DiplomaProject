@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DiplomaProject.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace DiplomaProject.Repositories;
 
@@ -48,6 +50,13 @@ public class OrderRepository
         var productInOrder = await _context.ProductsInOrder.FindAsync(id);
         _context.ProductsInOrder.Remove(productInOrder);
         await _context.SaveChangesAsync();
+    }
+
+    public IIncludableQueryable<Order, OrderFeedback> GetShopOrders(int shopProfileId)
+    {
+        return _context.Orders
+            .Where(o => o.ShopProfileId == shopProfileId)
+            .Include(o => o.OrderFeedback);
     }
 
     // public decimal ComputeTotalValue()

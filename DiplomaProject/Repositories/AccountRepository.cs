@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DiplomaProject.IRepositories;
@@ -25,6 +26,17 @@ public class AccountRepository: IAccountRepository
     public async Task<User> GetUserByEmail(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
+    
+    // public int GetCurrentUserId()
+    // {
+    //     //var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
+    //     //return user.Id;
+    // }
+        
+    public User GetCurrentUser(string username)
+    {
+        return _context.Users.FirstOrDefault(u => u.Email == username);
     }
 
     public async Task<bool> Register(RegisterViewModel model)
