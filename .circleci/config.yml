@@ -21,6 +21,21 @@ jobs:
           command: |
             cd DiplomaProject
             dotnet build
+  run-tests:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:6.0
+    steps:
+      - checkout
+      - run:
+          name: Restore packages
+          command: |
+            cd UnitTestsProject
+            dotnet restore
+      - run:
+          name: Run Tests
+          command: |
+            cd UnitTestsProject
+            dotnet test
   build-docker:
     machine:
       image: ubuntu-2004:current
@@ -62,9 +77,12 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - build-docker:
+      - run-tests:
           requires:
             - build
+      - build-docker:
+          requires:
+            - run-tests
       - aws-ecs/deploy-service-update:
           requires:
             - build-docker
