@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DiplomaProject.Models;
 
 public class ProductInOrder
@@ -5,13 +7,17 @@ public class ProductInOrder
     public int Id { get; set; }
     public int ProductId { get; set; }
     public int CartId { get; set; }
-    //public int OrderId { get; set; }
+    [Display(Name = "Кількість")]
     public string Amount { get; set; }
+    [Display(Name = "Коментар клієнта")]
     public string Comment { get; set; }
+    [Display(Name = "Ціна")]
     public double FinalPrice { get; set; }
+    [Display(Name = "Фінальний опис")]
     public string FinalDescription { get; set; }
     
+    [Display(Name = "Товар")]
     public Product Product { get; set; }
-    //public Order Order { get; set; }
+    [Display(Name = "Кошик")]
     public Cart Cart { get; set; }
 }

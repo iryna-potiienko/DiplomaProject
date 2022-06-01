@@ -47,17 +47,17 @@
                 @Html.DisplayFor(modelItem => item.IsInTime)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.IsEverythingOkay)
+                @Html.DisplayNameFor(model => item.IsEverythingOkay)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.Id)
+                @Html.DisplayFor(modelItem => item.Customer.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Order.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Details" asp-route-orderId="@item.Order.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

@@ -52,20 +52,31 @@
             @*     @Html.DisplayFor(modelItem => item.Cart.Id) *@
             @* </td> *@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-info" asp-action="Details" asp-controller="Product" asp-route-id="@item.Product.Id">
+                    <i class="fa-solid fa-circle-info"></i>
+                </a>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-pen"></i>
+                </a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+                @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
+                @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+                @* <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
             </td>
         </tr>
     }
     </tbody>
 </table>
 
-@if (Model.Count() != 0)
-{
-    <div>
-        @Html.ActionLink("Оформити замовлення", "UserMakeOrder", "Order", new {cartId = ViewBag.CartId})
-    </div>
-}
-
-@Html.ActionLink("Повернутися до покупок", "Index", "Product")
+<div class="d-flex align-items-center">
+    @if (Model.Count() != 0)
+    {
+        <div>
+            @* @Html.ActionLink("Оформити замовлення", "UserMakeOrder", "Order", new {cartId = ViewBag.CartId}) *@
+            <a class="btn btn-warning" asp-action="UserMakeOrder" asp-controller="Order" asp-route-cartId="@ViewBag.CartId">Оформити замовлення</a>
+        </div>
+    }
+    <a class="btn btn-info" asp-action="Index" asp-controller="Product">Повернутися до покупок</a>
+</div>

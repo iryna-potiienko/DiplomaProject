@@ -7,7 +7,7 @@
 <h1>Деталі замовлення</h1>
 
 <div>
-    <h4>Order</h4>
+    <h4></h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -182,7 +182,7 @@
                     <a asp-action="Details" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id">Переглянути відгук</a>
                     break;
             }
-            <a asp-action="Index" asp-controller="Order">Back to List</a>
+            <a asp-action="Index" asp-controller="Order">Повернутися до замовлень</a>
         }
         else if (Model.ShopProfile.Salesman.Email == User.Identity.Name)
         {
@@ -223,7 +223,7 @@
                     <a asp-action="Details" asp-controller="OrderFeedback" asp-route-orderId="@Model?.Id">Переглянути відгук</a>
                     break;
             }
-            <a asp-action="Index" asp-controller="Order" asp-route-shopProfileId="@Model?.ShopProfileId">Back to List</a>
+            <a asp-action="Index" asp-controller="Order" asp-route-shopProfileId="@Model?.ShopProfileId">Повернутися до замовлень</a>
         }
         
     }

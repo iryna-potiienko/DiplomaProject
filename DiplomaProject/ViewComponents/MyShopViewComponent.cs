@@ -25,6 +25,8 @@ public class MyShopViewComponent: ViewComponent
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == currentUserEmail);
             var shops = await _context.ShopProfiles.Where(s => s.SalesmanId == user.Id).ToListAsync();
 
+            // if (shops.Count == 0)
+            //     return null;
             if (shops.Count == 1)
                 return View("MyShop", shops.First());
 

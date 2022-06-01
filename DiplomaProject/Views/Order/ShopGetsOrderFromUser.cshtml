@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Замовлення користувача</h1>
 
-<h4>Order</h4>
+<h4></h4>
 <hr />
 <div class="row">
     @* <div class="col-md-4"> *@
@@ -144,12 +144,12 @@
                 <span asp-validation-for="SalesmanComment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Надіслати" class="btn btn-primary" />
             </div>
         </form>
     @* </div> *@
 </div>
 
 <div>
-    <a asp-action="Index" asp-route-shopProfileId="@ViewBag.ShopProfileId">Back to List</a>
+    <a asp-action="Index" asp-route-shopProfileId="@ViewBag.ShopProfileId">Повернутися до покупок</a>
 </div>

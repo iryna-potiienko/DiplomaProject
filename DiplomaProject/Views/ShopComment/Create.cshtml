@@ -53,5 +53,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Назад", "Details", "ShopProfile", new { id = ViewBag.ShopProfileId }, null)
 </div>

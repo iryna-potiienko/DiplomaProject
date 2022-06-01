@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center secondary-color pt-2">Edit</h1>
+<h1 class="text-center secondary-color pt-2">Редагувати</h1>
 
-<h4 class="text-center primary-color">Product</h4>
+<h4 class="text-center primary-color">Товар</h4>
 <hr/>
 
 <div class="d-flex align-items-center justify-content-center">
@@ -57,13 +57,14 @@
             <div class="form-group">
                 <button type="submit" value="Save" class="btn btn-success">
                     <i class="fa-solid fa-floppy-disk"></i>
-                    Save
+                    Зберегти
                 </button>
             </div>
         </form>
 
         <div class="pt-5">
-            <a class="btn btn-info left" asp-action="Index">Back to List</a>
+            @* <a class="btn btn-info left" asp-action="Index">Back to List</a> *@
+            <a class="btn btn-info left" asp-action="Details" asp-controller="ShopProfile" asp-route-id="@ViewBag.ShopProfileId">Повернутися до магазину</a>
         </div>
     </div>
 </div>

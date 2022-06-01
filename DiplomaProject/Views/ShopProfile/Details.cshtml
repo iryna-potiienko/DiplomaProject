@@ -4,17 +4,16 @@
     ViewData["Title"] = "Details";
 }
 
-<h1 class="text-center secondary-color pt-2">Shop Details</h1>
+<h1 class="text-center secondary-color pt-2">Детальна інформація</h1>
 
 <div class="text-center">
-    <h4 class="primary-color">Shop Profile</h4>
+    <h4 class="primary-color">Деталі магазину</h4>
     <hr/>
 
     @* <dt class = "col-sm-2"> *@
     @*     @Html.DisplayNameFor(model => model.LogoPhoto) *@
     @* </dt> *@
     <div class="image-center pb-5 image-style">
-        @* @Html.DisplayFor(model => model.LogoPhoto) *@
         <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LogoPhoto)" alt="LogoPhoto" class="shop-image-style"/>
     </div>
 
@@ -64,23 +63,23 @@
             </th>
         </tr>
 
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Latitude)
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Longitude)
-            </th>
-        </tr>
+        @* <tr> *@
+        @*     <th> *@
+        @*         @Html.DisplayNameFor(model => model.Latitude) *@
+        @*     </th> *@
+        @*     <th> *@
+        @*         @Html.DisplayFor(model => model.Latitude) *@
+        @*     </th> *@
+        @* </tr> *@
+        
+        @* <tr> *@
+        @*     <th> *@
+        @*         @Html.DisplayNameFor(model => model.Longitude) *@
+        @*     </th> *@
+        @*     <th> *@
+        @*         @Html.DisplayFor(model => model.Longitude) *@
+        @*     </th> *@
+        @* </tr> *@
 
         <tr>
             <th>
@@ -91,51 +90,6 @@
             </th>
         </tr>
 
-        @* <tr> *@
-        @*     <th> *@
-        @*         Загалом товарів *@
-        @*     </th> *@
-        @*     <th> *@
-        @*         @ViewBag.ProductsCount *@
-        @*     </th> *@
-        @* </tr> *@
-        @* *@
-        @* <tr> *@
-        @*     <th> *@
-        @*         Загалом замовлень *@
-        @*     </th> *@
-        @*     <th> *@
-        @*         @ViewBag.OrdersCount *@
-        @*     </th> *@
-        @* </tr> *@
-        @* *@
-        @* <tr> *@
-        @*     <th> *@
-        @*         Замовлень виконано *@
-        @*     </th> *@
-        @*     <th> *@
-        @*         @ViewBag.OrdersUserGetCount *@
-        @*     </th> *@
-        @* </tr> *@
-        @* *@
-        @* <tr> *@
-        @*     <th> *@
-        @*         Замовлень виконано вчасно *@
-        @*     </th> *@
-        @*     <th> *@
-        @*         @ViewBag.OrdersInTimeCount *@
-        @*     </th> *@
-        @* </tr> *@
-        @* *@
-        @* <tr> *@
-        @*     <th> *@
-        @*         Замовлень виконано успішно *@
-        @*     </th> *@
-        @*     <th> *@
-        @*         @ViewBag.OrdersSuccesfulCount *@
-        @*     </th> *@
-        @* </tr> *@
-        
         @await Component.InvokeAsync("ShopOrdersInfo",new {shopProfileId = Model.Id})
         <tr>
             <th>
@@ -160,35 +114,28 @@
                 @Html.DisplayNameFor(model => model.Products)
             </th>
             <th class="btn btn-warning">
-                @Html.ActionLink("Товари цього магазину", "Index", "Product", new { shopProfileId = Model.Id }, null)
+                @Html.ActionLink("Товари магазину", "Index", "Product", new { shopProfileId = Model.Id }, null)
             </th>
         </tr>
-
-        @if (Model.Salesman.Email == User.Identity.Name)
-        {
-            <dt class="col-sm-2">
-                Orders in this shop
-            </dt>
-            <dd class="col-sm-2">
-                @* todo *@
-                @Html.ActionLink("Замовлення цього магазину", "Index", "Order", new { shopProfileId = Model.Id }, null)
-            </dd>
-        }
     </table>
 </div>
 <div class="text-center">
-    @if (!Model.IsVerified) //&& User.IsInRole("admin"))
+    @if (!Model.IsVerified && User.IsInRole("admin"))
     {
-        <a class="btn btn-success" asp-action="VerifyShopProfile" asp-route-id="@Model?.Id">
+        <a class="btn btn-success" role="button" asp-action="VerifyShopProfile" asp-route-id="@Model?.Id">
             <i class="fa-solid fa-check"></i>
             Верифікувати сторінку
         </a>
     }
 </div>
 
-<div class="btn btn-secondary" id="leave-comment">
-    @Html.ActionLink("Залишити коментар", "Create", "ShopComment", new { shopProfileId = Model.Id }, null)
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="btn btn-secondary" id="leave-comment">
+        @* @Html.ActionLink("Залишити коментар", "Create", "ShopComment", new { shopProfileId = Model.Id }, ) *@
+        <a asp-action="Create" asp-controller="ShopComment" asp-route-shopProfileId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
+    </div>
+}
 
 <div class="pt-5">
     @await Component.InvokeAsync("ShopCommentsList", new {shopProfileId = Model.Id})
@@ -197,6 +144,11 @@
 
 @if (Model.Salesman.Email == User.Identity.Name)
 {
+    <div class="d-flex align-items-center">
+        <a class="btn btn-warning" asp-action="Index" asp-controller="Order" asp-route-shopProfileId="@Model?.Id">Замовлення магазину</a>
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Редагувати</a>
+        <a class="btn btn-success" asp-action="Create" asp-controller="Product" asp-route-shopProfileId="@Model.Id">Додати товар</a>
+    </div>
     <table class="columns">
         <tr>
             <td>
@@ -211,7 +163,6 @@
 
 <div class="d-flex align-items-center">
     <a class="btn btn-info left" asp-action="Index">Back to List</a>
-    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

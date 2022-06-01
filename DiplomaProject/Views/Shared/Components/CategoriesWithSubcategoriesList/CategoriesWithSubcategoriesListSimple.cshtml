@@ -1,0 +1,16 @@
+@model IEnumerable<DiplomaProject.Models.Category>
+
+<div class="accordion accordion" id="accordionExample">
+    @foreach (var category in Model)
+    {
+        <li class="list-group">
+            @category.Name
+            <div class="list-group">
+                @foreach (var subcategory in category.Subcategories)
+                {
+                    <a asp-action="Index" asp-controller="Product" asp-route-subcategoryId="@subcategory.Id" class="list-group-item list-group-item-action main-background-color">@subcategory.Name</a>
+                }
+            </div>
+        </li>
+    }
+</div>

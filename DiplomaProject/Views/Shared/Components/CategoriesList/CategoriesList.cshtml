@@ -1,10 +1,12 @@
 @model IEnumerable<DiplomaProject.Models.Category>
 
-@* <h4>Категорії товарів</h4> *@
+<div class="welcome-padding">
+    <h4>Доступні категорії товарів</h4>
 
-<div class="list-group list-group-horizontal-md welcome-padding">
-    @foreach (var item in Model)
-    {
-        <a asp-action="Index" asp-controller="Product" asp-route-categoryId="@item.Id" class="list-group-item list-group-item-action main-background-color">@item.Name</a>
-    }
+    <div class="list-group list-group-horizontal-md">
+        @foreach (var item in Model)
+        {
+            <a asp-action="Index" asp-controller="Product" asp-route-categoryId="@item.Id" class="list-group-item list-group-item-action main-background-color">@item.Name</a>
+        }
+    </div>
 </div>

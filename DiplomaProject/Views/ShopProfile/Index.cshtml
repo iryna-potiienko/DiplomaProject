@@ -1,14 +1,17 @@
 @model IEnumerable<DiplomaProject.Models.ShopProfile>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ShopList";
 }
 
-<h1 class="text-center secondary-color pt-5">Shop list</h1>
+<h1 class="text-center secondary-color pt-5">Магазини</h1>
 
-<p>
-    <a asp-action="Create" asp-route-username="@User.Identity.Name" class="btn btn-success">Create New</a>
-</p>
+ @if (!User.IsInRole("admin"))
+ {
+     <p>
+         <a asp-action="Create" asp-route-username="@User.Identity.Name" class="btn btn-success">Створити</a>
+     </p>
+ }
 
 <form class="d-flex">
     <input class="form-control me-2" type="search" name="name" placeholder="Введіть назву магазину" aria-label="Search">
@@ -43,12 +46,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.Contacts)
-        </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.Salesman)
-        </th>
+        @* <th class="text-center"> *@
+        @*     @Html.DisplayNameFor(model => model.Contacts) *@
+        @* </th> *@
+        @* <th class="text-center"> *@
+        @*     @Html.DisplayNameFor(model => model.Salesman) *@
+        @* </th> *@
         <th></th>
     </tr>
     </thead>
@@ -90,24 +93,28 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Contacts)
-            </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Salesman.Email)
-            </td>
-            <td>
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
-                    <i class="fa-solid fa-circle-info"></i>
-                </a>
-                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
-                    <i class="fa-solid fa-pen"></i>
-                </a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
-                    <i class="fa-solid fa-trash"></i>
-                </a>
-            </td>
-        </tr>
+            @* <td class="text-center"> *@
+            @*     @Html.DisplayFor(modelItem => item.Contacts) *@
+            @* </td> *@
+            @* <td class="text-center"> *@
+            @*     @Html.DisplayFor(modelItem => item.Salesman.Email) *@
+            @* </td> *@
+            
+                <td>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    }
+                </td>
+                </tr>
     }
     </tbody>
 </table>

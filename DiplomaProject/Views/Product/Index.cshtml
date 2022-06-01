@@ -5,21 +5,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center secondary-color pt-5">Products List</h1>
-<h4 class="text-center primary-color">Продукти у категорії @ViewBag.CategoryId</h4>
+<h1 class="text-center secondary-color pt-5">Список товарів</h1>
+@* <h4 class="text-center primary-color">Продукти у категорії @ViewBag.CategoryId</h4> *@
 
-<p>
-    <a class="btn btn-success" asp-action="Create" asp-route-shopProfileId="@ViewBag.ShopProfileId">Create New</a>
-</p>
+@* <p> *@
+@*     <a class="btn btn-success" asp-action="Create" asp-route-shopProfileId="@ViewBag.ShopProfileId">Create New</a> *@
+@* </p> *@
 
 <form class="d-flex">
-    <input class="form-control me-2" type="search" name="name" placeholder="Введіть назву" aria-label="Search">
+    <input class="form-control me-2" type="search" name="name" placeholder="Введіть назву товару" aria-label="Search">
     <button asp-action="GetByName" class="btn btn-outline-success" type="submit">Пошук</button>
 </form>
 
 <div class="row">
 
-    <div class="@(ViewBag.CategoryId != null) ? col-md-9  : col-md-12">
+    @* <div class="@(ViewBag.CategoryId != null) ? col-md-9  : col-md-12"> *@
+    <div class="col-md-9">
         <table class="table">
             <thead>
             <tr>
@@ -49,7 +50,6 @@
             {
                 <tr>
                     <td>
-                        @* @Html.DisplayFor(modelItem => item.Photo) *@
                         <div class="col-12">
                             <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Photo)" alt="LogoPhoto" style="width: inherit;"/>
                         </div>
@@ -73,12 +73,15 @@
                         <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
                             <i class="fa-solid fa-circle-info"></i>
                         </a>
-                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
-                            <i class="fa-solid fa-pen"></i>
-                        </a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
+                         @if (User.IsInRole("admin"))
+                         {
+                             <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
+                                 <i class="fa-solid fa-pen"></i>
+                             </a>
+                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                                 <i class="fa-solid fa-trash"></i>
+                             </a>
+                         }
                     </td>
                 </tr>
             }
@@ -86,12 +89,15 @@
         </table>
     </div>
 
-    @if (ViewBag.CategoryId != null)
-    {
-        <div class="col-md-3 pt-5">
-            @await Component.InvokeAsync("SubcategoryInProducts", new { categoryId = ViewBag.CategoryId })
-        </div>
-    }
-
-
+    @* @if (ViewBag.CategoryId != null) *@
+    @* { *@
+    @*     <div class="col-md-3 pt-5"> *@
+    @*         @await Component.InvokeAsync("SubcategoryInProducts", new { categoryId = ViewBag.CategoryId }) *@
+    @*     </div> *@
+    @* } *@
+    
+    <div class="col-md-3 pt-5">
+        @await Component.InvokeAsync("CategoriesWithSubcategoriesList")
+    </div>
+    
 </div>

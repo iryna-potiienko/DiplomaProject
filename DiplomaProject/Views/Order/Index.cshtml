@@ -105,8 +105,10 @@ else
             </td>
             <td>
                 @* <a asp-action="ShopGetsOrderFromUser" asp-route-id="@item.Id">Узгодити деталі замовлення</a> | *@
-                <a asp-action="Details" asp-route-id="@item.Id">Деталі замовлення</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-circle-info"></i>
+                </a>
+                @* <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
             </td>
         </tr>
 }
