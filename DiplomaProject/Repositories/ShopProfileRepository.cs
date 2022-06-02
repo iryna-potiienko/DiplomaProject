@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using DiplomaProject.IRepositories;
 using DiplomaProject.Models;
 using DiplomaProject.ViewModels;
+using GoogleMapsAPI.NET.API.Client;
+using GoogleMapsAPI.NET.API.Common.Components.Locations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -80,8 +82,23 @@ public class ShopProfileRepository: IShopProfileRepository
 
     public async Task<bool> CreateShopProfile(ShopProfileViewModel model, int userId)
     {
-        var logoPhoto = await AddLogoPhoto(model.LogoPhoto);
+        var shopLatitude = 0.0;
+        var shopLongitude = 0.0;
         
+        var logoPhoto = await AddLogoPhoto(model.LogoPhoto);
+
+        if (model.Address != null)
+        {
+            // var client = new MapsAPIClient("AIzaSyBYeT7YA4M3Q9iv0sNoBlnM4T5gM1T6-g4");
+            // var geocodeResult = client.Geocoding
+            //     .Geocode(model.Address).Results.FirstOrDefault()
+            //     ?.Geometry.Location;
+            var shopAddress = model.City + " " + model.Address;
+            var geocodeResult = Geocode(shopAddress);
+            shopLatitude = geocodeResult.Latitude;
+            shopLongitude = geocodeResult.Longitude;
+        }
+
         var shopProfile = new ShopProfile
         {
             Name = model.Name,
@@ -90,8 +107,8 @@ public class ShopProfileRepository: IShopProfileRepository
             Contacts = model.Contacts,
             Description = model.Description,
             LogoPhoto = logoPhoto,
-            Latitude = 0,
-            Longitude = 0,
+            Latitude = shopLatitude,
+            Longitude = shopLongitude,
             IsVerified = false,
             SalesmanId = userId
         };
@@ -110,12 +127,29 @@ public class ShopProfileRepository: IShopProfileRepository
                 //return NotFound();
                 throw new FileNotFoundException();
 
-            shopProfile.LogoPhoto = await AddLogoPhoto(model.LogoPhoto);
+            if (model.LogoPhoto != null)
+            {
+                shopProfile.LogoPhoto = await AddLogoPhoto(model.LogoPhoto);
+            }
+
             shopProfile.Name = model.Name;
             shopProfile.Contacts = model.Contacts;
             shopProfile.Description = model.Description;
             shopProfile.City = model.City;
-            shopProfile.Address = model.Address;
+            if (shopProfile.City != model.City || shopProfile.Address != model.Address)
+            {
+                if (model.Address != null)
+                {
+                    // var client = new MapsAPIClient("AIzaSyBYeT7YA4M3Q9iv0sNoBlnM4T5gM1T6-g4");
+                    // var geocodeResult = client.Geocoding
+                    //     .Geocode(model.Address).Results.FirstOrDefault()
+                    //     ?.Geometry.Location;
+                    var shopAddress = model.City + " " + model.Address;
+                    var geocodeResult = Geocode(shopAddress);
+                    shopProfile.Latitude = geocodeResult.Latitude;
+                    shopProfile.Longitude = geocodeResult.Longitude;
+                }
+            }
             // shopProfile.Latitude = 0;
             // shopProfile.Longitude = 0;
                     
@@ -182,5 +216,15 @@ public class ShopProfileRepository: IShopProfileRepository
             }
         }
         return logoPhoto;
+    }
+
+    private GeoCoordinatesLocation Geocode(string address)
+    {
+        var client = new MapsAPIClient("AIzaSyBYeT7YA4M3Q9iv0sNoBlnM4T5gM1T6-g4");
+        var geocodeResult = client.Geocoding
+            .Geocode(address).Results.FirstOrDefault()
+            ?.Geometry.Location;
+        
+        return geocodeResult;
     }
 }

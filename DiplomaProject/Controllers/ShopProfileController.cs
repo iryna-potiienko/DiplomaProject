@@ -173,5 +173,31 @@ namespace DiplomaProject.Controllers
             
             return RedirectToAction(nameof(Details), new {id = shopProfile.Id});
         }
+        
+        public JsonResult GetData()
+        {
+            //var client = new MapsAPIClient("AIzaSyBfckBchOpn-lM4oJ9V9nBDBZmmlousIRQ");
+
+            // Geocoding an address
+            //var geocodeResult = client.Geocoding.Geocode("1600 Amphitheatre Parkway, Mountain View, CA");
+
+            var brokerAdresses = new List<ShopProfileOnMapViewModel>();
+            var shopProfiles = _shopProfileRepository.GetShopProfiles(null).Result;
+            foreach(var b in shopProfiles)
+            {
+                if (b.Address == null) continue;
+                brokerAdresses.Add(new ShopProfileOnMapViewModel
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    City = b.City,
+                    Address = b.Address,
+                    Latitude = b.Latitude,
+                    Longitude = b.Longitude
+                });
+            }
+
+            return Json(brokerAdresses);
+        }
     }
 }

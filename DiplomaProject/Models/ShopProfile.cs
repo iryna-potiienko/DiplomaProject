@@ -22,8 +22,8 @@ public class ShopProfile
     public string City { get; set; }
     [Display(Name = "Адреса")]
     public string Address { get; set; }
-    public int Latitude { get; set; }
-    public int Longitude { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
     
     [Display(Name = "Логотип")]
     public byte[] LogoPhoto { get; set; }

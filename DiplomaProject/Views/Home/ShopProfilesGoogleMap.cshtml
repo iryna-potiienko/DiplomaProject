@@ -1,0 +1,107 @@
+
+<div class="text-center">
+    <h1 class="display-4">Найближчі до мене магазини</h1>
+</div>
+<div id="map" style="height: 600px;"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYeT7YA4M3Q9iv0sNoBlnM4T5gM1T6-g4"
+            defer></script>
+<!--Устанавливаем секцию scripts, которая затем будет рендериться на мастер-странице -->
+    @section scripts {
+        <script type="text/javascript">
+    $(document).ready(function () {
+        GetMap();
+    });
+    // Функция загрузки
+    function GetMap(callback) {
+        google.maps.visualRefresh = true;
+        // установка основных координат
+        var Kyiv = new google.maps.LatLng(50.4500336, 30.5241361);
+        infoWindow = new google.maps.InfoWindow();
+        
+        // Установка общих параметров отображения карты, как масштаб, центральная точка и тип карты
+                var mapOptions = {
+                    zoom: 15,
+                    center: Kyiv,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                // Встраиваем гугл-карты в элемент на странице и получаем объект карты
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                // Настраиваем красный маркер, который будет использоваться для центральной точки
+                // var myLatlng = new google.maps.LatLng(50.4500336, 30.5241361);
+                // var marker = new google.maps.Marker({
+                //     position: myLatlng,
+                //     map: map,
+                //     title: 'Офіси роботи брокерів'
+                // });
+                // // Берем для маркера иконку с сайта google
+                // marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
+               
+        if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+        
+                  infoWindow.setPosition(pos);
+                  infoWindow.setContent("Location found.");
+                  infoWindow.open(map);
+                  map.setCenter(pos);
+                },
+                () => {
+                  handleLocationError(true, infoWindow, map.getCenter());
+                }
+              );
+            } else {
+              // Browser doesn't support Geolocation
+              handleLocationError(false, infoWindow, map.getCenter());
+            }
+          
+        
+        // Получаем данные
+        $.getJSON('@Url.Action("GetData","ShopProfile")', function (data) {
+            // Проходим по всем данным и устанавливаем для них маркеры
+            $.each(data, function (i, item) {
+                //console.log(data + " " + item.address +" " +item.latitude+" "+item.longitude);
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(item.latitude, item.longitude),
+                    map: map,
+                    title: item.name
+                });
+                // Берем для этих маркеров синие иконки с сайта google
+                //marker.setIcon('https://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+                // Для каждого объекта добавляем доп. информацию, выводимую в отдельном окне
+                var content = "<div class='adressInfo'>" +
+                 "<h3>Магазин: " + item.name+"</h3>" +                                                   
+                 "<div>" +
+                  "<p>Адреса: " + item.address + "</p>" +
+                  "<p>Місто: " + item.city + "</p>" +
+                  "<a class='btn btn-info' href='/ShopProfile/Details/"+item.id + "'>Перейти до магазину</a>"+
+                   "</div>" +
+                  "</div>";
+                
+                var infowindow = new google.maps.InfoWindow({
+                    title:item.name,
+                    content: content
+                });
+                // обработчик нажатия на маркер объекта
+                google.maps.event.addListener(marker,'click',function () {
+                    infowindow.open(map, marker);
+                });
+            })
+        });
+    }
+    
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(
+        browserHasGeolocation
+          ? "Error: The Geolocation service failed."
+          : "Error: Your browser doesn't support geolocation."
+      );
+      infoWindow.open(map);
+    }
+        </script>
+    }
