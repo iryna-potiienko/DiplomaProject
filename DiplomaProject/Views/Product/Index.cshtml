@@ -73,6 +73,10 @@
                         <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
                             <i class="fa-solid fa-circle-info"></i>
                         </a>
+                        <a asp-controller="LikedProductByUser" asp-action="Create" asp-route-productId="@item.Id" asp-route-username="@User.Identity.Name">
+                            Додати до списку бажань
+                        </a>
+                        
                          @if (User.IsInRole("admin"))
                          {
                              <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">

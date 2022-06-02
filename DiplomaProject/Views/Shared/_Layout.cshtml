@@ -50,6 +50,11 @@
                     <i class="fa-solid fa-cart-shopping" style="color:green;"></i>
                     @Html.ActionLink("Мої замовлення", "Index", "Order")
                 </div>
+                
+                <div>
+                    @* <i class="fa-solid fa-cart-shopping" style="color:green;"></i> *@
+                    <a asp-controller="LikedProductByUser" asp-action="Index" asp-route-currentUserEmail="@User.Identity.Name">Мій список бажань</a>
+                </div>
 
                 <div>
                     @await Component.InvokeAsync("MyShop", new { currentUserEmail = User.Identity.Name })

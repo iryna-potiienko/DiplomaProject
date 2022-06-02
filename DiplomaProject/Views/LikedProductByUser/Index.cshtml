@@ -1,0 +1,61 @@
+@model IEnumerable<DiplomaProject.Models.LikedProductsByUsers>
+
+@{
+    ViewData["Title"] = "Список бажань";
+}
+
+<h1>Мій список бажань</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.User) *@
+            @* </th> *@
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Product.Photo)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Product.Name)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Product.ShopProfile)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Product.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.User.Id) *@
+            @* </td> *@
+            <td class="col-3">
+                <div class="col-8" style="margin: auto">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Product.Photo)" alt="Product Photo" style="width: inherit;"/>
+                </div>
+            </td>
+            <td class="text-center col-4">
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td class="text-center col-3">
+                @Html.DisplayFor(modelItem => item.Product.ShopProfile.Name)
+            </td>
+            <td class="text-center col-2">
+                @Html.DisplayFor(modelItem => item.Product.Price)
+            </td>
+            <td>
+                <a class="btn btn-info" asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.Id">
+                    <i class="fa-solid fa-circle-info"></i>
+                </a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
