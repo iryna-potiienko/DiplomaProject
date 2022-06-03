@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiplomaProject.Models;
+using DiplomaProject.ViewModels;
 
 namespace DiplomaProject.Controllers
 {
@@ -46,10 +47,10 @@ namespace DiplomaProject.Controllers
         }
 
         // GET: ProductComment/Create
-        public IActionResult Create()
+        public IActionResult Create(int productId)
         {
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["ProductId"] = productId;//new SelectList(_context.Products, "Id", "Id");
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -58,17 +59,33 @@ namespace DiplomaProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductId,UserId,CommentText,Date,Estimation")] ProductComment productComment)
+        public async Task<IActionResult> Create([Bind("Id,ProductId,UserId,CommentText,Date,Estimation")] ProductCommentViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
+                if (user == null)
+                {
+                    ModelState.AddModelError("user","User not found");
+                    return NotFound();
+                }
+                
+                var productComment = new ProductComment
+                {
+                    CommentText = model.CommentText,
+                    Estimation = model.Estimation,
+                    ProductId = model.ProductId,
+                    UserId = user.Id,
+                    Date = DateTime.Now
+                };
+                
                 _context.Add(productComment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), nameof(Product), new {id = productComment.ProductId});
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productComment.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", productComment.UserId);
-            return View(productComment);
+            //ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productComment.ProductId);
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", productComment.UserId);
+            return View(model);
         }
 
         // GET: ProductComment/Edit/5
@@ -84,9 +101,16 @@ namespace DiplomaProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productComment.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", productComment.UserId);
-            return View(productComment);
+            
+            var model = new ProductCommentViewModel
+            {
+                CommentText = productComment.CommentText,
+                Estimation = productComment.Estimation,
+                //ShopProfileId = shopComment.ShopProfileId
+            };
+            //ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productComment.ProductId);
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", productComment.UserId);
+            return View(model);
         }
 
         // POST: ProductComment/Edit/5
@@ -94,23 +118,30 @@ namespace DiplomaProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductId,UserId,CommentText,Date,Estimation")] ProductComment productComment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductId,UserId,CommentText,Date,Estimation")] ProductCommentViewModel model)
         {
-            if (id != productComment.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                ProductComment productComment;
                 try
                 {
+                    productComment = await _context.ProductComments.FindAsync(id);
+
+                    productComment.CommentText = model.CommentText;
+                    productComment.Estimation = model.Estimation;
+                    productComment.Date = DateTime.Now;
+                    
                     _context.Update(productComment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductCommentExists(productComment.Id))
+                    if (!ProductCommentExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -119,11 +150,11 @@ namespace DiplomaProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), nameof(Product), new {id = productComment.ProductId});
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productComment.ProductId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", productComment.UserId);
-            return View(productComment);
+            //ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productComment.ProductId);
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", productComment.UserId);
+            return View(model);
         }
 
         // GET: ProductComment/Delete/5
@@ -154,7 +185,8 @@ namespace DiplomaProject.Controllers
             var productComment = await _context.ProductComments.FindAsync(id);
             _context.ProductComments.Remove(productComment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), nameof(Product), new {id = productComment.ProductId});
+
         }
 
         private bool ProductCommentExists(int id)

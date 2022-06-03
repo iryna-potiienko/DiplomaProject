@@ -1,0 +1,60 @@
+@model IEnumerable<DiplomaProject.Models.ProductComment>
+
+@* <h4>Коментарі до магазину @Model.First().ShopProfile.Name</h4> *@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CommentText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estimation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User)
+        </th>
+        @* <th> *@
+        @*     @Html.DisplayNameFor(model => model.ShopProfile) *@
+        @* </th> *@
+        <th></th>
+    </tr>
+    </thead>
+    
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estimation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.ShopProfile.Name) *@
+            @* </td> *@
+            <td>
+                @if (item.User.Email == User.Identity.Name)
+                {
+                    <a class="btn btn-success" asp-action="Edit" asp-controller="ProductComment" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+                    @*<a asp-action="Details" asp-controller="ShopComment" asp-route-id="@item.Id">Details</a>*@
+                    <a class="btn btn-danger" asp-action="Delete" asp-controller="ProductComment" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

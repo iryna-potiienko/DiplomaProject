@@ -1,48 +1,50 @@
-@model DiplomaProject.Models.ProductComment
+@model DiplomaProject.ViewModels.ProductCommentViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Коментар</h1>
 
-<h4>ProductComment</h4>
+<h4>Додати коментар до товару</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProductId" class="control-label"></label>
-                <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
+            <input type="hidden" asp-for="ProductId"/>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="ProductId" class="control-label"></label> *@
+            @*     <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select> *@
+            @* </div> *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="UserId" class="control-label"></label> *@
+            @*     <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select> *@
+            @* </div> *@
             <div class="form-group">
                 <label asp-for="CommentText" class="control-label"></label>
                 <input asp-for="CommentText" class="form-control" />
                 <span asp-validation-for="CommentText" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
+            @* <div class="form-group"> *@
+            @*     <label asp-for="Date" class="control-label"></label> *@
+            @*     <input asp-for="Date" class="form-control" /> *@
+            @*     <span asp-validation-for="Date" class="text-danger"></span> *@
+            @* </div> *@
             <div class="form-group">
                 <label asp-for="Estimation" class="control-label"></label>
                 <input asp-for="Estimation" class="form-control" />
                 <span asp-validation-for="Estimation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Додати" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @* <a asp-action="Index">Back to List</a> *@
+    @Html.ActionLink("Повернутися до товару", "Details", "Product", new { id = ViewBag.ProductId }, null)
 </div>
 
