@@ -2,7 +2,7 @@
 
 <div class="d-flex align-items-center justify-content-center welcome-padding">
     
-    <h2 class="text-center secondary-color">Вхід на сайт</h2>
+    <h2 class="text-center secondary-color" style="padding-right: 5%">Вхід на сайт</h2>
 
     <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" class="pl-5">
 
@@ -19,13 +19,12 @@
             <span asp-validation-for="Password"></span>
         </div>
 
-        <div class="form-group">
+        <div class="form-group pt-2">
             <button type="submit" class="btn btn-primary">
                 Увійти
             </button>
             
             OR
-            
             <a id="sign-in-btn" class="btn btn-success" asp-action="Register" asp-controller="Account">Зареєструватися</a>
         </div>
     </form>

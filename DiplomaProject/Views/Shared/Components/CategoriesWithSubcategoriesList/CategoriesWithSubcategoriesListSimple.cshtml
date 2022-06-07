@@ -1,16 +1,26 @@
 @model IEnumerable<DiplomaProject.Models.Category>
 
-<div class="accordion accordion" id="accordionExample">
+<div class="accordion main-background-color" id="accordionExamples">
     @foreach (var category in Model)
     {
-        <li class="list-group">
-            @category.Name
-            <div class="list-group">
-                @foreach (var subcategory in category.Subcategories)
-                {
-                    <a asp-action="Index" asp-controller="Product" asp-route-subcategoryId="@subcategory.Id" class="list-group-item list-group-item-action main-background-color">@subcategory.Name</a>
-                }
+        <div class="accordion-item main-background-color">
+            <h2 class="accordion-header" id="heading_@category.Id">
+                <button class="accordion-button collapsed main-background-color" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@category.Id" aria-expanded="false" aria-controls="collapse_@category.Id">
+                    @category.Name
+                </button>
+            </h2>
+            <div id="collapse_@category.Id" class="accordion-collapse collapse" aria-labelledby="heading_@category.Id" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <ul class="list-group-item-text">
+                        @foreach (var subcategory in category.Subcategories)
+                        {
+                            <li>
+                                <a asp-action="Index" asp-controller="Product" asp-route-subcategoryId="@subcategory.Id">@subcategory.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
-        </li>
+        </div>
     }
 </div>
