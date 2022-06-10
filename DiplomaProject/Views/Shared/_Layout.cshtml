@@ -44,17 +44,18 @@
 
                 <div>
                     <i class="fa-solid fa-cart-arrow-down" style="color:green;"></i>
-                    @Html.ActionLink("Мій кошик", "Index", "ProductInOrder")
+                    @Html.ActionLink("Кошик", "Index", "ProductInOrder")
                 </div>
 
                 <div style="padding-left: 3%;">
                     <i class="fa-solid fa-cart-shopping" style="color:green;"></i>
-                    @Html.ActionLink("Мої замовлення", "Index", "Order")
+                    @Html.ActionLink("Замовлення", "Index", "Order")
                 </div>
                 
-                <div>
+                <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Мій список бажань">
                     @* <i class="fa-solid fa-cart-shopping" style="color:green;"></i> *@
-                    <a asp-controller="LikedProductByUser" asp-action="Index" asp-route-currentUserEmail="@User.Identity.Name">Мій список бажань</a>
+                    <i class="fa-solid fa-heart" style="color:green;" ></i>
+                    <a asp-controller="LikedProductByUser" asp-action="Index" asp-route-currentUserEmail="@User.Identity.Name">Бажані</a>
                 </div>
 
                 <div>

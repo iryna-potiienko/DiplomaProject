@@ -10,15 +10,15 @@
                 </button>
             </h2>
             <div id="collapse_@category.Id" class="accordion-collapse collapse" aria-labelledby="heading_@category.Id" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <ul class="list-group-item-text">
+                <div class="accordion-body" style="padding: 0rem 0.5rem;">
+                    <div class="list-group list-group-flush">
                         @foreach (var subcategory in category.Subcategories)
                         {
-                            <li>
-                                <a asp-action="Index" asp-controller="Product" asp-route-subcategoryId="@subcategory.Id">@subcategory.Name</a>
-                            </li>
+                        @*     <li> *@
+                                <a asp-action="Index" asp-controller="Product" asp-route-subcategoryId="@subcategory.Id" class="list-group-item list-group-item-action main-background-color">@subcategory.Name</a>
+                           @* </li>*@
                         }
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
