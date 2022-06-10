@@ -36,11 +36,18 @@
     <div style="padding-right: 5%">
         @if (User.Identity.IsAuthenticated)
         {
-            <div>
-                <p>
+            <div class="d-flex flex-row" style="padding-left: 6%">
+                <div class="pt-2">
                     <i class="fa-solid fa-user fa-lg"></i>
+                </div>
+
+                <div class="pt-2" style="padding-left: 3%">
                     @User.Identity.Name
-                </p>
+                </div>
+
+                <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Вихiд" style="padding-left: 3%">
+                    @Html.ActionLink("", "Logout", "Account", new { currentUserEmail = User.Identity.Name }, new { @class = "my-btn fa-solid fa-right-from-bracket fa-2x secondary-color" })
+                </div>
             </div>
 
             <div class="d-flex justify-content-start">
@@ -59,10 +66,6 @@
 
                 <div >
                     @await Component.InvokeAsync("MyShop", new { currentUserEmail = User.Identity.Name })
-                </div>
-
-                <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Вихiд" style="padding-left: 3%"> 
-                    @Html.ActionLink("", "Logout", "Account", new { currentUserEmail = User.Identity.Name }, new { @class = "my-btn fa-solid fa-right-from-bracket fa-2x secondary-color" })
                 </div>
             </div>
         }
