@@ -57,7 +57,7 @@
                     @Html.ActionLink("", "Index", "LikedProductByUser", new { currentUserEmail = User.Identity.Name }, new { @class = "my-btn fa-solid fa-heart fa-2x secondary-color" })
                 </div>
 
-                <div>
+                <div >
                     @await Component.InvokeAsync("MyShop", new { currentUserEmail = User.Identity.Name })
                 </div>
 

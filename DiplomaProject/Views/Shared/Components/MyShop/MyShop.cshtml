@@ -1,4 +1,5 @@
 @model DiplomaProject.Models.ShopProfile
 
-<i class="fa-solid fa-store" style="color:green;"></i>
-<a asp-action="Details" asp-controller= "ShopProfile" asp-route-id="@Model.Id">Мій магазин</a>
+<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Мій магазин">
+    @Html.ActionLink("", "Details", "ShopProfile", new { id = Model.Id }, new { @class = "my-btn fa-solid fa-store fa-2x secondary-color" })
+</div>
