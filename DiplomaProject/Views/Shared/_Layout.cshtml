@@ -33,38 +33,36 @@
         }
     </div>
 
-    <div style="width: 30%">
+    <div style="padding-right: 5%">
         @if (User.Identity.IsAuthenticated)
         {
             <div>
-                <p>Вхід виконано під ім'ям: @User.Identity.Name</p>
+                <p>
+                    <i class="fa-solid fa-user fa-lg"></i>
+                    @User.Identity.Name
+                </p>
             </div>
-            
+
             <div class="d-flex justify-content-start">
 
-                <div>
-                    <i class="fa-solid fa-cart-arrow-down" style="color:green;"></i>
-                    @Html.ActionLink("Кошик", "Index", "ProductInOrder")
+                <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Мій кошик">
+                    @Html.ActionLink("", "Index", "ProductInOrder", "", new { @class = "my-btn fa-solid fa-cart-arrow-down fa-2x secondary-color" })
                 </div>
 
-                <div style="padding-left: 3%;">
-                    <i class="fa-solid fa-cart-shopping" style="color:green;"></i>
-                    @Html.ActionLink("Замовлення", "Index", "Order")
+                <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Мої замовлення">
+                    @Html.ActionLink("", "Index", "Order", "", new { @class = "my-btn fa-solid fa-cart-shopping fa-2x secondary-color" })
                 </div>
-                
+
                 <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Мій список бажань">
-                    @* <i class="fa-solid fa-cart-shopping" style="color:green;"></i> *@
-                    <i class="fa-solid fa-heart" style="color:green;" ></i>
-                    <a asp-controller="LikedProductByUser" asp-action="Index" asp-route-currentUserEmail="@User.Identity.Name">Бажані</a>
+                    @Html.ActionLink("", "Index", "LikedProductByUser", new { currentUserEmail = User.Identity.Name }, new { @class = "my-btn fa-solid fa-heart fa-2x secondary-color" })
                 </div>
 
                 <div>
                     @await Component.InvokeAsync("MyShop", new { currentUserEmail = User.Identity.Name })
                 </div>
-                
-                <div style="display: flex;width: 27%;justify-content: end;">
-                    <a id="log-out" asp-area="" asp-controller="Account" asp-action="Logout">Вийти</a>
-                    <i class="fa-solid fa-right-from-bracket" style="color:red;">></i>
+
+                <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Вихiд" style="padding-left: 3%"> 
+                    @Html.ActionLink("", "Logout", "Account", new { currentUserEmail = User.Identity.Name }, new { @class = "my-btn fa-solid fa-right-from-bracket fa-2x secondary-color" })
                 </div>
             </div>
         }
