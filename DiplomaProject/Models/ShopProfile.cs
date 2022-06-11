@@ -12,12 +12,14 @@ public class ShopProfile
         Orders = new List<Order>();
     }
     public int Id { get; set; }
+    [Required]
+    [MinLength(2)]
     [Display(Name = "Назва")]
     public string Name { get; set; }
     public int SalesmanId { get; set; }
     [Display(Name = "Верифікація")]
     public bool IsVerified { get; set; }
-    
+    [Required]
     [Display(Name = "Місто")]
     public string City { get; set; }
     [Display(Name = "Адреса")]
@@ -29,7 +31,8 @@ public class ShopProfile
     public byte[] LogoPhoto { get; set; }
     [Display(Name = "Опис")]
     public string Description { get; set; }
-    [Display(Name = "Контакти")]
+    [Phone]
+    [Display(Name = "Номер телефону")]
     public string Contacts { get; set; }
     
     [Display(Name = "Продавець")]

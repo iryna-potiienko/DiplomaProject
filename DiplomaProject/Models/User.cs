@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using DataAnnotationsExtensions;
 
 namespace DiplomaProject.Models;
 
@@ -16,14 +19,23 @@ public class User
     }
 
     public int Id { get; set; }
+    [Required]
+    [Display(Name = "Ім'я")]
     public string Name { get; set; }
+    [Required]
+    [Email]
+    //[Display(Name = "Е-мейл")]
     public string Email { get; set; }
+    [Required]
+    [PasswordPropertyText]
     public string Password { get; set; }
+    [Display(Name = "Роль")]
     public int RoleId { get; set; }
     public int Latitude { get; set; }
     public int Longitude { get; set; }
-    public string Address { get; set; }
+    public string City { get; set; }
     
+    [Display(Name = "Роль")]
     public Role Role { get; set; }
     //public List<Order> Orders { get; set; }
     public List<ShopComment> ShopComments { get; set; }

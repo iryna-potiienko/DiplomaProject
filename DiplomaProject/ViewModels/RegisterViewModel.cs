@@ -1,20 +1,28 @@
 using System.ComponentModel.DataAnnotations;
+using DiplomaProject.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaProject.ViewModels;
 
 public class RegisterViewModel
 {
-    [Required(ErrorMessage = "Не вказане Ім'я")]
+    [Display(Name = "Ім'я")]
+    [Required(ErrorMessage = "Це поле має бути заповнене")]
     public string Name { get; set; }
     
-    [Required(ErrorMessage = "Не вказаний Email")]
+    [Required(ErrorMessage = "Це поле має бути заповнене")]
+    [Remote(action: "VerifyUniqueEmail", controller: "Account")]
     public string Email { get; set; }
  
-    [Required(ErrorMessage = "Не вказаний пароль")]
+    [Display(Name = "Пароль")]
+    [Required(ErrorMessage = "Це поле має бути заповнене")]
     [DataType(DataType.Password)]
     public string Password { get; set; }
+    [Display(Name = "Місто проживання")]
+    public string City { get; set; }
  
+    [Display(Name = "Повторіть пароль")]
     [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Паролі не співпадають")]
+    [Compare(nameof(Password), ErrorMessage = "Паролі не співпадають")]
     public string ConfirmPassword { get; set; }
 }

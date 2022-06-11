@@ -10,6 +10,7 @@ public class Subcategory
         Products = new List<Product>();
     }
     public int Id { get; set; }
+    [Required(ErrorMessage = "Це поле має бути заповнене")]
     [Display(Name = "Підкатегорія")]
     public string Name { get; set; }
     public int CategoryId { get; set; }

@@ -31,6 +31,18 @@ namespace DiplomaProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddRazorPages().AddMvcOptions(options =>
+            {
+                options.MaxModelValidationErrors = 50;
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                    _ => "Це поле має бути заповнене.");
+                options.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(
+                     () => "Це поле має бути заповнене.");
+                options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(
+                    _ => "Некоректний формат даних");
+            });
+
             services.AddControllers();
 
             var environmentName = Environment.GetEnvironmentVariable("Env");

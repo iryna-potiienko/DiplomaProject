@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DiplomaProject.Models;
@@ -39,11 +40,12 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             //var user = await _accountRepository.GetUserByEmail(model.Email);
-            if (user == null)
+            var isExist = _context.Users.Any(u => u.Email == model.Email);
+            if (!isExist)
             {
-                user = new User
+                var user = new User
                 {
                     Name = model.Name,
                     Email = model.Email,
@@ -51,16 +53,16 @@ public class AccountController : Controller
                 };
                 var hashPassword = _passwordHasher.HashPassword(user, model.Password);
                 user.Password = hashPassword;
-                
+
                 Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                 if (userRole != null)
                     user.Role = userRole;
-            
+
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
-            
+
                 await Authenticate(user);
-            
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -70,7 +72,8 @@ public class AccountController : Controller
             //     return RedirectToAction("Index", "Home");
             // }
 
-            ModelState.AddModelError("", "Некорректні логін та(чи) пароль");
+
+            ModelState.AddModelError("", "Користувач вже існує");
         }
 
         return View(model);
@@ -138,5 +141,13 @@ public class AccountController : Controller
         
         // установка аутентифікаційних кукі
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+    }
+    
+    [AcceptVerbs("GET", "POST")]
+    public IActionResult VerifyUniqueEmail(string Email)
+    {
+        var isExist = _context.Users.Any(u => u.Email == Email);
+
+        return isExist ? Json($"Email {Email} вже використовується у системі. Будь ласка, оберіть інший email.") : Json(true);
     }
 }

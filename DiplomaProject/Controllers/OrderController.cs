@@ -85,6 +85,7 @@ namespace DiplomaProject.Controllers
                 // .ThenInclude(o => o.ShopProfile)
                 .Include(o => o.Cart)
                 .ThenInclude(o => o.Customer)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -119,30 +120,39 @@ namespace DiplomaProject.Controllers
                 //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
                 //order.CustomerId = user.Id;
 
-                var currentCart = GetCurrentCart();//CloseCart();
-                if (currentCart!=null)
+                if (model.DateBeReady > DateTime.Now)
                 {
-                    var order = new Order
+                    //if(model.DeliveryTypeId!=1)
+                    var currentCart = GetCurrentCart(); //CloseCart();
+                    if (currentCart != null)
                     {
-                        CartId = model.CartId,
-                        AddressToDelivery = model.AddressToDelivery,
-                        UserComment = model.Comment,
-                        DeliveryTypeId = model.DeliveryTypeId,
-                        DateBeReady = model.DateBeReady,
-                        //Price = ViewBag.Price,
+                        var order = new Order
+                        {
+                            CartId = model.CartId,
+                            AddressToDelivery = model.AddressToDelivery,
+                            UserComment = model.Comment,
+                            DeliveryTypeId = model.DeliveryTypeId,
+                            DateBeReady = model.DateBeReady,
+                            //Price = ViewBag.Price,
 
-                        ShopProfileId = currentCart.ShopProfileId,
-                        ReadyStageId = 1,
-                        DateOfFixation = DateTime.Now,
-                        IsPaid = false,
-                        IsDelivered = false
-                    };
+                            ShopProfileId = currentCart.ShopProfileId,
+                            ReadyStageId = 1,
+                            DateOfFixation = DateTime.Now,
+                            IsPaid = false,
+                            IsDelivered = false
+                        };
 
-                    _context.Add(order);
-                    await _context.SaveChangesAsync();
+                        _context.Add(order);
+                        await _context.SaveChangesAsync();
 
-                    CloseCart();
-                    return RedirectToAction(nameof(Index));
+                        CloseCart();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                else
+                {
+                    ViewBag.CartId = model.CartId;
+                    ModelState.AddModelError("", "Неккоректна дата");
                 }
             }
             
@@ -447,6 +457,12 @@ namespace DiplomaProject.Controllers
 
             await _orderRepository.UpdateOrder(order);
             return View();
+        }
+        
+        //[AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyDateBeReady(DateTime DateBeReady)
+        {
+            return DateBeReady < DateTime.Now ? Json("Correct Data!") : Json(true);
         }
     }
 }

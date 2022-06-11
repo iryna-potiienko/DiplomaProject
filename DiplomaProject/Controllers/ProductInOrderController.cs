@@ -100,8 +100,13 @@ namespace DiplomaProject.Controllers
             }
             else
             {
-                if( cart.ShopProfileId != product.ShopProfileId)
+                if (cart.ShopProfileId != product.ShopProfileId)
+                {
+                    //ModelState.AddModelError("CartShopProfile","You made order in shop"+cart.ShopProfileId);
+                    ViewBag.CartShopProfileError = "You made order in shop" + cart.ShopProfileId;
                     return View(productInOrder);
+                }
+                    
             }
 
             // if (cart.ProductsInOrder.Count != 0)

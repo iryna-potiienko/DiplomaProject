@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaProject.Models;
 
@@ -10,13 +11,19 @@ public class Order
     [Display(Name = "Назва магазину")]
     public int ShopProfileId { get; set; }
     public int DeliveryTypeId { get; set; }
-    [Display(Name = "Дата коли замовлення буде готове")]
+    //[Required(ErrorMessage = "Це поле має бути заповнене")]
+    [DataType(DataType.DateTime)]
+    [Display(Name = "Замовлення на дату")]
+    [Remote(action: "VerifyDateBeReady", controller: "Order")]
     public DateTime DateBeReady { get; set; }
+    
+    [DataType(DataType.DateTime)]
     [Display(Name = "Дата замовлення")]
     public DateTime DateOfFixation { get; set; }
     
     [Display(Name = "Доставлено")]
     public bool IsDelivered { get; set; }
+    
     [Display(Name = "Адреса доставки")]
     public string AddressToDelivery { get; set; }
     [Display(Name = "Коментар покупця")]

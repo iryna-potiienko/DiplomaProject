@@ -14,10 +14,12 @@ public class Cart
     [Display(Name = "Покупець")]
     public User Customer { get; set; }
     
+    [Display(Name = "Магазин")]
     public int ShopProfileId { get; set; }
-    //public ShopProfile ShopProfile { get; set; }
+    
     public bool IsOpenForAddingProducts { get; set; }
     [Display(Name = "Замовлення у кошику")]
     public List<ProductInOrder> ProductsInOrder { get; set; }
+    [Display(Name = "Замовлення")]
     public Order Order { get; set; }
 }
