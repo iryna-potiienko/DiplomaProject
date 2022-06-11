@@ -1,0 +1,9 @@
+@model ShopProfile
+
+<h1 class="text-center secondary-color pt-5">Список товарів магазину</h1>
+@if (Model.Salesman.Email == User.Identity.Name)
+{
+    <div class="d-flex align-items-center">
+        <a class="btn btn-success" asp-action="Create" asp-controller="Product" asp-route-shopProfileId="@Model.Id">Додати товар</a>
+    </div>
+}

@@ -10,9 +10,6 @@
     <h4 class="primary-color">Деталі магазину</h4>
     <hr/>
 
-    @* <dt class = "col-sm-2"> *@
-    @*     @Html.DisplayNameFor(model => model.LogoPhoto) *@
-    @* </dt> *@
     <div class="image-center pb-5 image-style">
         <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LogoPhoto)" alt="LogoPhoto" class="shop-image-style"/>
     </div>
@@ -62,25 +59,6 @@
                 @Html.DisplayFor(model => model.Address)
             </th>
         </tr>
-
-        @* <tr> *@
-        @*     <th> *@
-        @*         @Html.DisplayNameFor(model => model.Latitude) *@
-        @*     </th> *@
-        @*     <th> *@
-        @*         @Html.DisplayFor(model => model.Latitude) *@
-        @*     </th> *@
-        @* </tr> *@
-        
-        @* <tr> *@
-        @*     <th> *@
-        @*         @Html.DisplayNameFor(model => model.Longitude) *@
-        @*     </th> *@
-        @*     <th> *@
-        @*         @Html.DisplayFor(model => model.Longitude) *@
-        @*     </th> *@
-        @* </tr> *@
-
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -113,8 +91,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Products)
             </th>
-            <th class="btn btn-warning">
-                @Html.ActionLink("Товари магазину", "Index", "Product", new { shopProfileId = Model.Id }, null)
+            <th>
+            @*     @Html.ActionLink("Товари магазину", "Index", "Product", new { shopProfileId = Model.Id }, null) *@
+                <a class="btn btn-warning" asp-controller="Product" asp-action="ShopProfileProductsIndex" asp-route-shopProfileId="@Model.Id">Товари</a>
             </th>
         </tr>
     </table>

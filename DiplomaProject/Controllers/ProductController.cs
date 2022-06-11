@@ -58,6 +58,18 @@ namespace DiplomaProject.Controllers
             return View(await products);
         }
 
+        public async Task<IActionResult> ShopProfileProductsIndex(int shopProfileId)
+        {
+            var products = await _context.Products
+                .Where(p => p.ShopProfileId == shopProfileId)
+                .Include(p => p.ShopProfile)
+                .ThenInclude(s=>s.Salesman)
+                .ToListAsync();
+            
+            ViewBag.ShopProfileId = shopProfileId;
+            return View(products);
+        }
+        
         public async Task<IActionResult> GetByName(string name)
         {
             Task<List<Product>> products;
