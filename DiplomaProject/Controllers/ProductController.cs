@@ -147,7 +147,8 @@ namespace DiplomaProject.Controllers
                     Price = model.Price,
                     ShopProfileId = model.ShopProfileId,
                     SubcategoryId = model.SubcategoryId,
-                    Photo = photo
+                    Photo = photo,
+                    DateAdded = DateOnly.FromDateTime(DateTime.Now)
                 };
                 
                 _context.Add(product);

@@ -1,0 +1,27 @@
+@model IEnumerable<DiplomaProject.Models.Product>
+
+<div class="row row-cols-2 row-cols-md-6 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100">
+                <div class="col-12">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Photo)" alt="LogoPhoto" class="card-img-top">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                    @* <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p> *@
+                    <div class="card-text">Ціна: @Html.DisplayFor(modelItem => item.Price)</div>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a>
+                    <a class="btn btn-danger" asp-controller="LikedProductByUser" asp-action="Create" asp-route-productId="@item.Id" asp-route-username="@User.Identity.Name">
+                        <i class="fa-solid fa-heart"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

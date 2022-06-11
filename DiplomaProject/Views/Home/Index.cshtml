@@ -4,7 +4,13 @@
 
 <div class="text-center">
     <h1 class="display-4">Вітаємо на платформі Handmade Space!</h1>
-    
+
+    <h4>Новинки: </h4>
+    @await Component.InvokeAsync("ProductsCards", new{productAction = "new"})
+
+    <h4>Популярні: </h4>
+    @await Component.InvokeAsync("ProductsCards",new{productAction = "popular"})
+
     @await Component.InvokeAsync("CategoriesList")
-    @* <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+    
 </div>

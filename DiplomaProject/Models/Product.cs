@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DataAnnotationsExtensions;
@@ -17,6 +18,7 @@ public class Product
     [MinLength(3)]
     [Display(Name = "Назва")]
     public string Name { get; set; }
+    public DateOnly DateAdded { get; set; }
     public int ShopProfileId { get; set; }
     [Display(Name = "Опис")]
     public string Description { get; set; }
