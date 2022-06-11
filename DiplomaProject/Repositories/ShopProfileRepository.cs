@@ -72,9 +72,6 @@ public class ShopProfileRepository: IShopProfileRepository
     {
         var shopProfile = _context.ShopProfiles
             .Include(s => s.Salesman)
-            .Include(s=>s.Products)
-            .Include(s=>s.Orders)
-            .ThenInclude(o=>o.OrderFeedback)
             .FirstOrDefaultAsync(m => m.Id == id);
         
         return shopProfile;
