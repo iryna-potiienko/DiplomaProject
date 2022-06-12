@@ -1,33 +1,25 @@
-<div class="mb-3 text-secondary pt-5">
-
+<div>
     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Показати iнформацiю про магазин
+        Iнформацiя про магазин
     </button>
+</div>
 
-    <div class="collapse pt-2" id="collapseExample">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                Загалом товарів: @ViewBag.ProductsCount
-            </li>
-            <li class="list-group-item">
-                Загалом замовлень: @ViewBag.OrdersCount
-            </li>
-            <li class="list-group-item">
-                Замовлень виконано: @ViewBag.OrdersUserGetCount
-            </li>
-            <li class="list-group-item">
-                Замовлень виконано вчасно: @ViewBag.OrdersInTimeCount
-            </li>
-            <li class="list-group-item">
-                Замовлень виконано успішно: @ViewBag.OrdersSuccesfulCount
-            </li>
-        </ul>
-    </div>
-
-    <div></div>
-
-    @* <div class="card-body"> *@
-    @* <h5 class="card-title">Primary card title</h5> *@
-
-    @* </div> *@
+<div class="collapse pt-5 pr-10" id="collapseExample" style="position: absolute">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            Загалом товарів: @ViewBag.ProductsCount
+        </li>
+        <li class="list-group-item">
+            Загалом замовлень: @ViewBag.OrdersCount
+        </li>
+        <li class="list-group-item">
+            Замовлень виконано: @ViewBag.OrdersUserGetCount
+        </li>
+        <li class="list-group-item">
+            Замовлень виконано вчасно: @ViewBag.OrdersInTimeCount
+        </li>
+        <li class="list-group-item">
+            Замовлень виконано успішно: @ViewBag.OrdersSuccesfulCount
+        </li>
+    </ul>
 </div>

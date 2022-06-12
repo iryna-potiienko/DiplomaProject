@@ -11,22 +11,22 @@
     </div>
 
     <div class="pt-5 pr-10">
-           
+
         <h3>
             @Html.DisplayFor(model => model.Name)
         </h3>
-        
+
         <hr class="mt-3 mb-3"/>
-        
+
         <h6>
             @Html.DisplayFor(model => model.Description)
         </h6>
-        
+
         <hr class="mt-3 mb-3"/>
-        
+
         <h6 class="pt-2">
             <span class="fw-bold">Розташування:</span>
-            @Html.DisplayFor(model => model.City),  @Html.DisplayFor(model => model.Address)
+            @Html.DisplayFor(model => model.City), @Html.DisplayFor(model => model.Address)
         </h6>
         <h6 class="pt-2">
             <span class="fw-bold">@Html.DisplayNameFor(model => model.IsVerified):</span>
@@ -39,7 +39,7 @@
                 <i class="fa-solid fa-xmark text-danger fa-2x"></i>
             }
         </h6>
-        
+
         <h6 class="pt-2">
             <span class="fw-bold">Продавець: </span>
             @Html.DisplayFor(model => model.Salesman.Name)
@@ -50,12 +50,17 @@
         </h6>
 
 
-        <div class="d-flex justify-content-center">
-            @Html.ActionLink("Товари магазину", "ShopProfileProductsIndex", "Product", new { shopProfileId = Model.Id }, new { @class = "btn btn-success" })
+        <div class="container pt-2 pb-5">
+            <div class="row">
+                <div class="col">
+                    @Html.ActionLink("Товари магазину", "ShopProfileProductsIndex", "Product", new { shopProfileId = Model.Id }, new { @class = "btn btn-success" })
+                </div>
+
+                <div class="col">
+                    @await Component.InvokeAsync("ShopOrdersInfo", new { shopProfileId = Model.Id })
+                </div>
+            </div>
         </div>
-        
-        
-        @await Component.InvokeAsync("ShopOrdersInfo", new { shopProfileId = Model.Id })
     </div>
 
 </div>
