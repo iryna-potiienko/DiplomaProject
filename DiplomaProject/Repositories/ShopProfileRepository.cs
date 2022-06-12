@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -86,10 +87,6 @@ public class ShopProfileRepository: IShopProfileRepository
 
         if (model.Address != null)
         {
-            // var client = new MapsAPIClient("AIzaSyBYeT7YA4M3Q9iv0sNoBlnM4T5gM1T6-g4");
-            // var geocodeResult = client.Geocoding
-            //     .Geocode(model.Address).Results.FirstOrDefault()
-            //     ?.Geometry.Location;
             var shopAddress = model.City + " " + model.Address;
             var geocodeResult = Geocode(shopAddress);
             shopLatitude = geocodeResult.Latitude;
@@ -107,7 +104,8 @@ public class ShopProfileRepository: IShopProfileRepository
             Latitude = shopLatitude,
             Longitude = shopLongitude,
             IsVerified = false,
-            SalesmanId = userId
+            SalesmanId = userId,
+            DateCreated = DateOnly.FromDateTime(DateTime.Now)
         };
                 
         _context.Add(shopProfile);
@@ -115,7 +113,7 @@ public class ShopProfileRepository: IShopProfileRepository
         return true;
     }
 
-    public async Task<ShopProfile?> UpdateShopProfile(int id, ShopProfileViewModel model)
+    public async Task<ShopProfile> UpdateShopProfile(int id, ShopProfileViewModel model)
     {
         try
         {
@@ -137,19 +135,13 @@ public class ShopProfileRepository: IShopProfileRepository
             {
                 if (model.Address != null)
                 {
-                    // var client = new MapsAPIClient("AIzaSyBYeT7YA4M3Q9iv0sNoBlnM4T5gM1T6-g4");
-                    // var geocodeResult = client.Geocoding
-                    //     .Geocode(model.Address).Results.FirstOrDefault()
-                    //     ?.Geometry.Location;
                     var shopAddress = model.City + " " + model.Address;
                     var geocodeResult = Geocode(shopAddress);
                     shopProfile.Latitude = geocodeResult.Latitude;
                     shopProfile.Longitude = geocodeResult.Longitude;
                 }
             }
-            // shopProfile.Latitude = 0;
-            // shopProfile.Longitude = 0;
-                    
+                 
             _context.Update(shopProfile);
             await _context.SaveChangesAsync();
             return shopProfile;
