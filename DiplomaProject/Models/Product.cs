@@ -18,6 +18,7 @@ public class Product
     [MinLength(3)]
     [Display(Name = "Назва")]
     public string Name { get; set; }
+    [Display(Name = "Дата додавання")]
     public DateOnly DateAdded { get; set; }
     public int ShopProfileId { get; set; }
     [Display(Name = "Опис")]
