@@ -53,6 +53,8 @@
         <div class="d-flex justify-content-center">
             @Html.ActionLink("Товари магазину", "ShopProfileProductsIndex", "Product", new { shopProfileId = Model.Id }, new { @class = "btn btn-success" })
         </div>
+        
+        
         @await Component.InvokeAsync("ShopOrdersInfo", new { shopProfileId = Model.Id })
     </div>
 

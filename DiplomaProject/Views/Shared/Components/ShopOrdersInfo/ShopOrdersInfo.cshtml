@@ -1,8 +1,10 @@
+<div class="mb-3 text-secondary pt-5">
 
-<div class="card mb-3 text-secondary" style="max-width: 20rem;">
-  <div class="card-header">Інформація про замовлення</div>
-    @* <div class="card-body"> *@
-        @* <h5 class="card-title">Primary card title</h5> *@
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Показати iнформацiю про магазин
+    </button>
+
+    <div class="collapse pt-2" id="collapseExample">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 Загалом товарів: @ViewBag.ProductsCount
@@ -20,5 +22,12 @@
                 Замовлень виконано успішно: @ViewBag.OrdersSuccesfulCount
             </li>
         </ul>
+    </div>
+
+    <div></div>
+
+    @* <div class="card-body"> *@
+    @* <h5 class="card-title">Primary card title</h5> *@
+
     @* </div> *@
 </div>
