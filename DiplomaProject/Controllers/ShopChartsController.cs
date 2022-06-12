@@ -46,20 +46,27 @@ namespace DiplomaProject.Controllers
         [Produces("application/json")]
         public async Task<ActionResult> OrdersAmountPerDay(int shopProfileId)
         {
-            var ordersListAsync = _context.Orders
+            var shopProfile = await _context.ShopProfiles.FindAsync(shopProfileId);
+            var ordersListAsync = await _context.Orders
                 //.Include(o => o.OrderFeedback)
-                .Where(o => o.ShopProfileId == shopProfileId).ToListAsync();
+                .Where(o => o.ShopProfileId == shopProfileId)
+                .OrderByDescending(o=>o.DateOfFixation)
+                .ToListAsync();
             
             var resList = new List<object>();
             resList.Add(new[] {"Дата", "Кількість замовлень"});
             
-            var orders = await ordersListAsync;
-            foreach (var order in orders)
+            //var days=ordersListAsync.
+            //var shopProfile = await _context.ShopProfiles.FindAsync(shopProfileId);
+            var orders =  ordersListAsync;
+            //var days = DateOnly.FromDateTime(DateTime.Now).AddDays(3);//shopProfile.DateAdded;
+
+            for (var i = shopProfile.DateCreated; i < DateOnly.FromDateTime(DateTime.Now); i = i.AddDays(1))
             {
-                var date = order.DateOfFixation.Date;
-                var count = orders.Count(o => o.DateOfFixation.Date == date);
-                
-                resList.Add(new object[] {date.ToShortDateString(),count});
+                var date = i;
+                var count = orders.Count(o => DateOnly.FromDateTime(o.DateOfFixation.Date) == i);
+
+                resList.Add(new object[] {date.ToShortDateString(), count});
             }
 
             return Ok(resList);
