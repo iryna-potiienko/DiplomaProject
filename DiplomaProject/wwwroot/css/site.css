@@ -199,3 +199,9 @@ body {
 .pt-10 {
     padding-top: 10% !important;
 }
+
+.card-img {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
