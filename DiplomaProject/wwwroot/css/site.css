@@ -28,6 +28,7 @@ a {
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    scroll-behavior: smooth;
 }
 
 @media (min-width: 768px) {
@@ -142,8 +143,13 @@ body {
     width: 100% !important;
 }
 
+.product-image-style {
+    width: 80% !important;
+}
+
 .shop-image-style {
-    width: 50% !important;
+    width: 100% !important;
+    padding-top: 50% !important;
 }
 
 .center {
@@ -158,9 +164,9 @@ body {
     padding-top: 27% !important;
 }
 
-#leave-comment a {
-    color: #70DB93;
-}
+/*#leave-comment a {*/
+/*    color: #70DB93;*/
+/*}*/
 
 #sign-in-btn {
     color: white;
@@ -184,4 +190,12 @@ body {
     user-select: none;
     background-color: transparent;
     padding: 0.375rem 0.75rem;
+}
+
+.pr-10 {
+    padding-right: 10% !important;
+}
+
+.pt-10 {
+    padding-top: 10% !important;
 }

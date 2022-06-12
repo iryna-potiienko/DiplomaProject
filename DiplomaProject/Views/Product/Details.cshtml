@@ -5,88 +5,63 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center secondary-color pt-2">Деталі</h1>
-
-<div>
-    <h4 class="text-center">Товару</h4>
-    <hr/>
-
-    <div class="image-center pb-5">
+<div class="d-flex flex-row">
+    <div class="image-center pb-5 pt-5">
         @* @Html.DisplayFor(model => model.LogoPhoto) *@
-        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="LogoPhoto" class="image-style"/>
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="LogoPhoto" class="product-image-style"/>
     </div>
 
-    <table class="table table-striped">
-        <tbody>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Name)
-            </th>
-        </tr>
+    <div class="pt-5 pr-10">
+        <h3>
+            @Html.DisplayFor(model => model.Name)
+        </h3>
 
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Description)
-            </th>
-        </tr>
+        <h4>
+            <span class="fw-bold">$</span>
+            @Html.DisplayFor(model => model.Price)
+        </h4>
+        
+        <hr class="mt-3 mb-3"/>
 
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Composition)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Composition)
-            </th>
-        </tr>
+        <h6 class="pt-2">
+            <span class="fw-bold">Магазин:</span>
+            @Html.DisplayFor(model => model.ShopProfile.Name)
+        </h6>
 
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Price)
-            </th>
-        </tr>
+        <h6>
+            <span class="fw-bold">Склад:</span>
+            @Html.DisplayFor(model => model.Composition)
+        </h6>
 
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ShopProfile)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.ShopProfile.Name)
-            </th>
-        </tr>
+        <hr class="mt-3 mb-3"/>
 
-    </table>
-    
-</div>
+        <h6>
+            @Html.DisplayFor(model => model.Description)
+        </h6>
+        
+        <hr class="mt-3 mb-3"/>
 
-<div class="w-100">
-    <div class="center btn btn-warning ">
-        <i class="fa-solid fa-cart-plus"></i>
-        @Html.ActionLink("Замовити товар", "Create", "ProductInOrder", new { productId = Model.Id, shopProfileId = Model.ShopProfile.Id }, null)
+        <div class="pt-2">
+            @Html.ActionLink("Замовити товар", "Create", "ProductInOrder", new { productId = Model.Id, shopProfileId = Model.ShopProfile.Id }, new { @class = "btn btn-success" })
+        </div>
     </div>
+
 </div>
+
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="btn btn-secondary" id="leave-comment">
+    <div id="leave-comment">
         @* @Html.ActionLink("Залишити коментар", "Create", "ShopComment", new { shopProfileId = Model.Id }, ) *@
         <a asp-action="Create" asp-controller="ProductComment" asp-route-productId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
     </div>
 }
 
 <div class="pt-5">
-    @await Component.InvokeAsync("ProductCommentsList", new {productId = Model.Id})
+    @await Component.InvokeAsync("ProductCommentsList", new { productId = Model.Id })
 </div>
 
 <div class="d-flex align-items-center">
-    <a class="btn btn-info left" asp-action="Index">Повернутися до покупок</a>
+    <a class="btn btn-primary left" asp-action="Index">Повернутися до покупок</a>
     @* <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> *@
 </div>

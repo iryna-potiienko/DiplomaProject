@@ -4,100 +4,96 @@
     ViewData["Title"] = "Details";
 }
 
-<h1 class="text-center secondary-color pt-2">Детальна інформація</h1>
 
-<div class="text-center">
-    <h4 class="primary-color">Деталі магазину</h4>
-    <hr/>
+<div class="container">
+    <div class="row">
+        
+        <div class="col-3 pt-2">
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LogoPhoto)" alt="LogoPhoto" class="shop-image-style"/>
+        </div>
 
-    <div class="image-center pb-5 image-style">
-        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LogoPhoto)" alt="LogoPhoto" class="shop-image-style"/>
+        <div class="col-9 pt-2">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th class="fw-normal">
+                        @Html.DisplayFor(model => model.Name)
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsVerified)
+                    </th>
+                    <th class="fw-normal">
+                        @if (Model.IsVerified)
+                        {
+                            <i class="fa-solid fa-check text-success fa-2x"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-xmark text-danger fa-2x"></i>
+                        }
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.City)
+                    </th>
+                    <th class="fw-normal">
+                        @Html.DisplayFor(model => model.City)
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th class="fw-normal">
+                        @Html.DisplayFor(model => model.Address)
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th class="fw-normal">
+                        @Html.DisplayFor(model => model.Description)
+                    </th>
+                </tr>
+
+                @await Component.InvokeAsync("ShopOrdersInfo", new { shopProfileId = Model.Id })
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Contacts)
+                    </th>
+                    <th class="fw-normal">
+                        @Html.DisplayFor(model => model.Contacts)
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Salesman)
+                    </th>
+                    <th class="fw-normal">
+                        @Html.DisplayFor(model => model.Salesman.Name)
+                    </th>
+                </tr>
+            </table>
+            
+            <div class="d-flex justify-content-center">
+                @Html.ActionLink("Товари магазину", "ShopProfileProductsIndex", "Product", new { shopProfileId = Model.Id }, new { @class = "btn btn-success" })
+            </div>
+        </div>
+
     </div>
-
-
-    <table class="table table-striped">
-        <tbody>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Name)
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IsVerified)
-            </th>
-            <th>
-                @if (Model.IsVerified)
-                {
-                    <i class="fa-solid fa-check text-success fa-2x"></i>
-                }
-                else
-                {
-                    <i class="fa-solid fa-xmark text-danger fa-2x"></i>
-                }
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.City)
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Address)
-            </th>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Description)
-            </th>
-        </tr>
-
-        @await Component.InvokeAsync("ShopOrdersInfo",new {shopProfileId = Model.Id})
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Contacts)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Contacts)
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Salesman)
-            </th>
-            <th>
-                @Html.DisplayFor(model => model.Salesman.Name)
-            </th>
-        </tr>
-
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Products)
-            </th>
-            <th>
-            @*     @Html.ActionLink("Товари магазину", "Index", "Product", new { shopProfileId = Model.Id }, null) *@
-                <a class="btn btn-warning" asp-controller="Product" asp-action="ShopProfileProductsIndex" asp-route-shopProfileId="@Model.Id">Товари</a>
-            </th>
-        </tr>
-    </table>
 </div>
+
 <div class="text-center">
     @if (!Model.IsVerified && User.IsInRole("admin"))
     {
@@ -110,14 +106,14 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="btn btn-secondary" id="leave-comment">
+    <div id="leave-comment">
         @* @Html.ActionLink("Залишити коментар", "Create", "ShopComment", new { shopProfileId = Model.Id }, ) *@
         <a asp-action="Create" asp-controller="ShopComment" asp-route-shopProfileId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
     </div>
 }
 
 <div class="pt-5">
-    @await Component.InvokeAsync("ShopCommentsList", new {shopProfileId = Model.Id})
+    @await Component.InvokeAsync("ShopCommentsList", new { shopProfileId = Model.Id })
 </div>
 
 
@@ -141,7 +137,7 @@
 }
 
 <div class="d-flex align-items-center">
-    <a class="btn btn-info left" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary left" asp-action="Index">Back to List</a>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
