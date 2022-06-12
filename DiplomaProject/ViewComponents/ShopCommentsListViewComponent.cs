@@ -21,6 +21,7 @@ public class ShopCommentsListViewComponent: ViewComponent
         var shopComments = await _context.ShopComments
             .Where(s => s.ShopProfileId == shopProfileId)
             .Include(s => s.User)
+            .OrderByDescending(s=>s.Date)
             .ToListAsync();
         return View("ShopCommentsList", shopComments);
     }
