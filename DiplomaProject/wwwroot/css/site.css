@@ -204,4 +204,12 @@ body {
     width: 100%;
     height: 15vw;
     object-fit: cover;
+
+    transition: .5s ease-in-out;
+}
+
+.card-img:hover {
+    width: 100%;
+    height: 25vw;
+    object-fit: cover;
 }
