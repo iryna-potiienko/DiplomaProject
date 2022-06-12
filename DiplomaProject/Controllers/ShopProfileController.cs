@@ -69,10 +69,10 @@ namespace DiplomaProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _accountRepository.GetCurrentUser(model.Username);//(User.Identity.Name);
+                var user = _accountRepository.GetCurrentUser(model.Username);
                 try
                 {
-                    await _shopProfileRepository.CreateShopProfile(model,user.Id);// model.Userid); //user.Id);
+                    await _shopProfileRepository.CreateShopProfile(model,user.Id);
                 }
                 catch (FileNotFoundException)
                 {

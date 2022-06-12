@@ -82,10 +82,7 @@
 
                         @if (User.IsInRole("admin"))
                          {
-                             <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
-                                 <i class="fa-solid fa-pen"></i>
-                             </a>
-                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
                                  <i class="fa-solid fa-trash"></i>
                              </a>
                          }

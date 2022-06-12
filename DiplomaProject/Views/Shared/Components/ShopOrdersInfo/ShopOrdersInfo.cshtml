@@ -1,46 +1,24 @@
 
-
-<tr>
-    <th>
-        Загалом товарів
-    </th>
-    <th>
-        @ViewBag.ProductsCount
-    </th>
-</tr>
-
-<tr>
-    <th>
-        Загалом замовлень
-    </th>
-    <th>
-        @ViewBag.OrdersCount
-    </th>
-</tr>
-
-<tr>
-    <th>
-        Замовлень виконано
-    </th>
-    <th>
-        @ViewBag.OrdersUserGetCount
-    </th>
-</tr>
-
-<tr>
-    <th>
-        Замовлень виконано вчасно
-    </th>
-    <th>
-        @ViewBag.OrdersInTimeCount
-    </th>
-</tr>
-
-<tr>
-    <th>
-        Замовлень виконано успішно
-    </th>
-    <th>
-        @ViewBag.OrdersSuccesfulCount
-    </th>
-</tr>
+<div class="card mb-3 text-secondary" style="max-width: 20rem;">
+  <div class="card-header">Інформація про замовлення</div>
+    @* <div class="card-body"> *@
+        @* <h5 class="card-title">Primary card title</h5> *@
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                Загалом товарів: @ViewBag.ProductsCount
+            </li>
+            <li class="list-group-item">
+                Загалом замовлень: @ViewBag.OrdersCount
+            </li>
+            <li class="list-group-item">
+                Замовлень виконано: @ViewBag.OrdersUserGetCount
+            </li>
+            <li class="list-group-item">
+                Замовлень виконано вчасно: @ViewBag.OrdersInTimeCount
+            </li>
+            <li class="list-group-item">
+                Замовлень виконано успішно: @ViewBag.OrdersSuccesfulCount
+            </li>
+        </ul>
+    @* </div> *@
+</div>

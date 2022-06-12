@@ -14,7 +14,7 @@
                     <div class="card-text">Ціна: @Html.DisplayFor(modelItem => item.Price)</div>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">
+                    <a class="btn btn-info" asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
                         <i class="fa-solid fa-circle-info"></i>
                     </a>
                     <a class="btn btn-danger" asp-controller="LikedProductByUser" asp-action="Create" asp-route-productId="@item.Id" asp-route-username="@User.Identity.Name">

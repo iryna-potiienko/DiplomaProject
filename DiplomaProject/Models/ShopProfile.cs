@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -43,4 +44,6 @@ public class ShopProfile
     public List<ShopComment> ShopComments { get; set; }
     [Display(Name = "Замовлення")]
     public List<Order> Orders { get; set; }
+    [Display(Name = "Дата створення")]
+    public DateOnly DateCreated { get; set; }
 }
