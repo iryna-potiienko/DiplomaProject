@@ -42,6 +42,7 @@ namespace DiplomaProject.Controllers
                         .Include(o => o.ShopProfile)
                         .Include(o => o.DeliveryType)
                         .Include(o => o.ReadyStage)
+                        .OrderByDescending(o=>o.DateOfFixation)
                         .ToListAsync();
                     ViewBag.ShopProfileName = shop.Name;
                 }
@@ -57,6 +58,8 @@ namespace DiplomaProject.Controllers
                     //.ThenInclude(o => o.ShopProfile)
                     .Include(o => o.DeliveryType)
                     .Include(o => o.ReadyStage)
+                    .AsSplitQuery()
+                    .OrderByDescending(o=>o.DateOfFixation)
                     .ToListAsync();
                 //.Include(o => o.ShopProfile);
             }
@@ -246,7 +249,8 @@ namespace DiplomaProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index), new {shopProfileId = model.ShopProfileId});
             }
             
             //ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
@@ -382,7 +386,7 @@ namespace DiplomaProject.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserGetResponse(int id, [Bind("Id,CartId,DeliveryTypeId,AddressToDelivery,Comment")] Order model)
+        public async Task<IActionResult> UserGetResponse(int id, [Bind("Id,CartId,DeliveryTypeId,AddressToDelivery,UserComment,DateBeReady")] Order model)
         {
             if (ModelState.IsValid)
             {

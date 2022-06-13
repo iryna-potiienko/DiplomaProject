@@ -17,9 +17,12 @@
                     <a class="btn btn-info" asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
                         <i class="fa-solid fa-circle-info"></i>
                     </a>
-                    <a class="btn btn-danger" asp-controller="LikedProductByUser" asp-action="Create" asp-route-productId="@item.Id" asp-route-username="@User.Identity.Name">
-                        <i class="fa-solid fa-heart"></i>
-                    </a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="btn btn-danger" asp-controller="LikedProductByUser" asp-action="Create" asp-route-productId="@item.Id" asp-route-username="@User.Identity.Name">
+                            <i class="fa-solid fa-heart"></i>
+                        </a>
+                    }
                 </div>
             </div>
         </div>

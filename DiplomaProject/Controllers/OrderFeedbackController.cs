@@ -64,7 +64,7 @@ namespace DiplomaProject.Controllers
             {
                 _context.Add(orderFeedback);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), "Order", new {id = orderFeedback.OrderId});
             }
             // ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "Id", orderFeedback.CustomerId);
             // ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", orderFeedback.OrderId);
@@ -119,7 +119,7 @@ namespace DiplomaProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), "Order", new {id = orderFeedback.OrderId});
             }
             ViewData["CustomerId"] = new SelectList(_context.Users, "Id", "Id", orderFeedback.CustomerId);
             ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", orderFeedback.OrderId);
@@ -154,7 +154,7 @@ namespace DiplomaProject.Controllers
             var orderFeedback = await _context.OrderFeedbacks.FindAsync(id);
             _context.OrderFeedbacks.Remove(orderFeedback);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), "Order", new {id = orderFeedback.OrderId});
         }
 
         private bool OrderFeedbackExists(int id)
