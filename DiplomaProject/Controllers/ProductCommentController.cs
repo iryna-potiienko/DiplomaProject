@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiplomaProject.Models;
 using DiplomaProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiplomaProject.Controllers
 {
@@ -46,7 +47,7 @@ namespace DiplomaProject.Controllers
             return View(productComment);
         }
 
-        // GET: ProductComment/Create
+        [Authorize]
         public IActionResult Create(int productId)
         {
             ViewData["ProductId"] = productId;//new SelectList(_context.Products, "Id", "Id");
@@ -54,9 +55,7 @@ namespace DiplomaProject.Controllers
             return View();
         }
 
-        // POST: ProductComment/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductId,UserId,CommentText,Date,Estimation")] ProductCommentViewModel model)

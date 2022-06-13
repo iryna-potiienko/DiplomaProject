@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiplomaProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace DiplomaProject.Controllers
@@ -70,7 +71,7 @@ namespace DiplomaProject.Controllers
             return View(productInOrder);
         }
 
-        // GET: ProductInOrder/Create
+        [Authorize]
         public IActionResult Create(int productId, int shopProfileId)
         {
             //ViewData["CartId"] = GetCart().Id;//new SelectList(_context.Orders, "Id", "Id");
@@ -79,7 +80,7 @@ namespace DiplomaProject.Controllers
             return View();
         }
 
-        // POST: ProductInOrder/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductId,ShopProfileId,CartId,Amount,Comment,FinalPrice,FinalDescription")] ProductInOrder productInOrder)

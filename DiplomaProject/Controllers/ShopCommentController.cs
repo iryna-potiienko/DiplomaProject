@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DiplomaProject.Models;
 using DiplomaProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DiplomaProject.Controllers
 {
@@ -48,7 +49,7 @@ namespace DiplomaProject.Controllers
             return View(shopComment);
         }
 
-        // GET: ShopComment/Create
+        [Authorize]
         public IActionResult Create(int? shopProfileId)
         {
             ViewData["ShopProfileId"] = shopProfileId; //new SelectList(_context.ShopProfiles, "Id", "Id");
@@ -56,7 +57,7 @@ namespace DiplomaProject.Controllers
             return View();
         }
 
-        // POST: ShopComment/Create
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CommentText,Date,Estimation,ShopProfileId,UserId")] ShopCommentViewModel model)

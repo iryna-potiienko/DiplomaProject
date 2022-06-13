@@ -11,7 +11,10 @@
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                     @* <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p> *@
-                    <div class="card-text">Ціна: @Html.DisplayFor(modelItem => item.Price)</div>
+                    <div class="card-text">
+                        <span class="fw-bold">₴</span>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </div>
                 </div>
                 <div class="card-footer">
                     <a class="btn btn-info" asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">

@@ -65,6 +65,14 @@ namespace DiplomaProject.Controllers
                 .Include(p => p.ShopProfile)
                 .ThenInclude(s=>s.Salesman)
                 .ToListAsync();
+
+            if (!products.Any())
+            {
+                var shop = await _context.ShopProfiles.FindAsync(shopProfileId);
+                ViewBag.ShopProfileName = shop.Name;
+            }
+            else
+                ViewBag.ShopProfileName = products.First().ShopProfile.Name;
             
             ViewBag.ShopProfileId = shopProfileId;
             return View(products);

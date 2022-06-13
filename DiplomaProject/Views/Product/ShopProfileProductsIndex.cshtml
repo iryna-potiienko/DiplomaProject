@@ -4,7 +4,14 @@
     ViewData["Title"] = "Products";
 }
 
+<h1 class="text-center secondary-color pt-6">Товари магазину @ViewBag.ShopProfileName</h1>
+<a asp-controller="ShopProfile" asp-action="Details" asp-route-id="@ViewBag.ShopProfileId" class="btn btn-primary">Назад до магазину</a>
 @* @Component.InvokeAsync("ShopProfileViewWithProducts",new{ shopProfileId = ViewBag.ShopProfileId}) *@
+
+@if (!Model.Any())
+{
+    <h6 class="text-center pt-3">В цьому магазині поки немає товарів</h6>
+}
 
 <div class="row row-cols-1 row-cols-md-3 g-4 pt-5">
     @foreach (var item in Model)
@@ -17,7 +24,10 @@
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                    <div class="card-text">Ціна: @Html.DisplayFor(modelItem => item.Price)</div>
+                    <div class="card-text">
+                        <span class="fw-bold">₴</span>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </div>
                 </div>
                 <div class="card-footer">
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">

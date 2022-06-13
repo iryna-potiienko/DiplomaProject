@@ -94,19 +94,17 @@
         </tr>
     </table>
 }
-@if (User.Identity.IsAuthenticated)
-{
-    <div id="leave-comment">
-        <a asp-action="Create" asp-controller="ShopComment" asp-route-shopProfileId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
-    </div>
-}
+
+<div id="leave-comment">
+    <a asp-action="Create" asp-controller="ShopComment" asp-route-shopProfileId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
+</div>
 
 <div class="pt-5">
     @await Component.InvokeAsync("ShopCommentsList", new { shopProfileId = Model.Id })
 </div>
 
 <div class="d-flex align-items-center">
-    <a class="btn btn-primary left" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary left" asp-action="Index">Назад до магазинів</a>
 </div>
 
 <script>
