@@ -21,10 +21,10 @@ public class ProductsInOrderListViewComponent: ViewComponent
         var productsInOrder = await _context.ProductsInOrder
             .Where(s => s.CartId == cartId)
             .Include(s=>s.Product)
-            // .Include(s=>s.Cart)
-            // .ThenInclude(c=>c.ProductsInOrder)
             .ToListAsync();
         //ViewBag.CategoryId = categoryId;
+
+        ViewBag.TotalPrice = productsInOrder.Sum(p => p.Product.Price);
         return View("ProductsInOrderList", productsInOrder);
     }
 }

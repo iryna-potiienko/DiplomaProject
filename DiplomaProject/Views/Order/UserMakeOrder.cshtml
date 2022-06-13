@@ -8,37 +8,90 @@
 
 <h4>Оформлення замовлення</h4>
 <hr />
+
+  @await Component.InvokeAsync("ProductsInOrderList", new { cartId = ViewBag.CartId })
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="UserMakeOrder">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
             <input type="hidden" asp-for="CartId" asp-items="ViewBag.CartId"/>
-                
-            @await Component.InvokeAsync("ProductsInOrderList", new { cartId = ViewBag.CartId })
             
-            <div class="form-group">
-                <label asp-for="DeliveryTypeId" class="control-label"></label>
-                <select asp-for="DeliveryTypeId" class ="form-control" asp-items="ViewBag.DeliveryTypeId"></select>
-            </div>
             
-            <div class="form-group">
-                <label asp-for="AddressToDelivery" class="control-label"></label>
-                <input asp-for="AddressToDelivery" class="form-control" />
-                <span asp-validation-for="AddressToDelivery" class="text-danger"></span>
-            </div>
             
-            <div class="form-group">
-                <label asp-for="DateBeReady" class="control-label"></label>
-                <input asp-for="DateBeReady" class="form-control" />
-                <span asp-validation-for="DateBeReady" class="text-danger"></span>
+            <div class="card h-100" style="width: 30rem;background-color: blanchedalmond;">
+                <dd class="card-body">
+                @* <h5 class="card-title">Інформація про покупця</h5> *@
+                @* <h6 class="card-subtitle mb-2 text-muted"> *@
+                @*     @Html.DisplayFor(model => model.Customer.Name), *@
+                @*     @Html.DisplayFor(model => model.Cart.Customer.Email) *@
+                @* </h6> *@
+                @* <form asp-action="UserGetResponse"> *@
+                @*     <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+                <dl class="row">
+                    <dt class="col-sm-6">
+                        <label asp-for="DeliveryTypeId" class="control-label"></label>
+                    </dt>
+                    <dd class="col-sm-6">
+                        <select asp-for="DeliveryTypeId" class ="form-control" asp-items="ViewBag.DeliveryTypeId"></select>
+                    </dd>
+                    <dt class="col-sm-6">
+                        <label asp-for="AddressToDelivery" class="control-label"></label>
+                    </dt>
+                    <dd class="col-sm-6">
+                        <input asp-for="AddressToDelivery" class="form-control" />
+                        <span asp-validation-for="AddressToDelivery" class="text-danger"></span>
+                    </dd>
+                    <dt class="col-sm-6">
+                        <label asp-for="DateBeReady" class="control-label"></label>
+                    </dt>
+                    <dd class="col-sm-6">
+                        <input asp-for="DateBeReady" class="form-control" />
+                        <span asp-validation-for="DateBeReady" class="text-danger"></span>
+                    </dd>
+                    <dt class="col-sm-6">
+                        <label asp-for="Comment" class="control-label"></label>
+                    </dt>
+                    <dd class="col-sm-6">
+                        <input asp-for="Comment" class="form-control" />
+                        <span asp-validation-for="Comment" class="text-danger"></span>
+                    </dd>
+                                   
+                                
+                </dl>
+                @* <div class="form-group"> *@
+                @*     <input type="submit" value="Надіслати" class="btn btn-primary" /> *@
+                @* </div> *@
+                @* </form> *@
             </div>
+                 
             
-            <div class="form-group">
-                <label asp-for="Comment" class="control-label"></label>
-                <input asp-for="Comment" class="form-control" />
-                <span asp-validation-for="Comment" class="text-danger"></span>
-            </div>
+            
+            @* <input type="hidden" asp-for="CartId" asp-items="ViewBag.CartId"/> *@
+            @* *@
+            @* *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="DeliveryTypeId" class="control-label"></label> *@
+            @*     <select asp-for="DeliveryTypeId" class ="form-control" asp-items="ViewBag.DeliveryTypeId"></select> *@
+            @* </div> *@
+            @* *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="AddressToDelivery" class="control-label"></label> *@
+            @*     <input asp-for="AddressToDelivery" class="form-control" /> *@
+            @*     <span asp-validation-for="AddressToDelivery" class="text-danger"></span> *@
+            @* </div> *@
+            @* *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="DateBeReady" class="control-label"></label> *@
+            @*     <input asp-for="DateBeReady" class="form-control" /> *@
+            @*     <span asp-validation-for="DateBeReady" class="text-danger"></span> *@
+            @* </div> *@
+            @* *@
+            @* <div class="form-group"> *@
+            @*     <label asp-for="Comment" class="control-label"></label> *@
+            @*     <input asp-for="Comment" class="form-control" /> *@
+            @*     <span asp-validation-for="Comment" class="text-danger"></span> *@
+            @* </div> *@
             
             <div class="form-group">
                 <input type="submit" value="Надіслати" class="btn btn-primary" />

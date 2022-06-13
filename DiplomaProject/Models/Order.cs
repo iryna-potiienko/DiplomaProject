@@ -10,6 +10,7 @@ public class Order
     public int Id { get; set; }
     [Display(Name = "Назва магазину")]
     public int ShopProfileId { get; set; }
+    [Display(Name = "Спосіб доставки")]
     public int DeliveryTypeId { get; set; }
     //[Required(ErrorMessage = "Це поле має бути заповнене")]
     [DataType(DataType.DateTime)]
@@ -34,6 +35,7 @@ public class Order
     public double Price { get; set; }
     [Display(Name = "Оплачено")]
     public bool IsPaid { get; set; }
+    [Display(Name = "Стадія готовності")]
     public int ReadyStageId { get; set; }
     
     [Display(Name = "Відгук покупця")]

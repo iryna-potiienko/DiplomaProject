@@ -25,8 +25,8 @@ namespace DiplomaProject.Controllers
         {
             List<ProductInOrder> productsInOrder;
             
-            var sessionId = HttpContext.Session.GetInt32(SessionKey);
-            var cart = GetCurrentCart(sessionId); //await GetCart();
+            //var sessionId = HttpContext.Session.GetInt32(SessionKey);
+            var cart = await GetCart();//GetCurrentCart(sessionId); //await GetCart();
             if (cart != null)
             {
                 var user = _context.Users.FirstOrDefault(u => u.Email == User.Identity.Name);

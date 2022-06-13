@@ -18,7 +18,7 @@ public class UserMakeOrderViewModel
     public string AddressToDelivery { get; set; }
     [Display(Name = "Коментар")]
     public string Comment { get; set; }
-    [Display(Name = "На яку дату має бути готове замовлення")]
+    [Display(Name = "Дата готовності")]
     [Required(ErrorMessage = "Це поле має бути заповнене")]
     [Remote(action: "VerifyDateBeReady", controller: "Order")]
     public DateTime DateBeReady { get; set; }

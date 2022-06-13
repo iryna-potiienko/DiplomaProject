@@ -4,14 +4,14 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Деталі замовлення</h1>
+<h1 class="text-center secondary-color pt-3">Деталі замовлення</h1>
 
-<div>
-    <h4></h4>
-    <hr />
+<div class="pt-3">
+    @* <h4></h4> *@
+    @* <hr /> *@
     <div class="row g-4 pt-2 card-group row-cols-2">
         <div class="col">
-            <div class="card h-100" style="width: 30rem">
+            <div class="card h-100" style="width: 30rem;background-color: blanchedalmond;">
                 <div class="card-body">
                     <h5 class="card-title">Інформація про покупця</h5>
                     <h6 class="card-subtitle mb-2 text-muted">
@@ -19,40 +19,32 @@
                         @Html.DisplayFor(model => model.Cart.Customer.Email)
                     </h6>
                     <dl class="row">
-                        @* <dt class="col-sm-6"> *@
-                        @*     @Html.DisplayNameFor(model => model.Cart.Customer) *@
-                        @* </dt> *@
-                        @* <dd class="col-sm-6"> *@
-                        @*     @Html.DisplayFor(model => model.Cart.Customer.Email) *@
-                        @* </dd> *@
                         <dt class="col-sm-6">
                             @Html.DisplayNameFor(model => model.AddressToDelivery)
                         </dt>
                         <dd class="col-sm-6">
                             @Html.DisplayFor(model => model.AddressToDelivery)
                         </dd>
-                        @* <dt class="col-sm-2"> *@
-                        @*     @Html.DisplayNameFor(model => model.IsDelivered) *@
-                        @* </dt> *@
-                        @* <dd class="col-sm-4"> *@
-                        @*     @Html.DisplayFor(model => model.IsDelivered) *@
-                        @* </dd> *@
                         <dt class="col-sm-6">
                             @Html.DisplayNameFor(model => model.DeliveryType)
                         </dt>
                         <dd class="col-sm-6">
-                            @Html.DisplayFor(model => model.DeliveryType.Name)
-                             
-                            @* @Html.DisplayFor(model => model.IsDelivered) *@
-                            @if (Model.IsDelivered)
-                            {
-                                <i class="fa-solid fa-check text-success fa-2x"></i>
-                            }
-                            else
-                            {
-                                <i class="fa-solid fa-xmark text-danger fa-2x"></i>
-                            }
-                                   
+                            <div class="row">
+                                <div class="col-6">
+                                @Html.DisplayFor(model => model.DeliveryType.Name)
+                                </div>
+
+                                <div class="col-6 text-center">
+                                    @if (Model.IsDelivered)
+                                    {
+                                        <i class="fa-solid fa-check text-success fa-1x"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-xmark text-danger fa-1x"></i>
+                                    }
+                                </div>
+                            </div>
                         </dd>
                         <dt class="col-sm-6">
                             @Html.DisplayNameFor(model => model.UserComment)
@@ -65,29 +57,17 @@
             </div>
         </div>
         <div class="col">
-            <div class="card h-100" style="width: 30rem">
+            <div class="card h-100" style="width: 30rem; background-color:lavender;">
                 <div class="card-body">
                     <h5 class="card-title">Інформація про продавця</h5>
                     <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(model => model.ShopProfile.Name)</h6>
                     <dl class="row">
-                        @* <dt class="col-sm-6"> *@
-                        @*     @Html.DisplayNameFor(model => model.ShopProfile) *@
-                        @* </dt> *@
-                        @* <dd class="col-sm-6"> *@
-                        @*     @Html.DisplayFor(model => model.ShopProfile.Name) *@
-                        @* </dd> *@
                         <dt class="col-sm-6">
                             @Html.DisplayNameFor(model => model.DateBeReady)
                         </dt>
                         <dd class="col-sm-6">
                             @Html.DisplayFor(model => model.DateBeReady)
                         </dd>
-                        @* <dt class="col-sm-2"> *@
-                        @*     @Html.DisplayNameFor(model => model.DateOfFixation) *@
-                        @* </dt> *@
-                        @* <dd class="col-sm-4"> *@
-                        @*     @Html.DisplayFor(model => model.DateOfFixation) *@
-                        @* </dd> *@
                         <dt class="col-sm-6">
                             @Html.DisplayNameFor(model => model.ReadyStage)
                         </dt>
@@ -194,15 +174,17 @@
                 </td>
             </tr>
         }
-        <tr>
+        </tbody>
+        <tfoot class="fw-bold table-borderless">
+        
             <td colspan="3"></td>
-            <td>
+            <td class="text-end table-light">
                 Сумма
             </td>
-            <td>
+            <td class="table-light">
                 @Html.DisplayFor(model => model.Price)
             </td>
-            <td>
+            <td class="text-center table-light">
                 @if (Model.IsPaid)
                 {
                     <i class="fa-solid fa-check text-success fa-2x"></i>
@@ -212,8 +194,8 @@
                     <i class="fa-solid fa-xmark text-danger fa-2x"></i>
                 }
             </td>
-        </tr>
-        </tbody>
+        </tfoot>
+        
     </table>
 
     <dl class="row">

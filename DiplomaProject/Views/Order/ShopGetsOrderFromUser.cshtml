@@ -4,152 +4,276 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Замовлення користувача</h1>
+<h1 class="text-center secondary-color pt-3">Узгодження деталей замовлення</h1>
 
-<h4></h4>
-<hr />
-<div class="row">
-    @* <div class="col-md-4"> *@
-        <form asp-action="ShopGetsOrderFromUser">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CartId" />
-            <input type="hidden" asp-for="ShopProfileId" />
-            <input type="hidden" asp-for="Cart.ProductsInOrder" />
-            <dl class="row">
-            <div class="form-group">
-                @* <label asp-for="Cart.Customer.Email" class="control-label"></label> *@
-                <dt class = "col-sm-2">
-                    @Html.DisplayNameFor(model => model.Cart.Customer)
-                </dt>
-                <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Cart.Customer.Email)
-                </dd>
-            </div>
-            <div class="form-group">
-                @* <label asp-for="DeliveryType.Name" class="control-label"></label> *@
-                <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.DeliveryType)
-                </dt>
-                <dd class = "col-sm-10">
-                    @Html.DisplayFor(model => model.DeliveryType.Name)
-                </dd>
-            </div>
-            <div class="form-group">
-                @* <label asp-for="DateOfFixation" class="control-label"></label> *@
-                <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.DateOfFixation)
-                </dt>
-                <dd class = "col-sm-10">
-                    @Html.DisplayFor(model => model.DateOfFixation)
-                </dd>
-            </div>
-                <div class="form-group">
-                    <dt class = "col-sm-2">
-                        @Html.DisplayNameFor(model => model.AddressToDelivery)
-                    </dt>
-                    <dd class = "col-sm-10">
-                        @Html.DisplayFor(model => model.AddressToDelivery)
-                    </dd>
-                </div>
-                <div class="form-group">
-                    <dt class = "col-sm-2">
-                        @Html.DisplayNameFor(model => model.ReadyStageId)
-                    </dt>
-                    <dd class = "col-sm-10">
-                        @Html.DisplayFor(model => model.ReadyStage.Name)
-                    </dd>
-                </div>
-                <div class="form-group">
-                <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => model.UserComment)
-                </dt>
-                <dd class = "col-sm-10">
-                    @Html.DisplayFor(model => model.UserComment)
-                </dd>
-            </div>
+@* <h4></h4> *@
+@* <hr /> *@
+<form asp-action="ShopGetsOrderFromUser">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="CartId" />
+    <input type="hidden" asp-for="ShopProfileId" />
+    <input type="hidden" asp-for="Cart.ProductsInOrder" />
+                
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalDescription)
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Cart.ProductsInOrder)
+        {
+            <tr>
+                <td style="width: 15%">
+                    <div class="col-6">
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Product.Photo)" alt="LogoPhoto" class="image-style">
+                    </div>
+                </td>
             
-            </dl>
-            
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Product)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Amount)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].Comment)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalPrice)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.ProductsInOrder[0].FinalDescription)
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model.Cart.ProductsInOrder)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Product.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Comment)
-                        </td>
-                        <td>
-                            <input type="number" name="productPrices" value="@item.FinalPrice"/>
-                            @* @Html.EditorFor(modelItem => item.FinalPrice) *@
-                        </td>
-                        <td>
-                            <textarea type="text" name="productDescriptions" value="@item.FinalDescription" rows="5"></textarea>
-                            @* @Html.EditorFor(modelItem => item.FinalDescription) *@
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    <input type="number" name="productPrices" class="form-control" style="width: 8rem;" value="@item.FinalPrice"/>
+                    @* @Html.EditorFor(modelItem => item.FinalPrice) *@
+                </td>
+                <td>
+                    <textarea type="text" name="productDescriptions" class="form-control" value="@item.FinalDescription" rows="3"></textarea>
+                    @* @Html.EditorFor(modelItem => item.FinalDescription) *@
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot class="fw-bold table-borderless">
+                        
+        <td colspan="3"></td>
+        <td class="text-end table-light">
+            Сумма
+        </td>
+        <td class="table-light">
+            <input asp-for="Price" class="form-control" style="width: 8rem;"/>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </td>
+        <td>
+        
+        </td>
+        </tfoot>
+    </table>
 
-            <div class="form-group">
-                <label asp-for="DateBeReady" class="control-label"></label>
-                <input asp-for="DateBeReady" class="form-control" />
-                <span asp-validation-for="DateBeReady" class="text-danger"></span>
+
+
+                
+    <div class="row g-4 pt-2 card-group row-cols-2">
+        <div class="col">
+            <div class="card h-100" style="width: 30rem;background-color: blanchedalmond;">
+                <div class="card-body">
+                    <h5 class="card-title">Інформація про покупця</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        @Html.DisplayFor(model => model.Cart.Customer.Name),
+                        @Html.DisplayFor(model => model.Cart.Customer.Email)
+                    </h6>
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.AddressToDelivery)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.AddressToDelivery)
+                        </dd>
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.DeliveryType)
+                        </dt>
+                        <dd class="col-sm-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    @Html.DisplayFor(model => model.DeliveryType.Name)
+                                </div>
+        
+                                <div class="col-6 text-center">
+                                    @if (Model.IsDelivered)
+                                    {
+                                        <i class="fa-solid fa-check text-success fa-1x"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-xmark text-danger fa-1x"></i>
+                                    }
+                                </div>
+                            </div>
+                        </dd>
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.UserComment)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.UserComment)
+                        </dd>
+                    </dl>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="col">
+            <div class="card h-100" style="width: 30rem; background-color:lavender;">
+                <div class="card-body">
+                    <h5 class="card-title">Інформація про продавця</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(model => model.ShopProfile.Name)</h6>
+                    <dl class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.DateBeReady)
+                        </dt>
+                        <dd class="col-sm-6">
+                            <input asp-for="DateBeReady" class="form-control" />
+                            <span asp-validation-for="DateBeReady" class="text-danger"></span>
+                        </dd>
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.ReadyStage)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.ReadyStage.Name)
+                        </dd>
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.SalesmanComment)
+                        </dt>
+                        <dd class="col-sm-6">
+                            <input asp-for="SalesmanComment" class="form-control" />
+                            <span asp-validation-for="SalesmanComment" class="text-danger"></span>
+                        </dd>
+                    </dl>
+                </div>
             </div>
-            @* <div class="form-group form-check"> *@
-            @*     <label class="form-check-label"> *@
-            @*         <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid) *@
-            @*     </label> *@
-            @* </div> *@
-            @* <div class="form-group"> *@
-            @*     <label asp-for="ReadyStageId" class="control-label"></label> *@
-            @*     <select asp-for="ReadyStageId" class="form-control" asp-items="ViewBag.ReadyStageId"></select> *@
-            @*     <span asp-validation-for="ReadyStageId" class="text-danger"></span> *@
-            @* </div> *@
-            <div class="form-group">
-                <label asp-for="SalesmanComment" class="control-label"></label>
-                <input asp-for="SalesmanComment" class="form-control" />
-                <span asp-validation-for="SalesmanComment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Надіслати" class="btn btn-primary" />
-            </div>
-        </form>
-    @* </div> *@
-</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Надіслати" class="btn btn-primary" />
+    </div>
+</form>
+
+
+
+
+@* <div class="row"> *@
+@*     $1$ <div class="col-md-4"> #1# *@
+@*         <form asp-action="ShopGetsOrderFromUser"> *@
+@*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@*             <input type="hidden" asp-for="Id" /> *@
+@*             <input type="hidden" asp-for="CartId" /> *@
+@*             <input type="hidden" asp-for="ShopProfileId" /> *@
+@*             <input type="hidden" asp-for="Cart.ProductsInOrder" /> *@
+@*             <dl class="row"> *@
+@*             <div class="form-group"> *@
+@*                 $1$ <label asp-for="Cart.Customer.Email" class="control-label"></label> #1# *@
+@*                 <dt class = "col-sm-2"> *@
+@*                     @Html.DisplayNameFor(model => model.Cart.Customer) *@
+@*                 </dt> *@
+@*                 <dd class = "col-sm-10"> *@
+@*                 @Html.DisplayFor(model => model.Cart.Customer.Email) *@
+@*                 </dd> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 $1$ <label asp-for="DeliveryType.Name" class="control-label"></label> #1# *@
+@*                 <dt class = "col-sm-2"> *@
+@*                 @Html.DisplayNameFor(model => model.DeliveryType) *@
+@*                 </dt> *@
+@*                 <dd class = "col-sm-10"> *@
+@*                     @Html.DisplayFor(model => model.DeliveryType.Name) *@
+@*                 </dd> *@
+@*             </div> *@
+@*              *@
+@*                 <div class="form-group"> *@
+@*                     <dt class = "col-sm-2"> *@
+@*                         @Html.DisplayNameFor(model => model.AddressToDelivery) *@
+@*                     </dt> *@
+@*                     <dd class = "col-sm-10"> *@
+@*                         @Html.DisplayFor(model => model.AddressToDelivery) *@
+@*                     </dd> *@
+@*                 </div> *@
+@*                 <div class="form-group"> *@
+@*                     <dt class = "col-sm-2"> *@
+@*                         @Html.DisplayNameFor(model => model.ReadyStageId) *@
+@*                     </dt> *@
+@*                     <dd class = "col-sm-10"> *@
+@*                         @Html.DisplayFor(model => model.ReadyStage.Name) *@
+@*                     </dd> *@
+@*                 </div> *@
+@*                 <div class="form-group"> *@
+@*                 <dt class = "col-sm-2"> *@
+@*                 @Html.DisplayNameFor(model => model.UserComment) *@
+@*                 </dt> *@
+@*                 <dd class = "col-sm-10"> *@
+@*                     @Html.DisplayFor(model => model.UserComment) *@
+@*                 </dd> *@
+@*             </div> *@
+@*              *@
+@*             </dl> *@
+@*              *@
+@*              *@
+@* *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="DateBeReady" class="control-label"></label> *@
+@*                 <input asp-for="DateBeReady" class="form-control" /> *@
+@*                 <span asp-validation-for="DateBeReady" class="text-danger"></span> *@
+@*             </div> *@
+@*              *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Price" class="control-label"></label> *@
+@*                 <input asp-for="Price" class="form-control" /> *@
+@*                 <span asp-validation-for="Price" class="text-danger"></span> *@
+@*             </div> *@
+@*             $1$ <div class="form-group form-check"> #1# *@
+@*             $1$     <label class="form-check-label"> #1# *@
+@*             $1$         <input class="form-check-input" asp-for="IsPaid" /> @Html.DisplayNameFor(model => model.IsPaid) #1# *@
+@*             $1$     </label> #1# *@
+@*             $1$ </div> #1# *@
+@*             $1$ <div class="form-group"> #1# *@
+@*             $1$     <label asp-for="ReadyStageId" class="control-label"></label> #1# *@
+@*             $1$     <select asp-for="ReadyStageId" class="form-control" asp-items="ViewBag.ReadyStageId"></select> #1# *@
+@*             $1$     <span asp-validation-for="ReadyStageId" class="text-danger"></span> #1# *@
+@*             $1$ </div> #1# *@
+@*              *@
+@*              *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="SalesmanComment" class="control-label"></label> *@
+@*                 <input asp-for="SalesmanComment" class="form-control" /> *@
+@*                 <span asp-validation-for="SalesmanComment" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <input type="submit" value="Надіслати" class="btn btn-primary" /> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 $1$ <label asp-for="DateOfFixation" class="control-label"></label> #1# *@
+@*                 <dt class = "col-sm-2"> *@
+@*                     @Html.DisplayNameFor(model => model.DateOfFixation) *@
+@*                 </dt> *@
+@*                 <dd class = "col-sm-10"> *@
+@*                     @Html.DisplayFor(model => model.DateOfFixation) *@
+@*                 </dd> *@
+@*             </div> *@
+@*         </form> *@
+@*     $1$ </div> #1# *@
+@* </div> *@
 
 <div>
-    <a asp-action="Index" asp-route-shopProfileId="@ViewBag.ShopProfileId">Повернутися до покупок</a>
+    <a asp-action="Index" asp-route-shopProfileId="@ViewBag.ShopProfileId">Повернутися до замовлень</a>
 </div>

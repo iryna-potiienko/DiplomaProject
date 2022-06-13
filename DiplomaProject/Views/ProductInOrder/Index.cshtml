@@ -4,12 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Мій кошик</h1>
+<h1 class="text-center secondary-color pt-3">Мій кошик</h1>
 
 <table class="table table-striped">
     <thead>
     <tr>
-        <th class="text-center">
+        <th></th>
+        <th class="text-start">
             @Html.DisplayNameFor(model => model.Product)
         </th>
         <th class="text-center">
@@ -21,9 +22,9 @@
         <th class="text-center">
             @Html.DisplayNameFor(model => model.FinalPrice)
         </th>
-        <th class="text-center">
-            @Html.DisplayNameFor(model => model.FinalDescription)
-        </th>
+        @* <th class="text-center"> *@
+        @*     @Html.DisplayNameFor(model => model.FinalDescription) *@
+        @* </th> *@
         @* <th class="text-center"> *@
         @*     @Html.DisplayNameFor(model => model.Cart) *@
         @* </th> *@
@@ -33,7 +34,13 @@
     <tbody>
     @foreach (var item in Model) {
         <tr>
-            <td class="text-center">
+            <td style="width: 15%">
+                <div class="col-6">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Product.Photo)" alt="LogoPhoto" class="image-style">
+                </div>
+            </td>
+            
+            <td class="text-start">
                 @Html.DisplayFor(modelItem => item.Product.Name)
             </td>
             <td class="text-center">
@@ -45,9 +52,9 @@
             <td class="text-center">
                 @Html.DisplayFor(modelItem => item.FinalPrice)
             </td>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.FinalDescription)
-            </td>
+            @* <td class="text-center"> *@
+            @*     @Html.DisplayFor(modelItem => item.FinalDescription) *@
+            @* </td> *@
             @* <td class="text-center"> *@
             @*     @Html.DisplayFor(modelItem => item.Cart.Id) *@
             @* </td> *@

@@ -3,6 +3,7 @@
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Product)
         </th>
@@ -15,15 +16,20 @@
         <th>
             @Html.DisplayNameFor(model => model.FinalPrice)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FinalDescription)
-        </th>
+        @* <th> *@
+        @*     @Html.DisplayNameFor(model => model.FinalDescription) *@
+        @* </th> *@
     </tr>
     </thead>
     <tbody>
     @foreach (var item in Model)
     {
         <tr>
+            <td style="width: 15%">
+                <div class="col-6">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Product.Photo)" alt="LogoPhoto" class="image-style">
+                </div>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Name)
             </td>
@@ -36,10 +42,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FinalPrice)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinalDescription)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.FinalDescription) *@
+            @* </td> *@
         </tr>
     }
     </tbody>
+    <tfoot class="fw-bold table-borderless">
+            
+    <td colspan="3"></td>
+    <td class="text-end table-light">
+        Сумма
+    </td>
+    <td class="table-light">
+        @ViewBag.TotalPrice
+    </td>
+    @* <td> *@
+    @* </td> *@
+    </tfoot>
 </table>
