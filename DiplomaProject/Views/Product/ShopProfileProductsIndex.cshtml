@@ -39,10 +39,10 @@
                         <a class="btn btn-danger" asp-controller="LikedProductByUser" asp-action="Create" asp-route-productId="@item.Id" asp-route-username="@User.Identity.Name">
                             <i class="fa-solid fa-heart"></i>
                         </a>
+                        <a class="btn btn-warning" asp-controller="ProductInOrder" asp-action="Create" asp-route-productId="@item.Id" asp-route-shopProfileId="@item.ShopProfileId">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </a>
                     }
-                    <a class="btn btn-warning" asp-controller="ProductInOrder" asp-action="Create" asp-route-productId="@item.Id" asp-route-shopProfileId="@item.ShopProfileId">
-                        <i class="fa-solid fa-cart-plus"></i>
-                    </a>
                     @if (item.ShopProfile.Salesman.Email == User.Identity.Name)
                     {
                         <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">
