@@ -25,12 +25,14 @@ public class ProductsCardsViewComponent: ViewComponent
             case "new":
                 products = _context.Products
                     .OrderByDescending(p => p.DateAdded)
+                    .Take(6)
                     .ToListAsync();
                 break;
             case "popular":
                 products = _context.Products
                     .Include(p=>p.ProductInOrders)
                     .OrderByDescending(p => p.ProductInOrders.Count)
+                    .Take(6)
                     .ToListAsync();
                 break;
             
@@ -38,7 +40,7 @@ public class ProductsCardsViewComponent: ViewComponent
                 products = _context.Products.ToListAsync();
                 break;
         }
-
+        
         return View("ProductsCards",await products);
     }
 

@@ -29,12 +29,15 @@ public class ShopProfileRepository: IShopProfileRepository
         if (salesmanId != null)
         {
             shopProfiles = _context.ShopProfiles
-                .Where(s => s.SalesmanId == salesmanId).ToListAsync();
+                .Where(s => s.SalesmanId == salesmanId)
+                .OrderByDescending(s=>s.DateCreated).ToListAsync();
         }
         else
         {
             shopProfiles = _context.ShopProfiles
-                .Include(s => s.Salesman).ToListAsync();
+                .Include(s => s.Salesman)
+                .OrderByDescending(s=>s.DateCreated)
+                .ToListAsync();
         }
 
         return shopProfiles;

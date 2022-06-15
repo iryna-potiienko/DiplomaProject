@@ -25,21 +25,19 @@ namespace DiplomaProject.Controllers
         {
             Task<List<Product>> products;
             if(shopProfileId!=null)
-                products = _context.Products.Where(p => p.ShopProfileId == shopProfileId).ToListAsync();
+                products = _context.Products.Where(p => p.ShopProfileId == shopProfileId)
+                    .OrderByDescending(s => s.DateAdded)
+                    .ToListAsync();
 
             else if (categoryId != null)
             {
-                // var subcategories = _context.Subcategories
-                //     .Where(s => s.CategoryId == categoryId)
-                //     .ToList();
-
                 products = _context.Subcategories
                     .Where(s => s.CategoryId == categoryId)
                     //.ToList()
                     .SelectMany(subcategory => _context.Products
                         .Include(p => p.ShopProfile)
                         .Where(p => p.SubcategoryId == subcategory.Id))
-                    //.ToList())
+                    .OrderByDescending(s => s.DateAdded)
                     .ToListAsync();
                 ViewBag.CategoryId = categoryId;
             }
@@ -48,11 +46,14 @@ namespace DiplomaProject.Controllers
                 products = _context.Products
                     .Include(p => p.ShopProfile)
                     .Where(p => p.SubcategoryId == subcategoryId)
+                    .OrderByDescending(s => s.DateAdded)
                     .ToListAsync();
             }
             else
             {
-                products = _context.Products.Include(p => p.ShopProfile).ToListAsync();
+                products = _context.Products.Include(p => p.ShopProfile)
+                    .OrderByDescending(s => s.DateAdded)
+                    .ToListAsync();
             }
             ViewBag.ShopProfileId = shopProfileId;
             return View(await products);
