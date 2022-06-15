@@ -30,14 +30,22 @@ namespace DiplomaProject.Controllers
                 .Where(o => o.ShopProfileId == shopProfileId && o.OrderFeedback != null).ToListAsync();
             var resList = new List<object>();
             resList.Add(new[] {"Балів оцінено замовлення", "Кількість замовлень"});
-            
+
             var orders = await ordersListAsync;
-            resList.AddRange(
-                from order in orders 
-                select order.OrderFeedback.Estimation into estimationNumber 
-                let count = orders.Count(o => o.OrderFeedback.Estimation == estimationNumber)
-                select new object[] {estimationNumber.ToString(), count}
-                );
+            for (var i = 1; i <= 5; i++)
+            {
+                var estimationNumber = i;
+                var count = orders.Count(o => o.OrderFeedback.Estimation == estimationNumber);
+                resList.Add(new object[] {estimationNumber.ToString(),count});
+            }
+            
+            
+            // resList.AddRange(
+            //     from order in orders 
+            //     select order.OrderFeedback.Estimation into estimationNumber 
+            //     let count = orders.Count(o => o.OrderFeedback.Estimation == estimationNumber)
+            //     select new object[] {estimationNumber.ToString(), count}
+            //     );
 
             return Ok(resList);
         }
