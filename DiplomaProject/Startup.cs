@@ -78,6 +78,7 @@ namespace DiplomaProject
                 //options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                options.Cookie.Domain = ".handmade-space.top";
             });
         }
 
