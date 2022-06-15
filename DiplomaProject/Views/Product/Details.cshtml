@@ -17,12 +17,12 @@
         <h6>
             @Html.DisplayFor(model => model.Description)
         </h6>
-        
+
         <h4>
             <span class="fw-bold">₴</span>
             @Html.DisplayFor(model => model.Price)
         </h4>
-        
+
         <hr class="mt-3 mb-3"/>
 
         <h6 class="pt-2">
@@ -37,16 +37,22 @@
 
         <hr class="mt-3 mb-3"/>
 
-        <div class="pt-2">
-            @Html.ActionLink("Замовити товар", "Create", "ProductInOrder", new { productId = Model.Id, shopProfileId = Model.ShopProfile.Id }, new { @class = "btn btn-warning" })
-        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="pt-2">
+                @Html.ActionLink("Замовити товар", "Create", "ProductInOrder", new { productId = Model.Id, shopProfileId = Model.ShopProfile.Id }, new { @class = "btn btn-warning" })
+            </div>
+        }
     </div>
 
 </div>
 
-<div id="leave-comment">
-    <a asp-action="Create" asp-controller="ProductComment" asp-route-productId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div id="leave-comment">
+        <a asp-action="Create" asp-controller="ProductComment" asp-route-productId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
+    </div>
+}
 
 <div class="pt-5">
     @await Component.InvokeAsync("ProductCommentsList", new { productId = Model.Id })
