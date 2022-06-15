@@ -213,3 +213,7 @@ body {
     height: 25vw;
     object-fit: cover;
 }
+
+.field-validation-error {
+    color: red;
+}
