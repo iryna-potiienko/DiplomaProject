@@ -5,7 +5,7 @@ namespace DiplomaProject.Models;
 public class OrderFeedback
 {
     public int Id { get; set; }
-    [Display(Name = "Текст коментаря")]
+    [Display(Name = "Текст відгуку")]
     public string Text { get; set; }
     [Required]
     [Range(1,5,ErrorMessage = "Введіть число від 1 до 5")]

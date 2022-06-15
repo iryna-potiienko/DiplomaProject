@@ -85,26 +85,24 @@ namespace DiplomaProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductId,ShopProfileId,CartId,Amount,Comment,FinalPrice,FinalDescription")] ProductInOrder productInOrder)
         {
-            //var product = await _context.Products.FindAsync(productInOrder.ProductId);
-            
             if (!ModelState.IsValid) return View(productInOrder);
             
             var cart = await GetCart();
             productInOrder.CartId = cart.Id;
             var product = _context.Products.FirstOrDefault(p => p.Id == productInOrder.ProductId);
+            productInOrder.FinalPrice = Convert.ToInt32(productInOrder.Amount)*product.Price;
 
             if (cart.ProductsInOrder.Count == 0)
             {
                 cart.ShopProfileId = product.ShopProfileId;
                 _context.Update(cart);
-                //_context.SaveChanges();
             }
             else
             {
                 if (cart.ShopProfileId != product.ShopProfileId)
                 {
-                    //ModelState.AddModelError("CartShopProfile","You made order in shop"+cart.ShopProfileId);
-                    ViewBag.CartShopProfileError = "You made order in shop" + cart.ShopProfileId;
+                    ModelState.AddModelError("","Замовлення можливе тільки в одному магазині.");
+                    //ViewBag.CartShopProfileError = "You made order in shop" + cart.ShopProfileId;
                     return View(productInOrder);
                 }
                     
@@ -181,31 +179,8 @@ namespace DiplomaProject.Controllers
             ViewData["CartId"] = new SelectList(_context.Products, "Id", "Id", productInOrder.CartId);
             return View(productInOrder);
         }
-
-        // GET: ProductInOrder/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var productInOrder = await _context.ProductsInOrder
-                .Include(p => p.Cart)
-                .Include(p => p.Product)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productInOrder == null)
-            {
-                return NotFound();
-            }
-
-            return View(productInOrder);
-        }
-
-        // POST: ProductInOrder/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        
+        public async Task<IActionResult> Delete(int id)
         {
             var productInOrder = await _context.ProductsInOrder.FindAsync(id);
             _context.ProductsInOrder.Remove(productInOrder);

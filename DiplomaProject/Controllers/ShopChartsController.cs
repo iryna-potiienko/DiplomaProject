@@ -61,7 +61,7 @@ namespace DiplomaProject.Controllers
             var orders =  ordersListAsync;
             //var days = DateOnly.FromDateTime(DateTime.Now).AddDays(3);//shopProfile.DateAdded;
 
-            for (var i = shopProfile.DateCreated; i < DateOnly.FromDateTime(DateTime.Now); i = i.AddDays(1))
+            for (var i = shopProfile.DateCreated; i <= DateOnly.FromDateTime(DateTime.Now); i = i.AddDays(1))
             {
                 var date = i;
                 var count = orders.Count(o => DateOnly.FromDateTime(o.DateOfFixation.Date) == i);

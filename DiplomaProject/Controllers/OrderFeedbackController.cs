@@ -63,6 +63,11 @@ namespace DiplomaProject.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(orderFeedback);
+
+                var order = await _context.Orders.FindAsync(orderFeedback.OrderId);
+                order.ReadyStageId = 10;
+                _context.Update(order);
+                
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Details), "Order", new {id = orderFeedback.OrderId});
             }
@@ -153,6 +158,11 @@ namespace DiplomaProject.Controllers
         {
             var orderFeedback = await _context.OrderFeedbacks.FindAsync(id);
             _context.OrderFeedbacks.Remove(orderFeedback);
+            
+            var order = await _context.Orders.FindAsync(orderFeedback.OrderId);
+            order.ReadyStageId = 9;
+            _context.Update(order);
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Details), "Order", new {id = orderFeedback.OrderId});
         }

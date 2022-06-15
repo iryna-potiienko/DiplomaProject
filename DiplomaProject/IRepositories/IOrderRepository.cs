@@ -11,4 +11,5 @@ public interface IOrderRepository
 
     public Task UpdateOrder(Order order);
     IIncludableQueryable<Order, OrderFeedback> GetShopOrders(int shopProfileId);
+    double GetTotalOrderPrice(int orderId);
 }

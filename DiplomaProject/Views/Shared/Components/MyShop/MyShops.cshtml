@@ -1,15 +1,8 @@
 @model IEnumerable<DiplomaProject.Models.ShopProfile>
 
-@if (Model.Count() != 0)
-{
-    <i class="fa-solid fa-store" style="color:green;"></i>
-    <a asp-action="Index" asp-controller="ShopProfile" asp-route-salesmanId="@ViewBag.UserId">Мої магазини</a>
-}
-
-@* <h4>Список пользователей</h4> *@
-@* <ul> *@
-@*     @foreach (var shop in Model) *@
-@*     { *@
-@*         <a asp-action="Details" asp-controller= "ShopProfile" asp-route-id="@shop.Id">Мій магазин</a> *@
-@*     } *@
-@* </ul> *@
+<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Мої магазини">
+    @if (Model.Count() != 0)
+    {
+        <a asp-action="Index" asp-controller="ShopProfile" asp-route-salesmanId="@ViewBag.UserId" class = "my-btn fa-solid fa-store fa-2x secondary-color" ></a>
+    }
+</div>

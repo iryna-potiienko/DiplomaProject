@@ -78,29 +78,32 @@
 
 @if (Model.Salesman.Email == User.Identity.Name)
 {
-    <div class="d-flex align-items-center">
+    <div class="pt-3 pb-3">
         <a class="btn btn-warning" asp-action="Index" asp-controller="Order" asp-route-shopProfileId="@Model?.Id">Замовлення магазину</a>
         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model?.Id">Редагувати</a>
         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Видалити</a>
         <a class="btn btn-success" asp-action="Create" asp-controller="Product" asp-route-shopProfileId="@Model.Id">Додати товар</a>
     </div>
-    <table class="columns">
-        <tr>
-            <td>
-                <div id="piechart_div" style="border: 1px solid #ccc"></div>
-            </td>
-            <td>
-                <div id="barchart_div" style="border: 1px solid #ccc"></div>
-            </td>
-        </tr>
-    </table>
+    @if (Model.Orders.Any())
+    {
+        <table class="columns">
+            <tr>
+                <td>
+                    <div id="piechart_div" style="border: 1px solid #ccc"></div>
+                </td>
+                <td>
+                    <div id="barchart_div" style="border: 1px solid #ccc"></div>
+                </td>
+            </tr>
+        </table>
+    }
 }
 
 <div id="leave-comment">
-    <a asp-action="Create" asp-controller="ShopComment" asp-route-shopProfileId="@Model.Id" class="btn btn-secondary">Залишити коментар</a>
+    <a asp-action="Create" asp-controller="ShopComment" asp-route-shopProfileId="@Model.Id" class="btn btn-secondary mt-5">Залишити коментар</a>
 </div>
 
-<div class="pt-5">
+<div class="">
     @await Component.InvokeAsync("ShopCommentsList", new { shopProfileId = Model.Id })
 </div>
 
@@ -131,8 +134,11 @@ google.charts.load('current', { 'packages': ['corechart'] });
                 var options = {
                     title: "Співвідношення оцінок замовлень",
                     width: 500,
-                    height: 400
+                    height: 400,
+                    backgroundColor:{
+                        fill: 'lavenderblush'
                     }
+                }
                     
                     var piechart = new google.visualization.PieChart(document.getElementById('piechart_div'));
                     piechart.draw(data, options);      
@@ -156,10 +162,13 @@ google.charts.load('current', { 'packages': ['corechart'] });
             function drawBarChart(mydata) {
                             data = google.visualization.arrayToDataTable(mydata, false);
                             var options = {
-                                title: "Надійшло замовлень за 1 день",
+                                title: "Кількість замовлень по датах",
                                 width: 500,
-                                height: 400
+                                height: 400,
+                                backgroundColor:{
+                                    fill: 'lavenderblush'
                                 }
+                            }
                                 
                                 var barchart = new google.visualization.LineChart(document.getElementById('barchart_div'));
                                 barchart.draw(data, options);      

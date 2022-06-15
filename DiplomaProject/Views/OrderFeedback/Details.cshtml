@@ -51,6 +51,6 @@
 </div>
 
 <div>
-    @* <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> | *@
-    @Html.ActionLink("Повернутися до замовлення", "Details", "Order", new { id = ViewBag.OrderId }, null)
+    <a class="btb btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Видалити</a>
+    @Html.ActionLink("Повернутися до замовлення", "Details", "Order", new { id = Model.Order.Id }, new {@class="btb btn-primary"})
 </div>

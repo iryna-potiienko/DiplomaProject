@@ -1,0 +1,59 @@
+@model OrderFeedback
+
+@if (Model != null)
+{
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estimation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsInTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsEverythingOkay)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td>
+                @Model.Text
+            </td>
+            <td>
+                @Model.Estimation
+            </td>
+            <td>
+                @if (Model.IsInTime)
+                {
+                    <i class="fa-solid fa-check text-success fa-2x"></i>
+                }
+                else
+                {
+                    <i class="fa-solid fa-xmark text-danger fa-2x"></i>
+                }
+            </td>
+            <td>
+                @if (Model.IsEverythingOkay)
+                {
+                    <i class="fa-solid fa-check text-success fa-2x"></i>
+                }
+                else
+                {
+                    <i class="fa-solid fa-xmark text-danger fa-2x"></i>
+                }
+            </td>
+
+            <td>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+}

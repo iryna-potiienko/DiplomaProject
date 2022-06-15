@@ -149,7 +149,7 @@ namespace DiplomaProject.Controllers
                         await _context.SaveChangesAsync();
 
                         CloseCart();
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(Details), new {id = order.Id});
                     }
                 }
                 else
@@ -190,6 +190,7 @@ namespace DiplomaProject.Controllers
             //ViewData["ReadyStageId"] = new SelectList(_context.ReadyStages, "Id", "Name", order.ReadyStageId);
             ViewBag.ShopProfileId = order.ShopProfileId;
             ViewData["CartId"] = order.CartId;
+            ViewBag.TotalPrice = order.Cart.ProductsInOrder.Sum(p => p.FinalPrice);
             return View(order);
         }
         
@@ -204,10 +205,11 @@ namespace DiplomaProject.Controllers
 
             if (ModelState.IsValid)
             {
+                Order order;
                 try
                 {
                     //var order = await _context.Orders.FindAsync(id);
-                    var order = await _context.Orders
+                    order = await _context.Orders
                         // .Include(o=>o.Cart)
                         // .ThenInclude(c=>c.Customer)
                         // .Include(o=>o.Cart)
@@ -250,7 +252,8 @@ namespace DiplomaProject.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(Index), new {shopProfileId = model.ShopProfileId});
+                //return RedirectToAction(nameof(Index), new {shopProfileId = model.ShopProfileId});
+                return RedirectToAction(nameof(Details), new {id = order.Id});
             }
             
             //ViewData["DeliveryTypeId"] = new SelectList(_context.DeliveryTypes, "Id", "Id", order.DeliveryTypeId);
@@ -427,6 +430,7 @@ namespace DiplomaProject.Controllers
             {
                 case "AcceptOrder":
                     order.ReadyStageId = 3;
+                    order.Price = _orderRepository.GetTotalOrderPrice(order.Id);
                     ViewBag.MessageText = "Замовлення підтверджене";
                     break;
                 case "PayForTheOrder":

@@ -60,6 +60,16 @@ public class OrderRepository: IOrderRepository
             .Include(o => o.OrderFeedback);
     }
 
+    public double GetTotalOrderPrice(int orderId)
+    {
+        var order = _context.Orders.Where(o => o.Id == orderId)
+            .Include(o => o.Cart)
+            .ThenInclude(c => c.ProductsInOrder)
+            .First();
+
+        var sum = order.Cart.ProductsInOrder.Sum(p => p.FinalPrice);
+        return sum;
+    }
     // public decimal ComputeTotalValue()
     // {
     //     return lineCollection.Sum(e => e.Game.Price * e.Quantity);

@@ -13,22 +13,10 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+           
             <div class="form-group">
-                @* <label asp-for="CartId" class="control-label"></label> *@
-                @* <select asp-for="CartId" class ="form-control" asp-items="ViewBag.CartId"></select> *@
-                @* <input type="hidden" asp-for="CartId" asp-items="ViewBag.CartId"/> *@
-            </div>
-            
-            <div class="form-group">
-                @* <label asp-for="ProductId" class="control-label"></label> *@
-                @* <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select> *@
                 <input type="hidden" asp-for="ProductId" asp-items="ViewBag.ProductId"/>
                 <input type="hidden" value="@ViewBag.ShopProfileId" asp-items="ViewBag.ShopProfileId"/>
-                
-                @* @{  *@
-                @*     ViewBag.ShopId = ViewBag.ShopProfileId; *@
-                @* } *@
             </div>
             
             <div class="form-group">
@@ -43,31 +31,21 @@
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             
-            @* <div class="form-group"> *@
-            @*     <label asp-for="FinalPrice" class="control-label"></label> *@
-            @*     <input asp-for="FinalPrice" class="form-control" /> *@
-            @*     <span asp-validation-for="FinalPrice" class="text-danger"></span> *@
-            @* </div> *@
-            @* <div class="form-group"> *@
-            @*     <label asp-for="FinalDescription" class="control-label"></label> *@
-            @*     <input asp-for="FinalDescription" class="form-control" /> *@
-            @*     <span asp-validation-for="FinalDescription" class="text-danger"></span> *@
-            @* </div> *@
-            @if (ViewBag.CartShopProfileError != null)
-            {
-                <div class="alert alert-dismissible alert-danger">
-                    @ViewBag.CartShopProfileError
-                </div>
-            }
+            @* @if (ViewBag.CartShopProfileError != null) *@
+            @* { *@
+            @*     <div class="alert alert-dismissible alert-danger"> *@
+            @*         @ViewBag.CartShopProfileError *@
+            @*     </div> *@
+            @* } *@
             
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Додати до замовлення" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="pt-3">
     <a class="btn btn-info" asp-action="Index" asp-controller="Product">Повернутися до покупок</a>
 </div>
 

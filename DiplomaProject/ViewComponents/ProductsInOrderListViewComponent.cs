@@ -24,7 +24,7 @@ public class ProductsInOrderListViewComponent: ViewComponent
             .ToListAsync();
         //ViewBag.CategoryId = categoryId;
 
-        ViewBag.TotalPrice = productsInOrder.Sum(p => p.Product.Price);
+        ViewBag.TotalPrice = productsInOrder.Sum(p => p.FinalPrice);
         return View("ProductsInOrderList", productsInOrder);
     }
 }
