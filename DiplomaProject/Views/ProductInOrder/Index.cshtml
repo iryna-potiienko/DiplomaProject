@@ -83,7 +83,11 @@
         <div>
             @* @Html.ActionLink("Оформити замовлення", "UserMakeOrder", "Order", new {cartId = ViewBag.CartId}) *@
             <a class="btn btn-warning" asp-action="UserMakeOrder" asp-controller="Order" asp-route-cartId="@ViewBag.CartId">Оформити замовлення</a>
+            <a class="btn btn-info ml-1" asp-action="ShopProfileProductsIndex" asp-controller="Product" asp-route-shopProfileId="@Model.First().Product.ShopProfileId">Інші товари магазину</a>
         </div>
     }
-    <a class="btn btn-info ml-1" asp-action="Index" asp-controller="Product">Повернутися до покупок</a>
+    else
+    {
+        <a class="btn btn-info ml-1" asp-action="Index" asp-controller="Product">Повернутися до покупок</a>
+    }
 </div>
