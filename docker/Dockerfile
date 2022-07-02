@@ -22,4 +22,6 @@ ENV PATH $PATH:/root/.dotnet/tools
 
 COPY cert/aspnetapp.pfx ${HOME}/.aspnet/https/
 
-ENTRYPOINT ["dotnet", "DiplomaProject.dll"]
+#ENTRYPOINT ["dotnet", "DiplomaProject.dll"]
+
+CMD ["sleep", "10000"]
