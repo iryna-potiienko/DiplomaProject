@@ -20,7 +20,6 @@ COPY /DiplomaProject /app/DiplomaProjectSrc
 RUN dotnet tool install --global dotnet-ef
 ENV PATH $PATH:/root/.dotnet/tools
 
-RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p 123 &&  \
-    dotnet dev-certs https --trust
+COPY cert/aspnetapp.pfx ${HOME}/.aspnet/https/
 
 ENTRYPOINT ["dotnet", "DiplomaProject.dll"]
