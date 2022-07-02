@@ -14,13 +14,20 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /app
 
+#ENV ASPNETCORE_URLS	http://*:80;https://*:443
+#ENV ASPNETCORE_HTTPS_PORT 443
+#ENV ASPNETCORE_ENVIRONMENT Production
+#ENV Env Production
+
 COPY --from=build-env /app/out .
 COPY /DiplomaProject /app/DiplomaProjectSrc
 
 RUN dotnet tool install --global dotnet-ef
 ENV PATH $PATH:/root/.dotnet/tools
 
-RUN dotnet dev-certs https --trust
-COPY cert/aspnetapp.pfx ${HOME}/.aspnet/https/
+RUN dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p 0970729386  \
+    && dotnet dev-certs https --trust 
+    
+COPY cert/aspnetapp.pfx /root/.aspnet/https/
 
 ENTRYPOINT ["dotnet", "DiplomaProject.dll"]
