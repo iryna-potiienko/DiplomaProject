@@ -1,15 +1,20 @@
 using System;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using DiplomaProject.IRepositories;
 using DiplomaProject.Models;
 using DiplomaProject.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MySqlConnector;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace DiplomaProject
 {
@@ -20,7 +25,7 @@ namespace DiplomaProject
             Configuration = configuration;
         }
 
-        private IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -39,35 +44,18 @@ namespace DiplomaProject
             });
 
             services.AddControllers();
-            
+
             var environmentName = Environment.GetEnvironmentVariable("Env");
 
-            var connString = "";
-
-            var dbUrl = Environment.GetEnvironmentVariable("DB_URL");
-            var dbUser = Environment.GetEnvironmentVariable("DB_USER");
-            var dbPass = Environment.GetEnvironmentVariable("DB_PASS");
-            
-            if (dbUrl != null && dbUser != null && dbPass != null)
-            {
-                var sb = new StringBuilder();
-                
-                sb.Append($"server={dbUrl};port=3306;user={dbUser};password={dbPass};database=CraftDatabase");
-
-                connString = sb.ToString();
-            }
-            else
-            {
-                var configuration = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json")
                     .AddJsonFile($"appsettings.{environmentName}.json", true)
                     .AddEnvironmentVariables()
                     .Build();
             
-                // other service configurations go here
-                connString = configuration.GetConnectionString("DefaultConnection");   
-            }
-
+            // other service configurations go here
+            var connString = configuration.GetConnectionString("DefaultConnection");
+            
             services.AddDbContext<KraftWebAppContext>(options => options.UseMySql(connString, 
                             ServerVersion.AutoDetect(connString)));
             
